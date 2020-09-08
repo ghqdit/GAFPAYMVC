@@ -244,25 +244,24 @@ namespace GAFPAY.Controllers
         public ActionResult CreateOCProcess()
         {
 
-            var model = new RecruitTrialPay();
+            var model = new OcTrialPay();
             model.MonthList = payViewData.getPayrollMonth();
-            model.StaffList = staffViewData.getRecruit();
-            ViewBag.User = "Recruit";
+            model.StaffList = staffViewData.getOfficerCadet(); 
 
             return View("CreateOCProcess", model);
         }
 
 
         [HttpPost]
-        public ActionResult CreateOCProcess(RecruitTrialPay data)
+        public ActionResult CreateOCProcess(OcTrialPay data)
         {
             if (ModelState.IsValid)
             {
-                var recruitID = data.RecruitID;
-                var rec = db.RECRUIT.Find(recruitID);
-                var constPay = db.MILITARYLEVSTEP.Find(rec.MILITARYLEVSTEPID);
+                var ocID = data.OfficerCadetID;
+                var oc = db.OFFICERCADET.Find(ocID);
+                var constPay = db.MILITARYLEVSTEP.Find(oc.MILITARYLEVSTEPID);
                 var tPay = new TrialPay();
-                if (rec != null)
+                if (oc != null)
                 {
 
                     var date = "";
@@ -273,24 +272,24 @@ namespace GAFPAY.Controllers
                     DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
                         System.Globalization.CultureInfo.InvariantCulture);
                     tPay.TrialPayDate = date1;
-                    var checkAvail = db.RECRUITTRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.RECRIUTID == recruitID);
+                    var checkAvail = db.OFFICERCADETTRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.OFFICERCADETID == ocID);
                     if (checkAvail != null)
                     {
-                        errorMessage = "Trial Pay for (" + rec.SERVICENUMBER + ") " + rec.SURNAME + " " + rec.OTHERNAME + " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
+                        errorMessage = "Trial Pay for (" + oc.SERVICENUMBER + ") " + oc.SURNAME + " " + oc.OTHERNAME + " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
 
                     }
                     else
                     {
-                        var recruitTrialPay = new RECRUITTRIALPAY();
-                        recruitTrialPay.PAYDATE = date1;
-                        recruitTrialPay.RECRIUTID = recruitID;
-                        recruitTrialPay.CONSTPAY = constPay.CONSTPAY;
-                        recruitTrialPay.BANKID = rec.RECRUITBANK.BANKID;
-                        recruitTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        recruitTrialPay.INSERTEDBY = "admin";
+                        var ocTrialPay = new OFFICERCADETTRIALPAY();
+                        ocTrialPay.PAYDATE = date1;
+                        ocTrialPay.OFFICERCADETID = ocID;
+                        ocTrialPay.CONSTPAY = constPay.CONSTPAY;
+                        ocTrialPay.BANKID = oc.OFFICERCADETBANK.BANKID;
+                        ocTrialPay.DATETIMEINSERTED = DateTime.Now;
+                        //ocTrialPay.INSERTEDBY = User.Identity.Name;
+                        ocTrialPay.INSERTEDBY = "admin";
 
-                        db.RECRUITTRIALPAY.Add(recruitTrialPay);
+                        db.OFFICERCADETTRIALPAY.Add(ocTrialPay);
 
                         try
                         {
@@ -301,15 +300,14 @@ namespace GAFPAY.Controllers
                         {
                             errorMessage = e.Message;
                         }
-
-
+                         
                     }
 
 
                 }
                 else
                 {
-                    errorMessage = "Recruit does not exist. Please contact System Admin for assistance.";
+                    errorMessage = "Officer Cadet does not exist. Please contact System Admin for assistance.";
                     //return Json(success ? JsonResponse.SuccessResponse("Recruit") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
@@ -327,13 +325,13 @@ namespace GAFPAY.Controllers
 
         public ActionResult CreateOCBatch()
         {
-            var model = new RecruitTrialPay();
+            var model = new OcTrialPay();
             model.MonthList = payViewData.getPayrollMonth();
 
-            return View("CreateRecruitBatch", model);
+            return View("CreateOCBatch", model);
         }
         [HttpPost]
-        public ActionResult CreateOCBatch(RecruitTrialPay data)
+        public ActionResult CreateOCBatch(OcTrialPay data)
         {
             var Processed = 0;
             var Unprocessed = 0;
@@ -348,26 +346,26 @@ namespace GAFPAY.Controllers
                 DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
                     System.Globalization.CultureInfo.InvariantCulture);
 
-                var recruit = db.RECRUIT.Where(a => a.GENERALSTATUSID == 1).ToList();
-                foreach (var item in recruit)
+                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == 1).ToList();
+                foreach (var item in oc)
                 {
-                    var tPay = new RecruitTrialPay();
+                    var tPay = new OcTrialPay();
                     tPay.TrialPayDate = date1;
-                    tPay.RecruitID = item.RECRIUTID;
+                    tPay.OfficerCadetID = item.OFFICERCADETID;
 
-                    var recTrialPay = db.RECRUITTRIALPAY.FirstOrDefault(a => a.PAYDATE == date1 && a.RECRIUTID == item.RECRIUTID);
-                    if (recTrialPay == null)
+                    var ocTrialPay = db.OFFICERCADETTRIALPAY.FirstOrDefault(a => a.PAYDATE == date1 && a.OFFICERCADETID == item.OFFICERCADETID);
+                    if (ocTrialPay == null)
                     {
-                        var recruitTrialPay = new RECRUITTRIALPAY();
-                        recruitTrialPay.PAYDATE = date1;
-                        recruitTrialPay.RECRIUTID = item.RECRIUTID;
-                        recruitTrialPay.CONSTPAY = item.MILITARYLEVSTEP.CONSTPAY;
-                        recruitTrialPay.BANKID = item.RECRUITBANK.BANKID;
-                        recruitTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        recruitTrialPay.INSERTEDBY = "admin";
+                        var offCadTrialPay = new OFFICERCADETTRIALPAY();
+                        offCadTrialPay.PAYDATE = date1;
+                        offCadTrialPay.OFFICERCADETID = item.OFFICERCADETID;
+                        offCadTrialPay.CONSTPAY = item.MILITARYLEVSTEP.CONSTPAY;
+                        offCadTrialPay.BANKID = item.OFFICERCADETBANK.BANKID;
+                        offCadTrialPay.DATETIMEINSERTED = DateTime.Now;
+                        //offCadTrialPay.INSERTEDBY = User.Identity.Name;
+                        offCadTrialPay.INSERTEDBY = "admin";
 
-                        db.RECRUITTRIALPAY.Add(recruitTrialPay);
+                        db.OFFICERCADETTRIALPAY.Add(offCadTrialPay);
 
 
                         Processed += 1;

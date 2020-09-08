@@ -1,6 +1,6 @@
-﻿@model GAFPAY.ViewModel.OcTrialPay
+﻿@model GAFPAY.ViewModel.RecruitTrialPay
 @{
-    ViewBag.Title = "Process Officer Cadet Trial Pay";
+    ViewBag.Title = "Batch Process Officer Cadet Trial Pay";
 }
 
 
@@ -10,7 +10,6 @@
         <ol class="breadcrumb">
 
             <li class="breadcrumb-item"> <a href="@Url.Action("Index", "Home")"> Dashboard</a> </li>
-            <li class="breadcrumb-item"> <a href="@Url.Action("IndexRecruitTrialPay","Pay")"> Recruit Trial Pay</a> </li>
             <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title </li>
         </ol>
     </nav>
@@ -36,14 +35,6 @@
                                         <div class="input-field">
                                             @Html.LabelFor(model => model.MonthID)
                                             @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Month", htmlAttributes: new { @class = "form-control", onchange = "populateBankBranch(this)" })
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-5">
-                                        <div class="input-field">
-                                            @Html.LabelFor(model => model.OfficerCadetID)
-                                            @Html.DropDownListFor(model => model.OfficerCadetID, Model.StaffList, "Select Officer Cadet", htmlAttributes: new { @class = "form-control" })
 
                                         </div>
                                     </div>
@@ -80,7 +71,7 @@
         var form = $('#NewFormX').get(0);
 
         $.ajax({
-            url: "@Url.Action("CreateOCProcess", "Pay")",
+            url: "@Url.Action("CreateOCBatch", "Pay")",
             type: "POST",
             data: new FormData(form),
             processData: false,
