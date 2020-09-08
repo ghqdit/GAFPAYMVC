@@ -1,0 +1,60 @@
+﻿@using GAFPAY.ViewModel
+@model List<Allowance>
+
+@{
+    ViewBag.Title = "Allowances";
+}
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item active"> @ViewBag.Title</> </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+    <a href="@Url.Action("CreateAllowance")" class="btn btn-primary"><i class="fas fa-plus" aria-hidden="true"></i> Add New</a>
+    <br /><br />
+    <table class="table table-striped" id="tableX">
+        <thead>
+            <tr>
+
+                <th></th>
+                <th>Allowance</th>
+                <th>Taxable</th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td></td>
+                <td>@item.AllowanceName</td>
+                <td>@item.IsTaxable</td>
+                <td class="text-center">
+                    <a class="" href="@Url.Action("EditAllowance",new {id=item.AllowanceID})"><i class="fas fa-pencil-alt"></i></a>|
+                    <a class="" onclick="removeItem(@item.AllowanceID,'@item.AllowanceName')"><i class="fas fa-trash-alt"></i></a>
+
+                </td>
+
+                @*@if (User.IsInRole("AccountAdmin") || User.IsInRole("SuperUser"))
+                    {
+                        <td class="text-center">
+
+                            <a class="" href="@Url.Action("EditExpense", new {id = item.ExpenseID})"><i class="fas fa-pencil-alt"></i></a> |
+
+                            <a class="" onclick="removeItem(@item.ExpenseID, '@item.Detail', '@item.Date')"><i class="fas fa-trash-alt"></i></a>
+
+
+                        </td>
+                    }*@
+            </tr>
+        }
+    </table>
+
+</div>
+<script src="~/Scripts/tableList.js"></script>

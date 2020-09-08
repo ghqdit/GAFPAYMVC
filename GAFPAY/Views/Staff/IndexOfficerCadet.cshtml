@@ -1,0 +1,113 @@
+﻿@using GAFPAY.ViewModel
+@model List<OfficerCadet>
+
+@{
+    ViewBag.Title = "Officer Cadet";
+}
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item active"> @ViewBag.Title</> </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+    <a href="@Url.Action("CreateOfficerCadet")" class="btn btn-primary"><i class="fas fa-plus" aria-hidden="true"></i> Add New</a>
+    <br /><br />
+    <table class="table table-striped" id="tableX">
+        <thead>
+            <tr>
+
+                <th></th>
+                <th>Svc Number</th>
+                <th>Name</th>
+                <th>Service</th>
+                <th>Commission Type</th>
+
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td></td>
+                <td>@item.ServiceNumber</td>
+                <td>@item.RankNameShort @item.Surname  @item.Othername </td>
+                <td>@item.ServiceName </td>
+                <td>@item.CommissionTypeName </td>
+                <td class="text-center">
+                    <a class="" href="@Url.Action("EditOfficerCadet",new {id=item.OfficerCadetID})"><i class="fas fa-pencil-alt"></i></a>|
+                    <a class="" href="@Url.Action("EditOfficerCadetBank",new {id=item.OfficerCadetID})"><i class="fas fa-credit-card"></i></a>|
+                    <a class="" onclick="removeItemx(@item.OfficerCadetID,'@item.Surname')"><i class="fas fa-trash-alt"></i></a>
+
+                </td>
+
+                @*@if (User.IsInRole("AccountAdmin") || User.IsInRole("SuperUser"))
+                    {
+                        <td class="text-center">
+
+                            <a class="" href="@Url.Action("EditExpense", new {id = item.ExpenseID})"><i class="fas fa-pencil-alt"></i></a> |
+
+                            <a class="" onclick="removeItem(@item.ExpenseID, '@item.Detail', '@item.Date')"><i class="fas fa-trash-alt"></i></a>
+
+
+                        </td>
+                    }*@
+            </tr>
+        }
+    </table>
+
+</div>
+<script src="~/Scripts/tableList.js"></script>
+<script>
+
+    function removeItem(X,Y) {
+        swal({
+            title: "Are you sure",
+            text: "Delete " + Y + "?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Delete",
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("RemoveOIntake","Settings")",
+                        type: 'POST',
+                    data: 'id=' + X,
+                    dataType: 'json'
+                })
+                    .done(function (response) {
+                        swal({
+                            title: "Successful",
+                            text: response.Message+ " deleted successfully",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            timer: 5000,
+                            closeOnConfirm: true
+
+
+                        })
+                        window.location.href = '@Url.Action("IndexOIntake", "Settings")';
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    },
+    allowOutsideClick: false
+    });
+    }
+
+
+</script>

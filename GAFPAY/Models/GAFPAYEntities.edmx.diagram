@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a9e4d322c993404da230ff204874d500" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="DBGAFPAYModel.ALLOWANCE" Width="1.5" PointX="7.5" PointY="68.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.BANK" Width="1.5" PointX="18.75" PointY="66.25" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.BANKNAME" Width="1.5" PointX="16.5" PointY="67.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.BLOODGROUP" Width="1.5" PointX="3" PointY="78.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.CIVILIANLEVSTEP" Width="1.5" PointX="13.5" PointY="68.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.COMMISSIONTYPE" Width="1.5" PointX="6" PointY="65.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DEDUCTION" Width="1.5" PointX="10.5" PointY="63.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DEDUCTIONCLASS" Width="1.5" PointX="8.25" PointY="65" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.GENDER" Width="1.5" PointX="3" PointY="82.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.GENERALSTATUS" Width="1.5" PointX="3" PointY="74.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCE" Width="1.5" PointX="18.75" PointY="74.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEALLOWANCE" Width="1.5" PointX="26" PointY="82.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEBANK" Width="1.5" PointX="24" PointY="79.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEDEDUCTION" Width="1.5" PointX="21" PointY="80.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEIMAGE" Width="1.5" PointX="21" PointY="86.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEMEDP" Width="1.5" PointX="21" PointY="89.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLL" Width="1.5" PointX="21" PointY="91.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" Width="1.5" PointX="23.25" PointY="96.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLLDEDUCTION" Width="1.5" PointX="26.25" PointY="91.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPROVIDENT" Width="1.5" PointX="12.75" PointY="116.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAY" Width="1.5" PointX="21" PointY="73.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" Width="1.5" PointX="23.25" PointY="71.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAYDEDUCTION" Width="1.5" PointX="26.25" PointY="73.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.MILITARYLEVSTEP" Width="1.5" PointX="3" PointY="71.25" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICER" Width="1.5" PointX="5.25" PointY="78.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERALLOWANCE" Width="1.5" PointX="13.5" PointY="82.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERBANK" Width="1.5" PointX="7.5" PointY="88.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERCADET" Width="1.5" PointX="8.25" PointY="79.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERCADETBANK" Width="1.5" PointX="13.5" PointY="79.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERCADETIMAGE" Width="1.5" PointX="10.5" PointY="88.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERCADETPAYROLL" Width="1.5" PointX="13.5" PointY="86" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERCADETTRIALPAY" Width="1.5" PointX="16.5" PointY="82" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERDEDUCTION" Width="1.5" PointX="10.5" PointY="81.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERIMAGE" Width="1.5" PointX="7.5" PointY="98.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERINTAKE" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERMEDP" Width="1.5" PointX="7.5" PointY="100.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERPAYROLL" Width="1.5" PointX="7.5" PointY="94.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERPAYROLLALLOWANCE" Width="1.5" PointX="9.75" PointY="95" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERPAYROLLDEDUCTION" Width="1.5" PointX="12.75" PointY="94.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERTRIALPAY" Width="1.5" PointX="7.5" PointY="74.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERTRIALPAYALLOWANCE" Width="1.5" PointX="9.75" PointY="74.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.OFFICERTRIALPAYDEDUCTION" Width="1.5" PointX="12.75" PointY="74.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.PROVIDENTFUND" Width="1.5" PointX="10.5" PointY="77.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RANK" Width="1.5" PointX="3" PointY="86.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RECRUIT" Width="1.5" PointX="5.25" PointY="89.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RECRUITBANK" Width="1.5" PointX="10.5" PointY="91.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RECRUITCOURSE" Width="1.5" PointX="3" PointY="99.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RECRUITIMAGE" Width="1.5" PointX="7.5" PointY="103.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RECRUITPAYROLL" Width="1.5" PointX="10.5" PointY="98.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RECRUITTRIALPAY" Width="1.5" PointX="13.5" PointY="90.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.REGION" Width="1.5" PointX="13.5" PointY="102" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.RELIGION" Width="1.5" PointX="13.5" PointY="98.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCE" Width="1.5" PointX="15.75" PointY="71.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEALLOWANCE" Width="1.5" PointX="21" PointY="70.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEBANK" Width="1.5" PointX="21" PointY="77.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEDEDUCTION" Width="1.5" PointX="24" PointY="74.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEIMAGE" Width="1.5" PointX="18" PointY="72.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEMEDP" Width="1.5" PointX="18" PointY="86.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEPAYROLL" Width="1.5" PointX="18" PointY="88.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEPAYROLLALLOWANCE" Width="1.5" PointX="23.25" PointY="89.25" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCEPAYROLLDEDUCTION" Width="1.5" PointX="23.25" PointY="85" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCETRIALPAY" Width="1.5" PointX="18" PointY="92.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCETRIALPAYALLOWANCE" Width="1.5" PointX="23.25" PointY="93.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SENIORCETRIALPAYDEDUCTION" Width="1.5" PointX="20.25" PointY="95.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SERVICE" Width="1.5" PointX="0.75" PointY="76.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIER" Width="1.5" PointX="15.75" PointY="85.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERALLOWANCE" Width="1.5" PointX="26" PointY="88.125" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERBANK" Width="1.5" PointX="26" PointY="85.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERDEDUCTION" Width="1.5" PointX="26" PointY="95.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERIMAGE" Width="1.5" PointX="18" PointY="101.25" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERMEDP" Width="1.5" PointX="18" PointY="108.25" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERPAYROLL" Width="1.5" PointX="18" PointY="97.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERPAYROLLALLOWANCE" Width="1.5" PointX="20.25" PointY="99.875" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERPAYROLLDEDUCTION" Width="1.5" PointX="23.25" PointY="99.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERTRIALPAY" Width="1.5" PointX="18" PointY="104.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERTRIALPAYALLOWANCE" Width="1.5" PointX="20.25" PointY="104.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.SOLDIERTRIALPAYDEDUCTION" Width="1.5" PointX="23.25" PointY="104.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.TITLE" Width="1.5" PointX="13.5" PointY="71.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.TRAININGCENTER" Width="1.5" PointX="3" PointY="102.5" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.UNIT" Width="1.5" PointX="13.5" PointY="105.625" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_JUNIORCEBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_OFFICERBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_OFFICERCADETBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_OFFICERCADETPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_OFFICERCADETTRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_RECRUITBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_RECRUITPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_RECRUITTRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_SENIORCEBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANK_SOLDIERBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BANKNAME_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BLOODGROUP_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BLOODGROUP_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BLOODGROUP_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_BLOODGROUP_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_CIVILIANLEVSTEP_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_CIVILIANLEVSTEP_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_COMMISSIONTYPE_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_JUNIORCEDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_JUNIORCEPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_JUNIORCETRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_OFFICERDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_OFFICERPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_OFFICERTRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_SENIORCEDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_SENIORCEPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_SENIORCETRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_SOLDIERDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_SOLDIERPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTION_SOLDIERTRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DEDUCTIONCLASS_DEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENDER_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENDER_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENDER_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENDER_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENDER_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENDER_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEIMAGE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEMEDP" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_PROVIDENTFUND" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_REGION_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_TITLE_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_UNIT_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPROVIDENT_PROVIDENTFUND" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERIMAGE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERMEDP" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_OFFICERTRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICER_PROVIDENTFUND" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RANK_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_REGION_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SERVICE_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_UNIT_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETIMAGE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETTRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RANK_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_REGION_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SERVICE_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERPAYROLL_OFFICERPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERTRIALPAY_OFFICERTRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERTRIALPAY_OFFICERTRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_PROVIDENTFUND" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RANK_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RANK_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SERVICE_RANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RECRUIT_RECRUITBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RECRUIT_RECRUITIMAGE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RECRUIT_RECRUITPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RECRUIT_RECRUITTRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RECRUITCOURSE_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_REGION_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SERVICE_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_TRAININGCENTER_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RECRUITCOURSE_SERVICE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_REGION_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_REGION_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEIMAGE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEMEDP" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_TITLE_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_UNIT_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SERVICE_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SERVICE_TRAININGCENTER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERBANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERIMAGE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERMEDP" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIER_SOLDIERTRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_UNIT_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIERPAYROLL_SOLDIERPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIERPAYROLL_SOLDIERPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.OFFICERPROVIDENT" />
+        <AssociationConnector Association="DBGAFPAYModel.SOLDIERPROVIDENT" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
