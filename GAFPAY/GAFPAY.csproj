@@ -1986,6 +1986,7 @@
     <Content Include="Views\Pay\CreateRecruitBatch.cshtml" />
     <Content Include="Views\Pay\IndexOCTrialPay.cshtml" />
     <Content Include="Views\Pay\CreateOCProcess.cshtml" />
+    <Content Include="Views\Pay\CreateOCBatch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
