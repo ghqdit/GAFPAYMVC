@@ -1198,119 +1198,124 @@ namespace GAFPAY.Controllers
         /*----------------------------------------- End General Status -----------------------------------------------------  */
 
 
-        ///*----------------------------------------- Start Officer Intake -----------------------------------------------------  */
+        /*----------------------------------------- Start Officer Intake -----------------------------------------------------  */
 
-        //public ActionResult IndexOIntake()
-        //{
-        //    List<OfficerIntake> getOIntakeList = settingsViewData.GetOfficerIntakeList();
-        //    return View("IndexOIntake", getOIntakeList);
-        //}
+        public ActionResult IndexOIntake()
+        {
+            List<OfficerIntake> getOIntakeList = settingsViewData.GetOfficerIntakeListX();
+            return View("IndexOIntake", getOIntakeList);
+        }
 
 
-        //public ActionResult CreateOIntake()
-        //{
-        //    var model = new OfficerIntake();
-        //    return View("EditorOIntake", model);
-        //}
-        //[HttpPost]
-        //public ActionResult CreateOIntake(OfficerIntake data)
-        //{
+        public ActionResult CreateOIntake()
+        {
+            var model = new OfficerIntake();
+            model.CommissionTypeList = settingsViewData.getCommissionType();
+            return View("EditorOIntake", model);
+        }
+        [HttpPost]
+        public ActionResult CreateOIntake(OfficerIntake data)
+        {
 
-        //    if (ModelState.IsValid)
-        //    {
+            if (ModelState.IsValid)
+            {
 
-        //        var oi = new OFFICERINTAKE();
-        //        oi.OFFICERINTAKENAME = data.OfficerIntakeName;
-        //        oi.STATUS = 1;
-        //        db.OFFICERINTAKE.Add(oi);
+                var oi = new OFFICERINTAKE();
+                oi.OFFICERINTAKENAME = data.OfficerIntakeName;
+                oi.COMMISSIONTYPEID = data.CommissionTypeID;
+                oi.STATUS = 1;
+                db.OFFICERINTAKE.Add(oi);
 
-        //        try
-        //        {
-        //            db.SaveChanges();
-        //            success = true;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            errorMessage = e.Message;
-        //        }
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
 
-        //    }
-        //    else
-        //    {
-        //        errorMessage = string.Join(" | ", ModelState.Values
-        //            .SelectMany(v => v.Errors)
-        //            .Select(e => e.ErrorMessage));
-        //    }
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
 
-        //    return Json(success ? JsonResponse.SuccessResponse("Officer intake") : JsonResponse.ErrorResponse(errorMessage));
+            return Json(success ? JsonResponse.SuccessResponse("Officer intake") : JsonResponse.ErrorResponse(errorMessage));
 
-        //}
+        }
 
-        //public ActionResult EditOIntake(int id)
-        //{
-        //    var oi = db.OFFICERINTAKE.Find(id);
-        //    var model = new OfficerIntake();
-        //    if (oi != null)
-        //    {
-        //        model.IsEdit = true;
-        //        model.OfficerIntakeName = oi.OFFICERINTAKENAME;
-        //        model.OfficerIntakeID = oi.OFFICERINTAKEID;
-        //    }
-        //    else
-        //    {
-        //        ViewBag.ErrorMessage = "Officer Intake does not exist. Kinldy contact Database Administrator for assistance";
-        //        return View("Error");
-        //    }
-        //    return View("EditorOIntake", model);
-        //}
-        //[HttpPost]
-        //public ActionResult EditOIntake(int id, OfficerIntake data)
-        //{
+        public ActionResult EditOIntake(int id)
+        {
+            var oi = db.OFFICERINTAKE.Find(id);
+            var model = new OfficerIntake();
+            if (oi != null)
+            {
+                model.IsEdit = true;
+                model.OfficerIntakeName = oi.OFFICERINTAKENAME;
+                model.OfficerIntakeID = oi.OFFICERINTAKEID;
+                model.CommissionTypeID = oi.COMMISSIONTYPEID;
+                model.CommissionTypeList = settingsViewData.getCommissionType();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Officer Intake does not exist. Kinldy contact Database Administrator for assistance";
+                return View("Error");
+            }
+            return View("EditorOIntake", model);
+        }
+        [HttpPost]
+        public ActionResult EditOIntake(int id, OfficerIntake data)
+        {
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        var oi = db.OFFICERINTAKE.Find(id);
-        //        oi.OFFICERINTAKENAME = data.OfficerIntakeName;
-                
-        //        try
-        //        {
-        //            db.SaveChanges();
-        //            success = true;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            errorMessage = e.Message;
-        //        }
+            if (ModelState.IsValid)
+            {
+                var oi = db.OFFICERINTAKE.Find(id);
+                oi.OFFICERINTAKENAME = data.OfficerIntakeName;
+                oi.COMMISSIONTYPEID = data.CommissionTypeID;
 
-        //    }
-        //    else
-        //    {
-        //        errorMessage = string.Join(" | ", ModelState.Values
-        //            .SelectMany(v => v.Errors)
-        //            .Select(e => e.ErrorMessage));
-        //    }
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
 
-        //    return Json(success ? JsonResponse.SuccessResponse("Officer intake") : JsonResponse.ErrorResponse(errorMessage));
-        //}
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
 
-        //public ActionResult RemoveOIntake(int id)
-        //{
-        //    var oi = db.OFFICERINTAKE.Find(id);
-        //    oi.STATUS = 0;
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //        success = true;
-        //    }
-        //    catch (Exception e)
-        //    {
+            return Json(success ? JsonResponse.SuccessResponse("Officer intake") : JsonResponse.ErrorResponse(errorMessage));
+        }
 
-        //        errorMessage = e.Message;
-        //    }
-        //    return Json(success ? JsonResponse.SuccessResponse(oi.OFFICERINTAKENAME) : JsonResponse.ErrorResponse(errorMessage));
-        //}
+        public ActionResult RemoveOIntake(int id)
+        {
+            var oi = db.OFFICERINTAKE.Find(id);
+            oi.STATUS = 0;
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
 
-        ///*----------------------------------------- End Officer Intake -----------------------------------------------------  */
+                errorMessage = e.Message;
+            }
+            return Json(success ? JsonResponse.SuccessResponse(oi.OFFICERINTAKENAME) : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        /*----------------------------------------- End Officer Intake -----------------------------------------------------  */
 
 
 
@@ -1567,8 +1572,7 @@ namespace GAFPAY.Controllers
 
         public ActionResult CreateAllowance()
         {
-            var model = new Allowance();
-            model.IsTaxableList = settingsViewData.getYesNo();
+            var model = new Allowance(); 
             return View("EditorAllowance", model);
         }
         [HttpPost]
@@ -1579,8 +1583,7 @@ namespace GAFPAY.Controllers
             {
 
                 var all = new ALLOWANCE();
-                all.ALLOWANCENAME = data.AllowanceName;
-                all.ISTAXABLE =Convert.ToBoolean(data.IsTaxable);
+                all.ALLOWANCENAME = data.AllowanceName; 
                 all.STATUS = 1;
                 db.ALLOWANCE.Add(all);
 
@@ -1613,8 +1616,7 @@ namespace GAFPAY.Controllers
             if (all != null)
             {
                 model.IsEdit = true;
-                model.AllowanceName = all.ALLOWANCENAME;
-                model.TaxableID = Convert.ToInt32(all.ISTAXABLE);
+                model.AllowanceName = all.ALLOWANCENAME; 
                 model.IsTaxableList = settingsViewData.getYesNo(); 
                 model.AllowanceID = all.ALLOWANCEID;
             }
@@ -1632,9 +1634,7 @@ namespace GAFPAY.Controllers
             if (ModelState.IsValid)
             {
                 var all = db.ALLOWANCE.Find(id);
-                all.ALLOWANCENAME = data.AllowanceName;
-                all.ISTAXABLE = Convert.ToBoolean(data.TaxableID);
-
+                all.ALLOWANCENAME = data.AllowanceName; 
                 try
                 {
                     db.SaveChanges();
@@ -2182,6 +2182,7 @@ namespace GAFPAY.Controllers
         {
             var model = new CivilianLevStep();
             model.IsSeniorList = settingsViewData.getYesNo();
+            model.IsSeniorID = 0;
             return View("EditorCLevStep", model);
         }
         [HttpPost]
@@ -2305,6 +2306,7 @@ namespace GAFPAY.Controllers
         {
             var model = new MilitaryLevStep(); 
             model.IsOfficerList = settingsViewData.getYesNo();
+            model.IsOfficerID = 0;
             return View("EditorMLevStep", model);
         }
         [HttpPost]
@@ -2530,7 +2532,121 @@ namespace GAFPAY.Controllers
             return Json(success ? JsonResponse.SuccessResponse("Provient Fund") : JsonResponse.ErrorResponse(errorMessage));
         }
 
-        /*----------------------------------------- End Provident Fund -----------------------------------------------------  */
+        /*----------------------------------------- End Provident Fund -----------------------------------------------------  */         
+        /*----------------------------------------- Start Grade  -----------------------------------------------------  */
+
+        public ActionResult IndexGrade()
+        {
+            List<Grade> gradeList = settingsViewData.GetGradeList();
+            return View("IndexGrade", gradeList);
+        }
+
+
+        public ActionResult CreateGrade()
+        {
+            var model = new Grade(); 
+             
+            return View("EditorGrade", model);
+        }
+        [HttpPost]
+        public ActionResult CreateGrade(Grade data)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var g = new GRADE();
+                g.GRADENAME = data.GradeName; 
+                g.STATUS = 1;
+
+                db.GRADE.Add(g);
+
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Grade") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+
+        public ActionResult EditGrade(int id)
+        {
+            var g = db.GRADE.Find(id);
+            var model = new Grade();
+            if (g != null)
+            {
+                model.IsEdit = true;
+                model.GradeName = g.GRADENAME;
+                
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Grade does not exist. Kinldy contact Database Administrator for assistance";
+                return View("Error");
+            }
+            return View("EditorGrade", model);
+        }
+        [HttpPost]
+        public ActionResult EditGrade(int id, Grade data)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var g = db.GRADE.Find(id);
+                g.GRADENAME = data.GradeName;
+                 
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Grade") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        public ActionResult RemoveGrade(int id) 
+        {
+            var g = db.GRADE.Find(id);
+            g.STATUS = 0;
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+
+                errorMessage = e.Message;
+            }
+            return Json(success ? JsonResponse.SuccessResponse("Grade") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        /*----------------------------------------- End Grade -----------------------------------------------------  */
 
         /*----------------------------------------- Start Fill Training Center -----------------------------------------------------  */
 
@@ -2542,7 +2658,7 @@ namespace GAFPAY.Controllers
         }
         /*----------------------------------------- End Fill Training Center -----------------------------------------------------  */
 
-        /*----------------------------------------- Start Fill Training Center -----------------------------------------------------  */
+        /*----------------------------------------- Start Fill Recruit Course -----------------------------------------------------  */
 
         public ActionResult FillRC(int id)
         {
@@ -2550,7 +2666,17 @@ namespace GAFPAY.Controllers
             RC.RecruitCourseNameList = settingsViewData.getRecruitCourse(id);
             return Json(RC.RecruitCourseNameList.Items, JsonRequestBehavior.AllowGet);
         }
-        /*----------------------------------------- End Fill Training Center -----------------------------------------------------  */
+        /*----------------------------------------- End Fill Recruit Course -----------------------------------------------------  */
+
+        /*----------------------------------------- Start Fill Officer Intake -----------------------------------------------------  */
+
+        public ActionResult FillOIntake(int id)
+        {
+            var oi = new OfficerIntake();
+            oi.OfficerIntakeList = settingsViewData.getOfficerIntake(id);
+            return Json(oi.OfficerIntakeList.Items, JsonRequestBehavior.AllowGet);
+        }
+        /*----------------------------------------- End Fill Officer Intake -----------------------------------------------------  */
 
 
         /*----------------------------------------- Start Bank Branch -----------------------------------------------------  */
@@ -2563,6 +2689,25 @@ namespace GAFPAY.Controllers
             return Json(b.BankBranchList.Items, JsonRequestBehavior.AllowGet);
         }
         /*----------------------------------------- End Bank Branch -----------------------------------------------------  */
+       
+        
+        /*-----------------------------------------Start Recruit Passout --------------------------------------   */
+
+
+
+        /*-----------------------------------------End Recruit Passout --------------------------------------   */
+  
+        /*-----------------------------------------Start Officer Cadet Promotion --------------------------------------   */
+
+
+
+        /*-----------------------------------------End Officer Cadet Promotion --------------------------------------   */
+
+        /*-----------------------------------------Start Officer Cadet Commission --------------------------------------   */
+
+
+
+        /*-----------------------------------------End Officer Cadet Commission --------------------------------------   */
 
 
     }

@@ -17,6 +17,7 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public COMMISSIONTYPE()
         {
+            this.OFFICERINTAKE = new HashSet<OFFICERINTAKE>();
             this.OFFICERCADET = new HashSet<OFFICERCADET>();
         }
     
@@ -25,6 +26,8 @@ namespace GAFPAY.Models
         public string COMMISSIONTYPESHORT { get; set; }
         public int STATUS { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFFICERINTAKE> OFFICERINTAKE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
     }

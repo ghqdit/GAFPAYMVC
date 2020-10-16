@@ -11,7 +11,6 @@
           </Key>
           <Property Name="ALLOWANCEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ALLOWANCENAME" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="ISTAXABLE" Type="bit" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="BANK">
@@ -95,6 +94,14 @@
           <Property Name="RATE" Type="float" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="GRADE">
+          <Key>
+            <PropertyRef Name="GRADEID" />
+          </Key>
+          <Property Name="GRADEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GRADENAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="JUNIORCE">
           <Key>
             <PropertyRef Name="JUNIORCEID" />
@@ -125,6 +132,8 @@
           <Property Name="BLOODGROUPID" Type="int" Nullable="false" />
           <Property Name="CIVILIANLEVSTEPID" Type="int" Nullable="false" />
           <Property Name="PROVIDENTFUNDID" Type="int" Nullable="false" />
+          <Property Name="GRADEID" Type="int" Nullable="false" />
+          <Property Name="ISDISABLED" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="JUNIORCEALLOWANCE">
           <Key>
@@ -334,7 +343,7 @@
           <Property Name="RANKID" Type="int" Nullable="false" />
           <Property Name="GENERALSTATUSID" Type="int" Nullable="false" />
           <Property Name="MILITARYLEVSTEPID" Type="int" Nullable="false" />
-          <Property Name="OFFICERINTAKE" Type="int" Nullable="false" />
+          <Property Name="OFFICERINTAKEID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OFFICERCADETBANK">
           <Key>
@@ -404,6 +413,7 @@
           <Property Name="OFFICERINTAKEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OFFICERINTAKENAME" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
+          <Property Name="COMMISSIONTYPEID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OFFICERMEDP">
           <Key>
@@ -632,6 +642,8 @@
           <Property Name="CIVILIANLEVSTEPID" Type="int" Nullable="false" />
           <Property Name="BLOODGROUPID" Type="int" Nullable="false" />
           <Property Name="PROVIDENTFUNDID" Type="int" Nullable="false" />
+          <Property Name="GRADEID" Type="int" Nullable="false" />
+          <Property Name="ISDISABLED" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SENIORCEALLOWANCE">
           <Key>
@@ -1619,6 +1631,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_JUNIORCE_GRADE">
+          <End Role="GRADE" Type="Self.GRADE" Multiplicity="1" />
+          <End Role="JUNIORCE" Type="Self.JUNIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRADE">
+              <PropertyRef Name="GRADEID" />
+            </Principal>
+            <Dependent Role="JUNIORCE">
+              <PropertyRef Name="GRADEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_JUNIORCE_JUNIORCEALLOWANCE">
           <End Role="JUNIORCE" Type="Self.JUNIORCE" Multiplicity="1" />
           <End Role="JUNIORCEALLOWANCE" Type="Self.JUNIORCEALLOWANCE" Multiplicity="*" />
@@ -1979,6 +2003,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_OFFICERCADET_OFFICERINTAKE">
+          <End Role="OFFICERINTAKE" Type="Self.OFFICERINTAKE" Multiplicity="1" />
+          <End Role="OFFICERCADET" Type="Self.OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERINTAKE">
+              <PropertyRef Name="OFFICERINTAKEID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERINTAKEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERINTAKE_COMMISSIONTYPE">
+          <End Role="COMMISSIONTYPE" Type="Self.COMMISSIONTYPE" Multiplicity="1" />
+          <End Role="OFFICERINTAKE" Type="Self.OFFICERINTAKE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMISSIONTYPE">
+              <PropertyRef Name="COMMISSIONTYPEID" />
+            </Principal>
+            <Dependent Role="OFFICERINTAKE">
+              <PropertyRef Name="COMMISSIONTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE">
           <End Role="OFFICERPAYROLL" Type="Self.OFFICERPAYROLL" Multiplicity="1" />
           <End Role="OFFICERPAYROLLALLOWANCE" Type="Self.OFFICERPAYROLLALLOWANCE" Multiplicity="*" />
@@ -2300,6 +2348,18 @@
             </Principal>
             <Dependent Role="SOLDIER">
               <PropertyRef Name="RELIGIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_GRADE">
+          <End Role="GRADE" Type="Self.GRADE" Multiplicity="1" />
+          <End Role="SENIORCE" Type="Self.SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRADE">
+              <PropertyRef Name="GRADEID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="GRADEID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2798,6 +2858,7 @@
           <EntitySet Name="DEDUCTIONCLASS" EntityType="Self.DEDUCTIONCLASS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GENDER" EntityType="Self.GENDER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GENERALSTATUS" EntityType="Self.GENERALSTATUS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GRADE" EntityType="Self.GRADE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JUNIORCE" EntityType="Self.JUNIORCE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JUNIORCEALLOWANCE" EntityType="Self.JUNIORCEALLOWANCE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JUNIORCEBANK" EntityType="Self.JUNIORCEBANK" Schema="dbo" store:Type="Tables" />
@@ -3098,6 +3159,10 @@
             <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
             <End Role="SOLDIER" EntitySet="SOLDIER" />
           </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCE_GRADE" Association="Self.FK_JUNIORCE_GRADE">
+            <End Role="GRADE" EntitySet="GRADE" />
+            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
+          </AssociationSet>
           <AssociationSet Name="FK_JUNIORCE_JUNIORCEALLOWANCE" Association="Self.FK_JUNIORCE_JUNIORCEALLOWANCE">
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
             <End Role="JUNIORCEALLOWANCE" EntitySet="JUNIORCEALLOWANCE" />
@@ -3218,6 +3283,14 @@
             <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
             <End Role="OFFICERCADETTRIALPAY" EntitySet="OFFICERCADETTRIALPAY" />
           </AssociationSet>
+          <AssociationSet Name="FK_OFFICERCADET_OFFICERINTAKE" Association="Self.FK_OFFICERCADET_OFFICERINTAKE">
+            <End Role="OFFICERINTAKE" EntitySet="OFFICERINTAKE" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERINTAKE_COMMISSIONTYPE" Association="Self.FK_OFFICERINTAKE_COMMISSIONTYPE">
+            <End Role="COMMISSIONTYPE" EntitySet="COMMISSIONTYPE" />
+            <End Role="OFFICERINTAKE" EntitySet="OFFICERINTAKE" />
+          </AssociationSet>
           <AssociationSet Name="FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE" Association="Self.FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE">
             <End Role="OFFICERPAYROLL" EntitySet="OFFICERPAYROLL" />
             <End Role="OFFICERPAYROLLALLOWANCE" EntitySet="OFFICERPAYROLLALLOWANCE" />
@@ -3325,6 +3398,10 @@
           <AssociationSet Name="FK_RELIGION_SOLDIER" Association="Self.FK_RELIGION_SOLDIER">
             <End Role="RELIGION" EntitySet="RELIGION" />
             <End Role="SOLDIER" EntitySet="SOLDIER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_GRADE" Association="Self.FK_SENIORCE_GRADE">
+            <End Role="GRADE" EntitySet="GRADE" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
           </AssociationSet>
           <AssociationSet Name="FK_SENIORCE_PROVIDENTFUND" Association="Self.FK_SENIORCE_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
@@ -3504,7 +3581,6 @@
             <Parameter Name="yearNext" Mode="In" Type="Int32" />
             <Parameter Name="next" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="ALLOWANCE" EntityType="DBGAFPAYModel.ALLOWANCE" />
           <EntitySet Name="BANK" EntityType="DBGAFPAYModel.BANK" />
           <EntitySet Name="BANKNAME" EntityType="DBGAFPAYModel.BANKNAME" />
           <EntitySet Name="BLOODGROUP" EntityType="DBGAFPAYModel.BLOODGROUP" />
@@ -3531,14 +3607,12 @@
           <EntitySet Name="OFFICER" EntityType="DBGAFPAYModel.OFFICER" />
           <EntitySet Name="OFFICERALLOWANCE" EntityType="DBGAFPAYModel.OFFICERALLOWANCE" />
           <EntitySet Name="OFFICERBANK" EntityType="DBGAFPAYModel.OFFICERBANK" />
-          <EntitySet Name="OFFICERCADET" EntityType="DBGAFPAYModel.OFFICERCADET" />
           <EntitySet Name="OFFICERCADETBANK" EntityType="DBGAFPAYModel.OFFICERCADETBANK" />
           <EntitySet Name="OFFICERCADETIMAGE" EntityType="DBGAFPAYModel.OFFICERCADETIMAGE" />
           <EntitySet Name="OFFICERCADETPAYROLL" EntityType="DBGAFPAYModel.OFFICERCADETPAYROLL" />
           <EntitySet Name="OFFICERCADETTRIALPAY" EntityType="DBGAFPAYModel.OFFICERCADETTRIALPAY" />
           <EntitySet Name="OFFICERDEDUCTION" EntityType="DBGAFPAYModel.OFFICERDEDUCTION" />
           <EntitySet Name="OFFICERIMAGE" EntityType="DBGAFPAYModel.OFFICERIMAGE" />
-          <EntitySet Name="OFFICERINTAKE" EntityType="DBGAFPAYModel.OFFICERINTAKE" />
           <EntitySet Name="OFFICERMEDP" EntityType="DBGAFPAYModel.OFFICERMEDP" />
           <EntitySet Name="OFFICERPAYROLL" EntityType="DBGAFPAYModel.OFFICERPAYROLL" />
           <EntitySet Name="OFFICERPAYROLLALLOWANCE" EntityType="DBGAFPAYModel.OFFICERPAYROLLALLOWANCE" />
@@ -3556,7 +3630,6 @@
           <EntitySet Name="RECRUITTRIALPAY" EntityType="DBGAFPAYModel.RECRUITTRIALPAY" />
           <EntitySet Name="REGION" EntityType="DBGAFPAYModel.REGION" />
           <EntitySet Name="RELIGION" EntityType="DBGAFPAYModel.RELIGION" />
-          <EntitySet Name="SENIORCE" EntityType="DBGAFPAYModel.SENIORCE" />
           <EntitySet Name="SENIORCEALLOWANCE" EntityType="DBGAFPAYModel.SENIORCEALLOWANCE" />
           <EntitySet Name="SENIORCEBANK" EntityType="DBGAFPAYModel.SENIORCEBANK" />
           <EntitySet Name="SENIORCEDEDUCTION" EntityType="DBGAFPAYModel.SENIORCEDEDUCTION" />
@@ -3584,54 +3657,6 @@
           <EntitySet Name="TITLE" EntityType="DBGAFPAYModel.TITLE" />
           <EntitySet Name="TRAININGCENTER" EntityType="DBGAFPAYModel.TRAININGCENTER" />
           <EntitySet Name="UNIT" EntityType="DBGAFPAYModel.UNIT" />
-          <AssociationSet Name="FK_ALLOWANCE_JUNIORCEALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="JUNIORCEALLOWANCE" EntitySet="JUNIORCEALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="JUNIORCEPAYROLLALLOWANCE" EntitySet="JUNIORCEPAYROLLALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="JUNIORCETRIALPAYALLOWANCE" EntitySet="JUNIORCETRIALPAYALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_OFFICERALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="OFFICERALLOWANCE" EntitySet="OFFICERALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="OFFICERPAYROLLALLOWANCE" EntitySet="OFFICERPAYROLLALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="OFFICERTRIALPAYALLOWANCE" EntitySet="OFFICERTRIALPAYALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_SENIORCEALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="SENIORCEALLOWANCE" EntitySet="SENIORCEALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="SENIORCEPAYROLLALLOWANCE" EntitySet="SENIORCEPAYROLLALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="SENIORCETRIALPAYALLOWANCE" EntitySet="SENIORCETRIALPAYALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_SOLDIERALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="SOLDIERALLOWANCE" EntitySet="SOLDIERALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="SOLDIERPAYROLLALLOWANCE" EntitySet="SOLDIERPAYROLLALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE">
-            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
-            <End Role="SOLDIERTRIALPAYALLOWANCE" EntitySet="SOLDIERTRIALPAYALLOWANCE" />
-          </AssociationSet>
           <AssociationSet Name="FK_BANK_JUNIORCEBANK" Association="DBGAFPAYModel.FK_BANK_JUNIORCEBANK">
             <End Role="BANK" EntitySet="BANK" />
             <End Role="JUNIORCEBANK" EntitySet="JUNIORCEBANK" />
@@ -3684,17 +3709,9 @@
             <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
             <End Role="OFFICER" EntitySet="OFFICER" />
           </AssociationSet>
-          <AssociationSet Name="FK_BLOODGROUP_OFFICERCADET" Association="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET">
-            <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
           <AssociationSet Name="FK_BLOODGROUP_RECRUIT" Association="DBGAFPAYModel.FK_BLOODGROUP_RECRUIT">
             <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
             <End Role="RECRUIT" EntitySet="RECRUIT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BLOODGROUP_SENIORCE" Association="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE">
-            <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
           </AssociationSet>
           <AssociationSet Name="FK_BLOODGROUP_SOLDIER" Association="DBGAFPAYModel.FK_BLOODGROUP_SOLDIER">
             <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
@@ -3703,14 +3720,6 @@
           <AssociationSet Name="FK_CIVILIANLEVSTEP_JUNIORCE" Association="DBGAFPAYModel.FK_CIVILIANLEVSTEP_JUNIORCE">
             <End Role="CIVILIANLEVSTEP" EntitySet="CIVILIANLEVSTEP" />
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CIVILIANLEVSTEP_SENIORCE" Association="DBGAFPAYModel.FK_CIVILIANLEVSTEP_SENIORCE">
-            <End Role="CIVILIANLEVSTEP" EntitySet="CIVILIANLEVSTEP" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_COMMISSIONTYPE_OFFICERCADET" Association="DBGAFPAYModel.FK_COMMISSIONTYPE_OFFICERCADET">
-            <End Role="COMMISSIONTYPE" EntitySet="COMMISSIONTYPE" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
           </AssociationSet>
           <AssociationSet Name="FK_DEDUCTION_JUNIORCEDEDUCTION" Association="DBGAFPAYModel.FK_DEDUCTION_JUNIORCEDEDUCTION">
             <End Role="DEDUCTION" EntitySet="DEDUCTION" />
@@ -3772,17 +3781,9 @@
             <End Role="GENDER" EntitySet="GENDER" />
             <End Role="OFFICER" EntitySet="OFFICER" />
           </AssociationSet>
-          <AssociationSet Name="FK_GENDER_OFFICERCADET" Association="DBGAFPAYModel.FK_GENDER_OFFICERCADET">
-            <End Role="GENDER" EntitySet="GENDER" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
           <AssociationSet Name="FK_GENDER_RECRUIT" Association="DBGAFPAYModel.FK_GENDER_RECRUIT">
             <End Role="GENDER" EntitySet="GENDER" />
             <End Role="RECRUIT" EntitySet="RECRUIT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GENDER_SENIORCE" Association="DBGAFPAYModel.FK_GENDER_SENIORCE">
-            <End Role="GENDER" EntitySet="GENDER" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
           </AssociationSet>
           <AssociationSet Name="FK_GENDER_SOLDIER" Association="DBGAFPAYModel.FK_GENDER_SOLDIER">
             <End Role="GENDER" EntitySet="GENDER" />
@@ -3796,17 +3797,9 @@
             <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
             <End Role="OFFICER" EntitySet="OFFICER" />
           </AssociationSet>
-          <AssociationSet Name="FK_GENERALSTATUS_OFFICERCADET" Association="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET">
-            <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
           <AssociationSet Name="FK_GENERALSTATUS_RECRUIT" Association="DBGAFPAYModel.FK_GENERALSTATUS_RECRUIT">
             <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
             <End Role="RECRUIT" EntitySet="RECRUIT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GENERALSTATUS_SENIORCE" Association="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE">
-            <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
           </AssociationSet>
           <AssociationSet Name="FK_GENERALSTATUS_SOLDIER" Association="DBGAFPAYModel.FK_GENERALSTATUS_SOLDIER">
             <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
@@ -3884,10 +3877,6 @@
             <End Role="MILITARYLEVSTEP" EntitySet="MILITARYLEVSTEP" />
             <End Role="OFFICER" EntitySet="OFFICER" />
           </AssociationSet>
-          <AssociationSet Name="FK_MILITARYLEVSTEP_OFFICERCADET" Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET">
-            <End Role="MILITARYLEVSTEP" EntitySet="MILITARYLEVSTEP" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
           <AssociationSet Name="FK_MILITARYLEVSTEP_RECRUIT" Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_RECRUIT">
             <End Role="MILITARYLEVSTEP" EntitySet="MILITARYLEVSTEP" />
             <End Role="RECRUIT" EntitySet="RECRUIT" />
@@ -3948,38 +3937,6 @@
             <End Role="UNIT" EntitySet="UNIT" />
             <End Role="OFFICER" EntitySet="OFFICER" />
           </AssociationSet>
-          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETBANK" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETBANK">
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-            <End Role="OFFICERCADETBANK" EntitySet="OFFICERCADETBANK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETIMAGE" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETIMAGE">
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-            <End Role="OFFICERCADETIMAGE" EntitySet="OFFICERCADETIMAGE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETPAYROLL" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETPAYROLL">
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-            <End Role="OFFICERCADETPAYROLL" EntitySet="OFFICERCADETPAYROLL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETTRIALPAY" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETTRIALPAY">
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-            <End Role="OFFICERCADETTRIALPAY" EntitySet="OFFICERCADETTRIALPAY" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RANK_OFFICERCADET" Association="DBGAFPAYModel.FK_RANK_OFFICERCADET">
-            <End Role="RANK" EntitySet="RANK" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
-          <AssociationSet Name="FK_REGION_OFFICERCADET" Association="DBGAFPAYModel.FK_REGION_OFFICERCADET">
-            <End Role="REGION" EntitySet="REGION" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RELIGION_OFFICERCADET" Association="DBGAFPAYModel.FK_RELIGION_OFFICERCADET">
-            <End Role="RELIGION" EntitySet="RELIGION" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SERVICE_OFFICERCADET" Association="DBGAFPAYModel.FK_SERVICE_OFFICERCADET">
-            <End Role="SERVICE" EntitySet="SERVICE" />
-            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
-          </AssociationSet>
           <AssociationSet Name="FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE">
             <End Role="OFFICERPAYROLL" EntitySet="OFFICERPAYROLL" />
             <End Role="OFFICERPAYROLLALLOWANCE" EntitySet="OFFICERPAYROLLALLOWANCE" />
@@ -3995,10 +3952,6 @@
           <AssociationSet Name="FK_OFFICERTRIALPAY_OFFICERTRIALPAYDEDUCTION" Association="DBGAFPAYModel.FK_OFFICERTRIALPAY_OFFICERTRIALPAYDEDUCTION">
             <End Role="OFFICERTRIALPAY" EntitySet="OFFICERTRIALPAY" />
             <End Role="OFFICERTRIALPAYDEDUCTION" EntitySet="OFFICERTRIALPAYDEDUCTION" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_PROVIDENTFUND" Association="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND">
-            <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
           </AssociationSet>
           <AssociationSet Name="FK_SOLDIER_PROVIDENTFUND" Association="DBGAFPAYModel.FK_SOLDIER_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
@@ -4056,57 +4009,13 @@
             <End Role="SERVICE" EntitySet="SERVICE" />
             <End Role="RECRUITCOURSE" EntitySet="RECRUITCOURSE" />
           </AssociationSet>
-          <AssociationSet Name="FK_REGION_SENIORCE" Association="DBGAFPAYModel.FK_REGION_SENIORCE">
-            <End Role="REGION" EntitySet="REGION" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-          </AssociationSet>
           <AssociationSet Name="FK_REGION_SOLDIER" Association="DBGAFPAYModel.FK_REGION_SOLDIER">
             <End Role="REGION" EntitySet="REGION" />
             <End Role="SOLDIER" EntitySet="SOLDIER" />
           </AssociationSet>
-          <AssociationSet Name="FK_RELIGION_SENIORCE" Association="DBGAFPAYModel.FK_RELIGION_SENIORCE">
-            <End Role="RELIGION" EntitySet="RELIGION" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-          </AssociationSet>
           <AssociationSet Name="FK_RELIGION_SOLDIER" Association="DBGAFPAYModel.FK_RELIGION_SOLDIER">
             <End Role="RELIGION" EntitySet="RELIGION" />
             <End Role="SOLDIER" EntitySet="SOLDIER" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCEALLOWANCE" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCEALLOWANCE" EntitySet="SENIORCEALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCEBANK" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEBANK">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCEBANK" EntitySet="SENIORCEBANK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCEDEDUCTION" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCEDEDUCTION" EntitySet="SENIORCEDEDUCTION" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCEIMAGE" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEIMAGE">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCEIMAGE" EntitySet="SENIORCEIMAGE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCEMEDP" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEMEDP">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCEMEDP" EntitySet="SENIORCEMEDP" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCEPAYROLL" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SENIORCE_SENIORCETRIALPAY" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY">
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-            <End Role="SENIORCETRIALPAY" EntitySet="SENIORCETRIALPAY" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TITLE_SENIORCE" Association="DBGAFPAYModel.FK_TITLE_SENIORCE">
-            <End Role="TITLE" EntitySet="TITLE" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UNIT_SENIORCE" Association="DBGAFPAYModel.FK_UNIT_SENIORCE">
-            <End Role="UNIT" EntitySet="UNIT" />
-            <End Role="SENIORCE" EntitySet="SENIORCE" />
           </AssociationSet>
           <AssociationSet Name="FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE">
             <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
@@ -4188,6 +4097,191 @@
             <End Role="SOLDIER" EntitySet="SOLDIER" />
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
           </AssociationSet>
+          <EntitySet Name="GRADE" EntityType="DBGAFPAYModel.GRADE" />
+          <AssociationSet Name="FK_JUNIORCE_GRADE" Association="DBGAFPAYModel.FK_JUNIORCE_GRADE">
+            <End Role="GRADE" EntitySet="GRADE" />
+            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
+          </AssociationSet>
+          <EntitySet Name="ALLOWANCE" EntityType="DBGAFPAYModel.ALLOWANCE" />
+          <AssociationSet Name="FK_ALLOWANCE_JUNIORCEALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="JUNIORCEALLOWANCE" EntitySet="JUNIORCEALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="JUNIORCEPAYROLLALLOWANCE" EntitySet="JUNIORCEPAYROLLALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="JUNIORCETRIALPAYALLOWANCE" EntitySet="JUNIORCETRIALPAYALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_OFFICERALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="OFFICERALLOWANCE" EntitySet="OFFICERALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="OFFICERPAYROLLALLOWANCE" EntitySet="OFFICERPAYROLLALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="OFFICERTRIALPAYALLOWANCE" EntitySet="OFFICERTRIALPAYALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_SENIORCEALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="SENIORCEALLOWANCE" EntitySet="SENIORCEALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="SENIORCEPAYROLLALLOWANCE" EntitySet="SENIORCEPAYROLLALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="SENIORCETRIALPAYALLOWANCE" EntitySet="SENIORCETRIALPAYALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_SOLDIERALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="SOLDIERALLOWANCE" EntitySet="SOLDIERALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="SOLDIERPAYROLLALLOWANCE" EntitySet="SOLDIERPAYROLLALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE">
+            <End Role="ALLOWANCE" EntitySet="ALLOWANCE" />
+            <End Role="SOLDIERTRIALPAYALLOWANCE" EntitySet="SOLDIERTRIALPAYALLOWANCE" />
+          </AssociationSet>
+          <EntitySet Name="SENIORCE" EntityType="DBGAFPAYModel.SENIORCE" />
+          <AssociationSet Name="FK_BLOODGROUP_SENIORCE" Association="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE">
+            <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CIVILIANLEVSTEP_SENIORCE" Association="DBGAFPAYModel.FK_CIVILIANLEVSTEP_SENIORCE">
+            <End Role="CIVILIANLEVSTEP" EntitySet="CIVILIANLEVSTEP" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GENDER_SENIORCE" Association="DBGAFPAYModel.FK_GENDER_SENIORCE">
+            <End Role="GENDER" EntitySet="GENDER" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GENERALSTATUS_SENIORCE" Association="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE">
+            <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_GRADE" Association="DBGAFPAYModel.FK_SENIORCE_GRADE">
+            <End Role="GRADE" EntitySet="GRADE" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_PROVIDENTFUND" Association="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND">
+            <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REGION_SENIORCE" Association="DBGAFPAYModel.FK_REGION_SENIORCE">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RELIGION_SENIORCE" Association="DBGAFPAYModel.FK_RELIGION_SENIORCE">
+            <End Role="RELIGION" EntitySet="RELIGION" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCEALLOWANCE" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCEALLOWANCE" EntitySet="SENIORCEALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCEBANK" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEBANK">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCEBANK" EntitySet="SENIORCEBANK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCEDEDUCTION" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCEDEDUCTION" EntitySet="SENIORCEDEDUCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCEIMAGE" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEIMAGE">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCEIMAGE" EntitySet="SENIORCEIMAGE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCEMEDP" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEMEDP">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCEMEDP" EntitySet="SENIORCEMEDP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCEPAYROLL" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCE_SENIORCETRIALPAY" Association="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="SENIORCETRIALPAY" EntitySet="SENIORCETRIALPAY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TITLE_SENIORCE" Association="DBGAFPAYModel.FK_TITLE_SENIORCE">
+            <End Role="TITLE" EntitySet="TITLE" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UNIT_SENIORCE" Association="DBGAFPAYModel.FK_UNIT_SENIORCE">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+          </AssociationSet>
+          <EntitySet Name="OFFICERINTAKE" EntityType="DBGAFPAYModel.OFFICERINTAKE" />
+          <AssociationSet Name="FK_OFFICERINTAKE_COMMISSIONTYPE" Association="DBGAFPAYModel.FK_OFFICERINTAKE_COMMISSIONTYPE">
+            <End Role="COMMISSIONTYPE" EntitySet="COMMISSIONTYPE" />
+            <End Role="OFFICERINTAKE" EntitySet="OFFICERINTAKE" />
+          </AssociationSet>
+          <EntitySet Name="OFFICERCADET" EntityType="DBGAFPAYModel.OFFICERCADET" />
+          <AssociationSet Name="FK_BLOODGROUP_OFFICERCADET" Association="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET">
+            <End Role="BLOODGROUP" EntitySet="BLOODGROUP" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMISSIONTYPE_OFFICERCADET" Association="DBGAFPAYModel.FK_COMMISSIONTYPE_OFFICERCADET">
+            <End Role="COMMISSIONTYPE" EntitySet="COMMISSIONTYPE" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GENDER_OFFICERCADET" Association="DBGAFPAYModel.FK_GENDER_OFFICERCADET">
+            <End Role="GENDER" EntitySet="GENDER" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GENERALSTATUS_OFFICERCADET" Association="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET">
+            <End Role="GENERALSTATUS" EntitySet="GENERALSTATUS" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MILITARYLEVSTEP_OFFICERCADET" Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET">
+            <End Role="MILITARYLEVSTEP" EntitySet="MILITARYLEVSTEP" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETBANK" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETBANK">
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+            <End Role="OFFICERCADETBANK" EntitySet="OFFICERCADETBANK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETIMAGE" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETIMAGE">
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+            <End Role="OFFICERCADETIMAGE" EntitySet="OFFICERCADETIMAGE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETPAYROLL" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETPAYROLL">
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+            <End Role="OFFICERCADETPAYROLL" EntitySet="OFFICERCADETPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERCADET_OFFICERCADETTRIALPAY" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETTRIALPAY">
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+            <End Role="OFFICERCADETTRIALPAY" EntitySet="OFFICERCADETTRIALPAY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERCADET_OFFICERINTAKE" Association="DBGAFPAYModel.FK_OFFICERCADET_OFFICERINTAKE">
+            <End Role="OFFICERINTAKE" EntitySet="OFFICERINTAKE" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RANK_OFFICERCADET" Association="DBGAFPAYModel.FK_RANK_OFFICERCADET">
+            <End Role="RANK" EntitySet="RANK" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REGION_OFFICERCADET" Association="DBGAFPAYModel.FK_REGION_OFFICERCADET">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RELIGION_OFFICERCADET" Association="DBGAFPAYModel.FK_RELIGION_OFFICERCADET">
+            <End Role="RELIGION" EntitySet="RELIGION" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SERVICE_OFFICERCADET" Association="DBGAFPAYModel.FK_SERVICE_OFFICERCADET">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="procGetRecruitTrialPayList_Result">
           <Property Type="Int32" Name="RTRIALPAYID" Nullable="false" />
@@ -4246,27 +4340,6 @@
           <Property Type="String" Name="OTHERNAME" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="RANKNAME" Nullable="false" MaxLength="25" />
         </ComplexType>
-        <EntityType Name="ALLOWANCE">
-          <Key>
-            <PropertyRef Name="ALLOWANCEID" />
-          </Key>
-          <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ALLOWANCENAME" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="ISTAXABLE" Type="Boolean" Nullable="false" />
-          <Property Name="STATUS" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="JUNIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE" FromRole="ALLOWANCE" ToRole="JUNIORCEALLOWANCE" />
-          <NavigationProperty Name="JUNIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="JUNIORCEPAYROLLALLOWANCE" />
-          <NavigationProperty Name="JUNIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="JUNIORCETRIALPAYALLOWANCE" />
-          <NavigationProperty Name="OFFICERALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE" FromRole="ALLOWANCE" ToRole="OFFICERALLOWANCE" />
-          <NavigationProperty Name="OFFICERPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="OFFICERPAYROLLALLOWANCE" />
-          <NavigationProperty Name="OFFICERTRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="OFFICERTRIALPAYALLOWANCE" />
-          <NavigationProperty Name="SENIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEALLOWANCE" FromRole="ALLOWANCE" ToRole="SENIORCEALLOWANCE" />
-          <NavigationProperty Name="SENIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="SENIORCEPAYROLLALLOWANCE" />
-          <NavigationProperty Name="SENIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="SENIORCETRIALPAYALLOWANCE" />
-          <NavigationProperty Name="SOLDIERALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE" FromRole="ALLOWANCE" ToRole="SOLDIERALLOWANCE" />
-          <NavigationProperty Name="SOLDIERPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="SOLDIERPAYROLLALLOWANCE" />
-          <NavigationProperty Name="SOLDIERTRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="SOLDIERTRIALPAYALLOWANCE" />
-        </EntityType>
         <EntityType Name="BANK">
           <Key>
             <PropertyRef Name="BANKID" />
@@ -4307,10 +4380,10 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_BLOODGROUP_JUNIORCE" FromRole="BLOODGROUP" ToRole="JUNIORCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_BLOODGROUP_OFFICER" FromRole="BLOODGROUP" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET" FromRole="BLOODGROUP" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_BLOODGROUP_RECRUIT" FromRole="BLOODGROUP" ToRole="RECRUIT" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE" FromRole="BLOODGROUP" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_BLOODGROUP_SOLDIER" FromRole="BLOODGROUP" ToRole="SOLDIER" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE" FromRole="BLOODGROUP" ToRole="SENIORCE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET" FromRole="BLOODGROUP" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="CIVILIANLEVSTEP">
           <Key>
@@ -4332,6 +4405,7 @@
           <Property Name="COMMISSIONTYPENAME" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="COMMISSIONTYPESHORT" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OFFICERINTAKE" Relationship="DBGAFPAYModel.FK_OFFICERINTAKE_COMMISSIONTYPE" FromRole="COMMISSIONTYPE" ToRole="OFFICERINTAKE" />
           <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_COMMISSIONTYPE_OFFICERCADET" FromRole="COMMISSIONTYPE" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="DEDUCTION">
@@ -4374,10 +4448,10 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_GENDER_JUNIORCE" FromRole="GENDER" ToRole="JUNIORCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_GENDER_OFFICER" FromRole="GENDER" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_GENDER_OFFICERCADET" FromRole="GENDER" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_GENDER_RECRUIT" FromRole="GENDER" ToRole="RECRUIT" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_GENDER_SENIORCE" FromRole="GENDER" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_GENDER_SOLDIER" FromRole="GENDER" ToRole="SOLDIER" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_GENDER_SENIORCE" FromRole="GENDER" ToRole="SENIORCE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_GENDER_OFFICERCADET" FromRole="GENDER" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="GENERALSTATUS">
           <Key>
@@ -4390,10 +4464,10 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_JUNIORCE" FromRole="GENERALSTATUS" ToRole="JUNIORCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_OFFICER" FromRole="GENERALSTATUS" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET" FromRole="GENERALSTATUS" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_RECRUIT" FromRole="GENERALSTATUS" ToRole="RECRUIT" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE" FromRole="GENERALSTATUS" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_SOLDIER" FromRole="GENERALSTATUS" ToRole="SOLDIER" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE" FromRole="GENERALSTATUS" ToRole="SENIORCE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET" FromRole="GENERALSTATUS" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="JUNIORCE">
           <Key>
@@ -4441,6 +4515,9 @@
           <NavigationProperty Name="RELIGION" Relationship="DBGAFPAYModel.FK_RELIGION_JUNIORCE" FromRole="JUNIORCE" ToRole="RELIGION" />
           <NavigationProperty Name="TITLE" Relationship="DBGAFPAYModel.FK_TITLE_JUNIORCE" FromRole="JUNIORCE" ToRole="TITLE" />
           <NavigationProperty Name="UNIT" Relationship="DBGAFPAYModel.FK_UNIT_JUNIORCE" FromRole="JUNIORCE" ToRole="UNIT" />
+          <Property Name="GRADEID" Type="Int32" Nullable="false" />
+          <Property Name="ISDISABLED" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="GRADE" Relationship="DBGAFPAYModel.FK_JUNIORCE_GRADE" FromRole="JUNIORCE" ToRole="GRADE" />
         </EntityType>
         <EntityType Name="JUNIORCEALLOWANCE">
           <Key>
@@ -4451,8 +4528,8 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
           <Property Name="JUNIORCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE" FromRole="JUNIORCEALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEALLOWANCE" FromRole="JUNIORCEALLOWANCE" ToRole="JUNIORCE" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE" FromRole="JUNIORCEALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="JUNIORCEBANK">
           <Key>
@@ -4520,8 +4597,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="JUNIORCEPAYROLLID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="JUNIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLLALLOWANCE" ToRole="JUNIORCEPAYROLL" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="JUNIORCEPAYROLLDEDUCTION">
           <Key>
@@ -4569,8 +4646,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="JUNIORCETRIALPAYID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="JUNIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAYALLOWANCE" ToRole="JUNIORCETRIALPAY" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="JUNIORCETRIALPAYDEDUCTION">
           <Key>
@@ -4596,9 +4673,9 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <Property Name="ISOFFICER" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICER" FromRole="MILITARYLEVSTEP" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET" FromRole="MILITARYLEVSTEP" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_RECRUIT" FromRole="MILITARYLEVSTEP" ToRole="RECRUIT" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_SOLDIER" FromRole="MILITARYLEVSTEP" ToRole="SOLDIER" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET" FromRole="MILITARYLEVSTEP" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="OFFICER">
           <Key>
@@ -4658,8 +4735,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
           <Property Name="OFFICERID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE" FromRole="OFFICERALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_OFFICER_OFFICERALLOWANCE" FromRole="OFFICERALLOWANCE" ToRole="OFFICER" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE" FromRole="OFFICERALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="OFFICERBANK">
           <Key>
@@ -4670,49 +4747,6 @@
           <Property Name="BANKID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_BANK_OFFICERBANK" FromRole="OFFICERBANK" ToRole="BANK" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_OFFICER_OFFICERBANK" FromRole="OFFICERBANK" ToRole="OFFICER" />
-        </EntityType>
-        <EntityType Name="OFFICERCADET">
-          <Key>
-            <PropertyRef Name="OFFICERCADETID" />
-          </Key>
-          <Property Name="OFFICERCADETID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SURNAME" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="OTHERNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="PHONENUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="EMAILADDRESS" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="RESADDRESS" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="SERVICENUMBER" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="OFFICERSTARTDATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="OFFICERENDDATE" Type="DateTime" Precision="3" />
-          <Property Name="HOMETOWN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="DATETIMEUPDATED" Type="DateTime" Precision="3" />
-          <Property Name="UPDATEDBY" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="COMMISSIONTYPEID" Type="Int32" Nullable="false" />
-          <Property Name="RELIGIONID" Type="Int32" Nullable="false" />
-          <Property Name="REGIONID" Type="Int32" Nullable="false" />
-          <Property Name="GENDERID" Type="Int32" Nullable="false" />
-          <Property Name="BLOODGROUPID" Type="Int32" Nullable="false" />
-          <Property Name="SERVICEID" Type="Int32" Nullable="false" />
-          <Property Name="RANKID" Type="Int32" Nullable="false" />
-          <Property Name="GENERALSTATUSID" Type="Int32" Nullable="false" />
-          <Property Name="MILITARYLEVSTEPID" Type="Int32" Nullable="false" />
-          <Property Name="OFFICERINTAKE" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BLOODGROUP" Relationship="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET" FromRole="OFFICERCADET" ToRole="BLOODGROUP" />
-          <NavigationProperty Name="COMMISSIONTYPE" Relationship="DBGAFPAYModel.FK_COMMISSIONTYPE_OFFICERCADET" FromRole="OFFICERCADET" ToRole="COMMISSIONTYPE" />
-          <NavigationProperty Name="GENDER" Relationship="DBGAFPAYModel.FK_GENDER_OFFICERCADET" FromRole="OFFICERCADET" ToRole="GENDER" />
-          <NavigationProperty Name="GENERALSTATUS" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET" FromRole="OFFICERCADET" ToRole="GENERALSTATUS" />
-          <NavigationProperty Name="MILITARYLEVSTEP" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET" FromRole="OFFICERCADET" ToRole="MILITARYLEVSTEP" />
-          <NavigationProperty Name="OFFICERCADETBANK" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETBANK" FromRole="OFFICERCADET" ToRole="OFFICERCADETBANK" />
-          <NavigationProperty Name="OFFICERCADETIMAGE" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETIMAGE" FromRole="OFFICERCADET" ToRole="OFFICERCADETIMAGE" />
-          <NavigationProperty Name="OFFICERCADETPAYROLL" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETPAYROLL" FromRole="OFFICERCADET" ToRole="OFFICERCADETPAYROLL" />
-          <NavigationProperty Name="OFFICERCADETTRIALPAY" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETTRIALPAY" FromRole="OFFICERCADET" ToRole="OFFICERCADETTRIALPAY" />
-          <NavigationProperty Name="RANK" Relationship="DBGAFPAYModel.FK_RANK_OFFICERCADET" FromRole="OFFICERCADET" ToRole="RANK" />
-          <NavigationProperty Name="REGION" Relationship="DBGAFPAYModel.FK_REGION_OFFICERCADET" FromRole="OFFICERCADET" ToRole="REGION" />
-          <NavigationProperty Name="RELIGION" Relationship="DBGAFPAYModel.FK_RELIGION_OFFICERCADET" FromRole="OFFICERCADET" ToRole="RELIGION" />
-          <NavigationProperty Name="SERVICE" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICERCADET" FromRole="OFFICERCADET" ToRole="SERVICE" />
         </EntityType>
         <EntityType Name="OFFICERCADETBANK">
           <Key>
@@ -4785,14 +4819,6 @@
           <Property Name="PICTUREPATH" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_OFFICER_OFFICERIMAGE" FromRole="OFFICERIMAGE" ToRole="OFFICER" />
         </EntityType>
-        <EntityType Name="OFFICERINTAKE">
-          <Key>
-            <PropertyRef Name="OFFICERINTAKEID" />
-          </Key>
-          <Property Name="OFFICERINTAKEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OFFICERINTAKENAME" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="STATUS" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="OFFICERMEDP">
           <Key>
             <PropertyRef Name="OFFICERID" />
@@ -4825,8 +4851,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="OFFICEPAYROLLID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" FromRole="OFFICERPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="OFFICERPAYROLL" Relationship="DBGAFPAYModel.FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE" FromRole="OFFICERPAYROLLALLOWANCE" ToRole="OFFICERPAYROLL" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" FromRole="OFFICERPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="OFFICERPAYROLLDEDUCTION">
           <Key>
@@ -4866,8 +4892,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="OTRIALPAYID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" FromRole="OFFICERTRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="OFFICERTRIALPAY" Relationship="DBGAFPAYModel.FK_OFFICERTRIALPAY_OFFICERTRIALPAYALLOWANCE" FromRole="OFFICERTRIALPAYALLOWANCE" ToRole="OFFICERTRIALPAY" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" FromRole="OFFICERTRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="OFFICERTRIALPAYDEDUCTION">
           <Key>
@@ -4893,10 +4919,10 @@
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_PROVIDENTFUND" FromRole="PROVIDENTFUND" ToRole="JUNIORCE" />
           <NavigationProperty Name="JUNIORCEPROVIDENT" Relationship="DBGAFPAYModel.FK_JUNIORCEPROVIDENT_PROVIDENTFUND" FromRole="PROVIDENTFUND" ToRole="JUNIORCEPROVIDENT" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_OFFICER_PROVIDENTFUND" FromRole="PROVIDENTFUND" ToRole="OFFICER" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND" FromRole="PROVIDENTFUND" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_SOLDIER_PROVIDENTFUND" FromRole="PROVIDENTFUND" ToRole="SOLDIER" />
           <NavigationProperty Name="OFFICER1" Relationship="DBGAFPAYModel.OFFICERPROVIDENT" FromRole="PROVIDENTFUND" ToRole="OFFICER" />
           <NavigationProperty Name="SOLDIER1" Relationship="DBGAFPAYModel.SOLDIERPROVIDENT" FromRole="PROVIDENTFUND" ToRole="SOLDIER" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND" FromRole="PROVIDENTFUND" ToRole="SENIORCE" />
         </EntityType>
         <EntityType Name="RANK">
           <Key>
@@ -4909,10 +4935,10 @@
           <Property Name="ISOFFICER" Type="Boolean" Nullable="false" />
           <Property Name="SERVICEID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_RANK_OFFICER" FromRole="RANK" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_RANK_OFFICERCADET" FromRole="RANK" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_RANK_RECRUIT" FromRole="RANK" ToRole="RECRUIT" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_RANK_SOLDIER" FromRole="RANK" ToRole="SOLDIER" />
           <NavigationProperty Name="SERVICE" Relationship="DBGAFPAYModel.FK_SERVICE_RANK" FromRole="RANK" ToRole="SERVICE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_RANK_OFFICERCADET" FromRole="RANK" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="RECRUIT">
           <Key>
@@ -5026,10 +5052,10 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_REGION_JUNIORCE" FromRole="REGION" ToRole="JUNIORCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_REGION_OFFICER" FromRole="REGION" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_REGION_OFFICERCADET" FromRole="REGION" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_REGION_RECRUIT" FromRole="REGION" ToRole="RECRUIT" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_REGION_SENIORCE" FromRole="REGION" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_REGION_SOLDIER" FromRole="REGION" ToRole="SOLDIER" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_REGION_SENIORCE" FromRole="REGION" ToRole="SENIORCE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_REGION_OFFICERCADET" FromRole="REGION" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="RELIGION">
           <Key>
@@ -5040,57 +5066,10 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_RELIGION_JUNIORCE" FromRole="RELIGION" ToRole="JUNIORCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_RELIGION_OFFICER" FromRole="RELIGION" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_RELIGION_OFFICERCADET" FromRole="RELIGION" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_RELIGION_RECRUIT" FromRole="RELIGION" ToRole="RECRUIT" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_RELIGION_SENIORCE" FromRole="RELIGION" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_RELIGION_SOLDIER" FromRole="RELIGION" ToRole="SOLDIER" />
-        </EntityType>
-        <EntityType Name="SENIORCE">
-          <Key>
-            <PropertyRef Name="SENIORCEID" />
-          </Key>
-          <Property Name="SENIORCEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SURNAME" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="OTHERNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="PHONENUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="EMAILADDRESS" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="RESADDRESS" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="SERVICENUMBER" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="HOMETOWN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="DATETIMEUPDATED" Type="DateTime" Precision="3" />
-          <Property Name="UPDATEDBY" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="DATEEMPLOYED" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DATEPROMOTED" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="SSNITNUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="ISMEDICAL" Type="Boolean" Nullable="false" />
-          <Property Name="UNITID" Type="Int32" Nullable="false" />
-          <Property Name="TITLEID" Type="Int32" Nullable="false" />
-          <Property Name="RELIGIONID" Type="Int32" Nullable="false" />
-          <Property Name="REGIONID" Type="Int32" Nullable="false" />
-          <Property Name="GENDERID" Type="Int32" Nullable="false" />
-          <Property Name="GENERALSTATUSID" Type="Int32" Nullable="false" />
-          <Property Name="CIVILIANLEVSTEPID" Type="Int32" Nullable="false" />
-          <Property Name="BLOODGROUPID" Type="Int32" Nullable="false" />
-          <Property Name="PROVIDENTFUNDID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BLOODGROUP" Relationship="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE" FromRole="SENIORCE" ToRole="BLOODGROUP" />
-          <NavigationProperty Name="CIVILIANLEVSTEP" Relationship="DBGAFPAYModel.FK_CIVILIANLEVSTEP_SENIORCE" FromRole="SENIORCE" ToRole="CIVILIANLEVSTEP" />
-          <NavigationProperty Name="GENDER" Relationship="DBGAFPAYModel.FK_GENDER_SENIORCE" FromRole="SENIORCE" ToRole="GENDER" />
-          <NavigationProperty Name="GENERALSTATUS" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE" FromRole="SENIORCE" ToRole="GENERALSTATUS" />
-          <NavigationProperty Name="PROVIDENTFUND" Relationship="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND" FromRole="SENIORCE" ToRole="PROVIDENTFUND" />
-          <NavigationProperty Name="REGION" Relationship="DBGAFPAYModel.FK_REGION_SENIORCE" FromRole="SENIORCE" ToRole="REGION" />
-          <NavigationProperty Name="RELIGION" Relationship="DBGAFPAYModel.FK_RELIGION_SENIORCE" FromRole="SENIORCE" ToRole="RELIGION" />
-          <NavigationProperty Name="SENIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE" FromRole="SENIORCE" ToRole="SENIORCEALLOWANCE" />
-          <NavigationProperty Name="SENIORCEBANK" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEBANK" FromRole="SENIORCE" ToRole="SENIORCEBANK" />
-          <NavigationProperty Name="SENIORCEDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION" FromRole="SENIORCE" ToRole="SENIORCEDEDUCTION" />
-          <NavigationProperty Name="SENIORCEIMAGE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEIMAGE" FromRole="SENIORCE" ToRole="SENIORCEIMAGE" />
-          <NavigationProperty Name="SENIORCEMEDP" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEMEDP" FromRole="SENIORCE" ToRole="SENIORCEMEDP" />
-          <NavigationProperty Name="SENIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL" FromRole="SENIORCE" ToRole="SENIORCEPAYROLL" />
-          <NavigationProperty Name="SENIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY" FromRole="SENIORCE" ToRole="SENIORCETRIALPAY" />
-          <NavigationProperty Name="TITLE" Relationship="DBGAFPAYModel.FK_TITLE_SENIORCE" FromRole="SENIORCE" ToRole="TITLE" />
-          <NavigationProperty Name="UNIT" Relationship="DBGAFPAYModel.FK_UNIT_SENIORCE" FromRole="SENIORCE" ToRole="UNIT" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_RELIGION_SENIORCE" FromRole="RELIGION" ToRole="SENIORCE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_RELIGION_OFFICERCADET" FromRole="RELIGION" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="SENIORCEALLOWANCE">
           <Key>
@@ -5158,9 +5137,9 @@
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <Property Name="SENIORCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL" FromRole="SENIORCEPAYROLL" ToRole="SENIORCE" />
           <NavigationProperty Name="SENIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE" FromRole="SENIORCEPAYROLL" ToRole="SENIORCEPAYROLLALLOWANCE" />
           <NavigationProperty Name="SENIORCEPAYROLLDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLDEDUCTION" FromRole="SENIORCEPAYROLL" ToRole="SENIORCEPAYROLLDEDUCTION" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL" FromRole="SENIORCEPAYROLL" ToRole="SENIORCE" />
         </EntityType>
         <EntityType Name="SENIORCEPAYROLLALLOWANCE">
           <Key>
@@ -5170,8 +5149,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="SENIORCEPAYROLLID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" FromRole="SENIORCEPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="SENIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE" FromRole="SENIORCEPAYROLLALLOWANCE" ToRole="SENIORCEPAYROLL" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" FromRole="SENIORCEPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="SENIORCEPAYROLLDEDUCTION">
           <Key>
@@ -5199,9 +5178,9 @@
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <Property Name="SENIORCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY" FromRole="SENIORCETRIALPAY" ToRole="SENIORCE" />
           <NavigationProperty Name="SENIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYALLOWANCE" FromRole="SENIORCETRIALPAY" ToRole="SENIORCETRIALPAYALLOWANCE" />
           <NavigationProperty Name="SENIORCETRIALPAYDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYDEDUCTION" FromRole="SENIORCETRIALPAY" ToRole="SENIORCETRIALPAYDEDUCTION" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY" FromRole="SENIORCETRIALPAY" ToRole="SENIORCE" />
         </EntityType>
         <EntityType Name="SENIORCETRIALPAYALLOWANCE">
           <Key>
@@ -5211,8 +5190,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="SENIORCETRIALPAYID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" FromRole="SENIORCETRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="SENIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYALLOWANCE" FromRole="SENIORCETRIALPAYALLOWANCE" ToRole="SENIORCETRIALPAY" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" FromRole="SENIORCETRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="SENIORCETRIALPAYDEDUCTION">
           <Key>
@@ -5237,12 +5216,12 @@
           <Property Name="SERVICESHORTNAME" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICER" FromRole="SERVICE" ToRole="OFFICER" />
-          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICERCADET" FromRole="SERVICE" ToRole="OFFICERCADET" />
           <NavigationProperty Name="RANK" Relationship="DBGAFPAYModel.FK_SERVICE_RANK" FromRole="SERVICE" ToRole="RANK" />
           <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_SERVICE_RECRUIT" FromRole="SERVICE" ToRole="RECRUIT" />
           <NavigationProperty Name="RECRUITCOURSE" Relationship="DBGAFPAYModel.FK_RECRUITCOURSE_SERVICE" FromRole="SERVICE" ToRole="RECRUITCOURSE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_SERVICE_SOLDIER" FromRole="SERVICE" ToRole="SOLDIER" />
           <NavigationProperty Name="TRAININGCENTER" Relationship="DBGAFPAYModel.FK_SERVICE_TRAININGCENTER" FromRole="SERVICE" ToRole="TRAININGCENTER" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICERCADET" FromRole="SERVICE" ToRole="OFFICERCADET" />
         </EntityType>
         <EntityType Name="SOLDIER">
           <Key>
@@ -5302,8 +5281,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
           <Property Name="SOLDEIRID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE" FromRole="SOLDIERALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_SOLDIER_SOLDIERALLOWANCE" FromRole="SOLDIERALLOWANCE" ToRole="SOLDIER" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE" FromRole="SOLDIERALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="SOLDIERBANK">
           <Key>
@@ -5371,8 +5350,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="SOLDIERPAYROLLID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" FromRole="SOLDIERPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="SOLDIERPAYROLL" Relationship="DBGAFPAYModel.FK_SOLDIERPAYROLL_SOLDIERPAYROLLALLOWANCE" FromRole="SOLDIERPAYROLLALLOWANCE" ToRole="SOLDIERPAYROLL" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" FromRole="SOLDIERPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="SOLDIERPAYROLLDEDUCTION">
           <Key>
@@ -5412,8 +5391,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="SOLDIERTRIALPAYID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" FromRole="SOLDIERTRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
           <NavigationProperty Name="SOLDIERTRIALPAY" Relationship="DBGAFPAYModel.FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYALLOWANCE" FromRole="SOLDIERTRIALPAYALLOWANCE" ToRole="SOLDIERTRIALPAY" />
+          <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" FromRole="SOLDIERTRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
         </EntityType>
         <EntityType Name="SOLDIERTRIALPAYDEDUCTION">
           <Key>
@@ -5461,153 +5440,9 @@
           <Property Name="STATUS" Type="Int32" Nullable="false" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_UNIT_JUNIORCE" FromRole="UNIT" ToRole="JUNIORCE" />
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_UNIT_OFFICER" FromRole="UNIT" ToRole="OFFICER" />
-          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_UNIT_SENIORCE" FromRole="UNIT" ToRole="SENIORCE" />
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_UNIT_SOLDIER" FromRole="UNIT" ToRole="SOLDIER" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_UNIT_SENIORCE" FromRole="UNIT" ToRole="SENIORCE" />
         </EntityType>
-        <Association Name="FK_ALLOWANCE_JUNIORCEALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCEALLOWANCE" Role="JUNIORCEALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="JUNIORCEALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" Role="JUNIORCEPAYROLLALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="JUNIORCEPAYROLLALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" Role="JUNIORCETRIALPAYALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="JUNIORCETRIALPAYALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_OFFICERALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERALLOWANCE" Role="OFFICERALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="OFFICERALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERPAYROLLALLOWANCE" Role="OFFICERPAYROLLALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="OFFICERPAYROLLALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERTRIALPAYALLOWANCE" Role="OFFICERTRIALPAYALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="OFFICERTRIALPAYALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_SENIORCEALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEALLOWANCE" Role="SENIORCEALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEPAYROLLALLOWANCE" Role="SENIORCEPAYROLLALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEPAYROLLALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCETRIALPAYALLOWANCE" Role="SENIORCETRIALPAYALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="SENIORCETRIALPAYALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_SOLDIERALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SOLDIERALLOWANCE" Role="SOLDIERALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="SOLDIERALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SOLDIERPAYROLLALLOWANCE" Role="SOLDIERPAYROLLALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="SOLDIERPAYROLLALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE">
-          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SOLDIERTRIALPAYALLOWANCE" Role="SOLDIERTRIALPAYALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Principal>
-            <Dependent Role="SOLDIERTRIALPAYALLOWANCE">
-              <PropertyRef Name="ALLOWANCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BANK_JUNIORCEBANK">
           <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
           <End Type="DBGAFPAYModel.JUNIORCEBANK" Role="JUNIORCEBANK" Multiplicity="*" />
@@ -5764,18 +5599,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BLOODGROUP_OFFICERCADET">
-          <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BLOODGROUP">
-              <PropertyRef Name="BLOODGROUPID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="BLOODGROUPID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BLOODGROUP_RECRUIT">
           <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
           <End Type="DBGAFPAYModel.RECRUIT" Role="RECRUIT" Multiplicity="*" />
@@ -5784,18 +5607,6 @@
               <PropertyRef Name="BLOODGROUPID" />
             </Principal>
             <Dependent Role="RECRUIT">
-              <PropertyRef Name="BLOODGROUPID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BLOODGROUP_SENIORCE">
-          <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BLOODGROUP">
-              <PropertyRef Name="BLOODGROUPID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
               <PropertyRef Name="BLOODGROUPID" />
             </Dependent>
           </ReferentialConstraint>
@@ -5821,30 +5632,6 @@
             </Principal>
             <Dependent Role="JUNIORCE">
               <PropertyRef Name="CIVILIANLEVSTEPID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CIVILIANLEVSTEP_SENIORCE">
-          <End Type="DBGAFPAYModel.CIVILIANLEVSTEP" Role="CIVILIANLEVSTEP" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CIVILIANLEVSTEP">
-              <PropertyRef Name="CIVILIANLEVSTEPID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
-              <PropertyRef Name="CIVILIANLEVSTEPID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_COMMISSIONTYPE_OFFICERCADET">
-          <End Type="DBGAFPAYModel.COMMISSIONTYPE" Role="COMMISSIONTYPE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="COMMISSIONTYPE">
-              <PropertyRef Name="COMMISSIONTYPEID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="COMMISSIONTYPEID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6028,18 +5815,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GENDER_OFFICERCADET">
-          <End Type="DBGAFPAYModel.GENDER" Role="GENDER" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GENDER">
-              <PropertyRef Name="GENDERID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="GENDERID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_GENDER_RECRUIT">
           <End Type="DBGAFPAYModel.GENDER" Role="GENDER" Multiplicity="1" />
           <End Type="DBGAFPAYModel.RECRUIT" Role="RECRUIT" Multiplicity="*" />
@@ -6048,18 +5823,6 @@
               <PropertyRef Name="GENDERID" />
             </Principal>
             <Dependent Role="RECRUIT">
-              <PropertyRef Name="GENDERID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GENDER_SENIORCE">
-          <End Type="DBGAFPAYModel.GENDER" Role="GENDER" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GENDER">
-              <PropertyRef Name="GENDERID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
               <PropertyRef Name="GENDERID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6100,18 +5863,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GENERALSTATUS_OFFICERCADET">
-          <End Type="DBGAFPAYModel.GENERALSTATUS" Role="GENERALSTATUS" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GENERALSTATUS">
-              <PropertyRef Name="GENERALSTATUSID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="GENERALSTATUSID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_GENERALSTATUS_RECRUIT">
           <End Type="DBGAFPAYModel.GENERALSTATUS" Role="GENERALSTATUS" Multiplicity="1" />
           <End Type="DBGAFPAYModel.RECRUIT" Role="RECRUIT" Multiplicity="*" />
@@ -6120,18 +5871,6 @@
               <PropertyRef Name="GENERALSTATUSID" />
             </Principal>
             <Dependent Role="RECRUIT">
-              <PropertyRef Name="GENERALSTATUSID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GENERALSTATUS_SENIORCE">
-          <End Type="DBGAFPAYModel.GENERALSTATUS" Role="GENERALSTATUS" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GENERALSTATUS">
-              <PropertyRef Name="GENERALSTATUSID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
               <PropertyRef Name="GENERALSTATUSID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6364,18 +6103,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MILITARYLEVSTEP_OFFICERCADET">
-          <End Type="DBGAFPAYModel.MILITARYLEVSTEP" Role="MILITARYLEVSTEP" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MILITARYLEVSTEP">
-              <PropertyRef Name="MILITARYLEVSTEPID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="MILITARYLEVSTEPID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MILITARYLEVSTEP_RECRUIT">
           <End Type="DBGAFPAYModel.MILITARYLEVSTEP" Role="MILITARYLEVSTEP" Multiplicity="1" />
           <End Type="DBGAFPAYModel.RECRUIT" Role="RECRUIT" Multiplicity="*" />
@@ -6556,102 +6283,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OFFICERCADET_OFFICERCADETBANK">
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADETBANK" Role="OFFICERCADETBANK" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="OFFICERCADET">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Principal>
-            <Dependent Role="OFFICERCADETBANK">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OFFICERCADET_OFFICERCADETIMAGE">
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADETIMAGE" Role="OFFICERCADETIMAGE" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="OFFICERCADET">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Principal>
-            <Dependent Role="OFFICERCADETIMAGE">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OFFICERCADET_OFFICERCADETPAYROLL">
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADETPAYROLL" Role="OFFICERCADETPAYROLL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OFFICERCADET">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Principal>
-            <Dependent Role="OFFICERCADETPAYROLL">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OFFICERCADET_OFFICERCADETTRIALPAY">
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADETTRIALPAY" Role="OFFICERCADETTRIALPAY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OFFICERCADET">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Principal>
-            <Dependent Role="OFFICERCADETTRIALPAY">
-              <PropertyRef Name="OFFICERCADETID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RANK_OFFICERCADET">
-          <End Type="DBGAFPAYModel.RANK" Role="RANK" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RANK">
-              <PropertyRef Name="RANKID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="RANKID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_REGION_OFFICERCADET">
-          <End Type="DBGAFPAYModel.REGION" Role="REGION" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGION">
-              <PropertyRef Name="REGIONID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="REGIONID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RELIGION_OFFICERCADET">
-          <End Type="DBGAFPAYModel.RELIGION" Role="RELIGION" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RELIGION">
-              <PropertyRef Name="RELIGIONID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="RELIGIONID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SERVICE_OFFICERCADET">
-          <End Type="DBGAFPAYModel.SERVICE" Role="SERVICE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SERVICE">
-              <PropertyRef Name="SERVICEID" />
-            </Principal>
-            <Dependent Role="OFFICERCADET">
-              <PropertyRef Name="SERVICEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE">
           <End Type="DBGAFPAYModel.OFFICERPAYROLL" Role="OFFICERPAYROLL" Multiplicity="1" />
           <End Type="DBGAFPAYModel.OFFICERPAYROLLALLOWANCE" Role="OFFICERPAYROLLALLOWANCE" Multiplicity="*" />
@@ -6697,18 +6328,6 @@
             </Principal>
             <Dependent Role="OFFICERTRIALPAYDEDUCTION">
               <PropertyRef Name="OTRIALPAYID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_PROVIDENTFUND">
-          <End Type="DBGAFPAYModel.PROVIDENTFUND" Role="PROVIDENTFUND" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PROVIDENTFUND">
-              <PropertyRef Name="PROVIDENTFUNDID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
-              <PropertyRef Name="PROVIDENTFUNDID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6880,18 +6499,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_REGION_SENIORCE">
-          <End Type="DBGAFPAYModel.REGION" Role="REGION" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGION">
-              <PropertyRef Name="REGIONID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
-              <PropertyRef Name="REGIONID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_REGION_SOLDIER">
           <End Type="DBGAFPAYModel.REGION" Role="REGION" Multiplicity="1" />
           <End Type="DBGAFPAYModel.SOLDIER" Role="SOLDIER" Multiplicity="*" />
@@ -6904,18 +6511,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RELIGION_SENIORCE">
-          <End Type="DBGAFPAYModel.RELIGION" Role="RELIGION" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RELIGION">
-              <PropertyRef Name="RELIGIONID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
-              <PropertyRef Name="RELIGIONID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RELIGION_SOLDIER">
           <End Type="DBGAFPAYModel.RELIGION" Role="RELIGION" Multiplicity="1" />
           <End Type="DBGAFPAYModel.SOLDIER" Role="SOLDIER" Multiplicity="*" />
@@ -6925,114 +6520,6 @@
             </Principal>
             <Dependent Role="SOLDIER">
               <PropertyRef Name="RELIGIONID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCEALLOWANCE">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEALLOWANCE" Role="SENIORCEALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEALLOWANCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCEBANK">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEBANK" Role="SENIORCEBANK" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEBANK">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCEDEDUCTION">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEDEDUCTION" Role="SENIORCEDEDUCTION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEDEDUCTION">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCEIMAGE">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEIMAGE" Role="SENIORCEIMAGE" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEIMAGE">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCEMEDP">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEMEDP" Role="SENIORCEMEDP" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEMEDP">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCEPAYROLL">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCEPAYROLL" Role="SENIORCEPAYROLL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCEPAYROLL">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SENIORCE_SENIORCETRIALPAY">
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCETRIALPAY" Role="SENIORCETRIALPAY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SENIORCE">
-              <PropertyRef Name="SENIORCEID" />
-            </Principal>
-            <Dependent Role="SENIORCETRIALPAY">
-              <PropertyRef Name="SENIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TITLE_SENIORCE">
-          <End Type="DBGAFPAYModel.TITLE" Role="TITLE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TITLE">
-              <PropertyRef Name="TITLEID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
-              <PropertyRef Name="TITLEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UNIT_SENIORCE">
-          <End Type="DBGAFPAYModel.UNIT" Role="UNIT" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UNIT">
-              <PropertyRef Name="UNITID" />
-            </Principal>
-            <Dependent Role="SENIORCE">
-              <PropertyRef Name="UNITID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7260,6 +6747,681 @@
           <End Type="DBGAFPAYModel.SOLDIER" Role="SOLDIER" Multiplicity="*" />
           <End Type="DBGAFPAYModel.PROVIDENTFUND" Role="PROVIDENTFUND" Multiplicity="0..1" />
         </Association>
+        <EntityType Name="GRADE">
+          <Key>
+            <PropertyRef Name="GRADEID" />
+          </Key>
+          <Property Name="GRADEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GRADENAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_GRADE" FromRole="GRADE" ToRole="JUNIORCE" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_GRADE" FromRole="GRADE" ToRole="SENIORCE" />
+        </EntityType>
+        <Association Name="FK_JUNIORCE_GRADE">
+          <End Type="DBGAFPAYModel.GRADE" Role="GRADE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRADE">
+              <PropertyRef Name="GRADEID" />
+            </Principal>
+            <Dependent Role="JUNIORCE">
+              <PropertyRef Name="GRADEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ALLOWANCE">
+          <Key>
+            <PropertyRef Name="ALLOWANCEID" />
+          </Key>
+          <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ALLOWANCENAME" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JUNIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEALLOWANCE" FromRole="ALLOWANCE" ToRole="JUNIORCEALLOWANCE" />
+          <NavigationProperty Name="JUNIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="JUNIORCEPAYROLLALLOWANCE" />
+          <NavigationProperty Name="JUNIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="JUNIORCETRIALPAYALLOWANCE" />
+          <NavigationProperty Name="OFFICERALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERALLOWANCE" FromRole="ALLOWANCE" ToRole="OFFICERALLOWANCE" />
+          <NavigationProperty Name="OFFICERPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="OFFICERPAYROLLALLOWANCE" />
+          <NavigationProperty Name="OFFICERTRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="OFFICERTRIALPAYALLOWANCE" />
+          <NavigationProperty Name="SENIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEALLOWANCE" FromRole="ALLOWANCE" ToRole="SENIORCEALLOWANCE" />
+          <NavigationProperty Name="SENIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="SENIORCEPAYROLLALLOWANCE" />
+          <NavigationProperty Name="SENIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="SENIORCETRIALPAYALLOWANCE" />
+          <NavigationProperty Name="SOLDIERALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERALLOWANCE" FromRole="ALLOWANCE" ToRole="SOLDIERALLOWANCE" />
+          <NavigationProperty Name="SOLDIERPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE" FromRole="ALLOWANCE" ToRole="SOLDIERPAYROLLALLOWANCE" />
+          <NavigationProperty Name="SOLDIERTRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE" FromRole="ALLOWANCE" ToRole="SOLDIERTRIALPAYALLOWANCE" />
+        </EntityType>
+        <Association Name="FK_ALLOWANCE_JUNIORCEALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCEALLOWANCE" Role="JUNIORCEALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="JUNIORCEALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" Role="JUNIORCEPAYROLLALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="JUNIORCEPAYROLLALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" Role="JUNIORCETRIALPAYALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="JUNIORCETRIALPAYALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_OFFICERALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERALLOWANCE" Role="OFFICERALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="OFFICERALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_OFFICERPAYROLLALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERPAYROLLALLOWANCE" Role="OFFICERPAYROLLALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="OFFICERPAYROLLALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_OFFICERTRIALPAYALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERTRIALPAYALLOWANCE" Role="OFFICERTRIALPAYALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="OFFICERTRIALPAYALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_SENIORCEALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEALLOWANCE" Role="SENIORCEALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_SENIORCEPAYROLLALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEPAYROLLALLOWANCE" Role="SENIORCEPAYROLLALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEPAYROLLALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_SENIORCETRIALPAYALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCETRIALPAYALLOWANCE" Role="SENIORCETRIALPAYALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="SENIORCETRIALPAYALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_SOLDIERALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SOLDIERALLOWANCE" Role="SOLDIERALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="SOLDIERALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_SOLDIERPAYROLLALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SOLDIERPAYROLLALLOWANCE" Role="SOLDIERPAYROLLALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="SOLDIERPAYROLLALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ALLOWANCE_SOLDIERTRIALPAYALLOWANCE">
+          <End Type="DBGAFPAYModel.ALLOWANCE" Role="ALLOWANCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SOLDIERTRIALPAYALLOWANCE" Role="SOLDIERTRIALPAYALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Principal>
+            <Dependent Role="SOLDIERTRIALPAYALLOWANCE">
+              <PropertyRef Name="ALLOWANCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SENIORCE">
+          <Key>
+            <PropertyRef Name="SENIORCEID" />
+          </Key>
+          <Property Name="SENIORCEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SURNAME" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="OTHERNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PHONENUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="EMAILADDRESS" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="RESADDRESS" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="SERVICENUMBER" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="HOMETOWN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="DATETIMEUPDATED" Type="DateTime" Precision="3" />
+          <Property Name="UPDATEDBY" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="DATEEMPLOYED" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATEPROMOTED" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SSNITNUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ISMEDICAL" Type="Boolean" Nullable="false" />
+          <Property Name="UNITID" Type="Int32" Nullable="false" />
+          <Property Name="TITLEID" Type="Int32" Nullable="false" />
+          <Property Name="RELIGIONID" Type="Int32" Nullable="false" />
+          <Property Name="REGIONID" Type="Int32" Nullable="false" />
+          <Property Name="GENDERID" Type="Int32" Nullable="false" />
+          <Property Name="GENERALSTATUSID" Type="Int32" Nullable="false" />
+          <Property Name="CIVILIANLEVSTEPID" Type="Int32" Nullable="false" />
+          <Property Name="BLOODGROUPID" Type="Int32" Nullable="false" />
+          <Property Name="PROVIDENTFUNDID" Type="Int32" Nullable="false" />
+          <Property Name="GRADEID" Type="Int32" Nullable="false" />
+          <Property Name="ISDISABLED" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BLOODGROUP" Relationship="DBGAFPAYModel.FK_BLOODGROUP_SENIORCE" FromRole="SENIORCE" ToRole="BLOODGROUP" />
+          <NavigationProperty Name="CIVILIANLEVSTEP" Relationship="DBGAFPAYModel.FK_CIVILIANLEVSTEP_SENIORCE" FromRole="SENIORCE" ToRole="CIVILIANLEVSTEP" />
+          <NavigationProperty Name="GENDER" Relationship="DBGAFPAYModel.FK_GENDER_SENIORCE" FromRole="SENIORCE" ToRole="GENDER" />
+          <NavigationProperty Name="GENERALSTATUS" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_SENIORCE" FromRole="SENIORCE" ToRole="GENERALSTATUS" />
+          <NavigationProperty Name="GRADE" Relationship="DBGAFPAYModel.FK_SENIORCE_GRADE" FromRole="SENIORCE" ToRole="GRADE" />
+          <NavigationProperty Name="PROVIDENTFUND" Relationship="DBGAFPAYModel.FK_SENIORCE_PROVIDENTFUND" FromRole="SENIORCE" ToRole="PROVIDENTFUND" />
+          <NavigationProperty Name="REGION" Relationship="DBGAFPAYModel.FK_REGION_SENIORCE" FromRole="SENIORCE" ToRole="REGION" />
+          <NavigationProperty Name="RELIGION" Relationship="DBGAFPAYModel.FK_RELIGION_SENIORCE" FromRole="SENIORCE" ToRole="RELIGION" />
+          <NavigationProperty Name="SENIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE" FromRole="SENIORCE" ToRole="SENIORCEALLOWANCE" />
+          <NavigationProperty Name="SENIORCEBANK" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEBANK" FromRole="SENIORCE" ToRole="SENIORCEBANK" />
+          <NavigationProperty Name="SENIORCEDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION" FromRole="SENIORCE" ToRole="SENIORCEDEDUCTION" />
+          <NavigationProperty Name="SENIORCEIMAGE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEIMAGE" FromRole="SENIORCE" ToRole="SENIORCEIMAGE" />
+          <NavigationProperty Name="SENIORCEMEDP" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEMEDP" FromRole="SENIORCE" ToRole="SENIORCEMEDP" />
+          <NavigationProperty Name="SENIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL" FromRole="SENIORCE" ToRole="SENIORCEPAYROLL" />
+          <NavigationProperty Name="SENIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY" FromRole="SENIORCE" ToRole="SENIORCETRIALPAY" />
+          <NavigationProperty Name="TITLE" Relationship="DBGAFPAYModel.FK_TITLE_SENIORCE" FromRole="SENIORCE" ToRole="TITLE" />
+          <NavigationProperty Name="UNIT" Relationship="DBGAFPAYModel.FK_UNIT_SENIORCE" FromRole="SENIORCE" ToRole="UNIT" />
+        </EntityType>
+        <Association Name="FK_BLOODGROUP_SENIORCE">
+          <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BLOODGROUP">
+              <PropertyRef Name="BLOODGROUPID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="BLOODGROUPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CIVILIANLEVSTEP_SENIORCE">
+          <End Type="DBGAFPAYModel.CIVILIANLEVSTEP" Role="CIVILIANLEVSTEP" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CIVILIANLEVSTEP">
+              <PropertyRef Name="CIVILIANLEVSTEPID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="CIVILIANLEVSTEPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GENDER_SENIORCE">
+          <End Type="DBGAFPAYModel.GENDER" Role="GENDER" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GENDER">
+              <PropertyRef Name="GENDERID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="GENDERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GENERALSTATUS_SENIORCE">
+          <End Type="DBGAFPAYModel.GENERALSTATUS" Role="GENERALSTATUS" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GENERALSTATUS">
+              <PropertyRef Name="GENERALSTATUSID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="GENERALSTATUSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_GRADE">
+          <End Type="DBGAFPAYModel.GRADE" Role="GRADE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRADE">
+              <PropertyRef Name="GRADEID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="GRADEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_PROVIDENTFUND">
+          <End Type="DBGAFPAYModel.PROVIDENTFUND" Role="PROVIDENTFUND" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROVIDENTFUND">
+              <PropertyRef Name="PROVIDENTFUNDID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="PROVIDENTFUNDID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REGION_SENIORCE">
+          <End Type="DBGAFPAYModel.REGION" Role="REGION" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="REGIONID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="REGIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RELIGION_SENIORCE">
+          <End Type="DBGAFPAYModel.RELIGION" Role="RELIGION" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RELIGION">
+              <PropertyRef Name="RELIGIONID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="RELIGIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCEALLOWANCE">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEALLOWANCE" Role="SENIORCEALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEALLOWANCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCEBANK">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEBANK" Role="SENIORCEBANK" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEBANK">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCEDEDUCTION">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEDEDUCTION" Role="SENIORCEDEDUCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEDEDUCTION">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCEIMAGE">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEIMAGE" Role="SENIORCEIMAGE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEIMAGE">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCEMEDP">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEMEDP" Role="SENIORCEMEDP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEMEDP">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCEPAYROLL">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEPAYROLL" Role="SENIORCEPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCEPAYROLL">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCE_SENIORCETRIALPAY">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCETRIALPAY" Role="SENIORCETRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="SENIORCETRIALPAY">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TITLE_SENIORCE">
+          <End Type="DBGAFPAYModel.TITLE" Role="TITLE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITLE">
+              <PropertyRef Name="TITLEID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="TITLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UNIT_SENIORCE">
+          <End Type="DBGAFPAYModel.UNIT" Role="UNIT" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNITID" />
+            </Principal>
+            <Dependent Role="SENIORCE">
+              <PropertyRef Name="UNITID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OFFICERINTAKE">
+          <Key>
+            <PropertyRef Name="OFFICERINTAKEID" />
+          </Key>
+          <Property Name="OFFICERINTAKEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OFFICERINTAKENAME" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <Property Name="COMMISSIONTYPEID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="COMMISSIONTYPE" Relationship="DBGAFPAYModel.FK_OFFICERINTAKE_COMMISSIONTYPE" FromRole="OFFICERINTAKE" ToRole="COMMISSIONTYPE" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERINTAKE" FromRole="OFFICERINTAKE" ToRole="OFFICERCADET" />
+        </EntityType>
+        <Association Name="FK_OFFICERINTAKE_COMMISSIONTYPE">
+          <End Type="DBGAFPAYModel.COMMISSIONTYPE" Role="COMMISSIONTYPE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERINTAKE" Role="OFFICERINTAKE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMISSIONTYPE">
+              <PropertyRef Name="COMMISSIONTYPEID" />
+            </Principal>
+            <Dependent Role="OFFICERINTAKE">
+              <PropertyRef Name="COMMISSIONTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OFFICERCADET">
+          <Key>
+            <PropertyRef Name="OFFICERCADETID" />
+          </Key>
+          <Property Name="OFFICERCADETID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SURNAME" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="OTHERNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PHONENUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="EMAILADDRESS" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="RESADDRESS" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="SERVICENUMBER" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OFFICERSTARTDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OFFICERENDDATE" Type="DateTime" Precision="3" />
+          <Property Name="HOMETOWN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="DATETIMEUPDATED" Type="DateTime" Precision="3" />
+          <Property Name="UPDATEDBY" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="COMMISSIONTYPEID" Type="Int32" Nullable="false" />
+          <Property Name="RELIGIONID" Type="Int32" Nullable="false" />
+          <Property Name="REGIONID" Type="Int32" Nullable="false" />
+          <Property Name="GENDERID" Type="Int32" Nullable="false" />
+          <Property Name="BLOODGROUPID" Type="Int32" Nullable="false" />
+          <Property Name="SERVICEID" Type="Int32" Nullable="false" />
+          <Property Name="RANKID" Type="Int32" Nullable="false" />
+          <Property Name="GENERALSTATUSID" Type="Int32" Nullable="false" />
+          <Property Name="MILITARYLEVSTEPID" Type="Int32" Nullable="false" />
+          <Property Name="OFFICERINTAKEID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BLOODGROUP" Relationship="DBGAFPAYModel.FK_BLOODGROUP_OFFICERCADET" FromRole="OFFICERCADET" ToRole="BLOODGROUP" />
+          <NavigationProperty Name="COMMISSIONTYPE" Relationship="DBGAFPAYModel.FK_COMMISSIONTYPE_OFFICERCADET" FromRole="OFFICERCADET" ToRole="COMMISSIONTYPE" />
+          <NavigationProperty Name="GENDER" Relationship="DBGAFPAYModel.FK_GENDER_OFFICERCADET" FromRole="OFFICERCADET" ToRole="GENDER" />
+          <NavigationProperty Name="GENERALSTATUS" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_OFFICERCADET" FromRole="OFFICERCADET" ToRole="GENERALSTATUS" />
+          <NavigationProperty Name="MILITARYLEVSTEP" Relationship="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICERCADET" FromRole="OFFICERCADET" ToRole="MILITARYLEVSTEP" />
+          <NavigationProperty Name="OFFICERCADETBANK" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETBANK" FromRole="OFFICERCADET" ToRole="OFFICERCADETBANK" />
+          <NavigationProperty Name="OFFICERCADETIMAGE" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETIMAGE" FromRole="OFFICERCADET" ToRole="OFFICERCADETIMAGE" />
+          <NavigationProperty Name="OFFICERCADETPAYROLL" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETPAYROLL" FromRole="OFFICERCADET" ToRole="OFFICERCADETPAYROLL" />
+          <NavigationProperty Name="OFFICERCADETTRIALPAY" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERCADETTRIALPAY" FromRole="OFFICERCADET" ToRole="OFFICERCADETTRIALPAY" />
+          <NavigationProperty Name="OFFICERINTAKE" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERINTAKE" FromRole="OFFICERCADET" ToRole="OFFICERINTAKE" />
+          <NavigationProperty Name="RANK" Relationship="DBGAFPAYModel.FK_RANK_OFFICERCADET" FromRole="OFFICERCADET" ToRole="RANK" />
+          <NavigationProperty Name="REGION" Relationship="DBGAFPAYModel.FK_REGION_OFFICERCADET" FromRole="OFFICERCADET" ToRole="REGION" />
+          <NavigationProperty Name="RELIGION" Relationship="DBGAFPAYModel.FK_RELIGION_OFFICERCADET" FromRole="OFFICERCADET" ToRole="RELIGION" />
+          <NavigationProperty Name="SERVICE" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICERCADET" FromRole="OFFICERCADET" ToRole="SERVICE" />
+        </EntityType>
+        <Association Name="FK_BLOODGROUP_OFFICERCADET">
+          <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BLOODGROUP">
+              <PropertyRef Name="BLOODGROUPID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="BLOODGROUPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMISSIONTYPE_OFFICERCADET">
+          <End Type="DBGAFPAYModel.COMMISSIONTYPE" Role="COMMISSIONTYPE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMISSIONTYPE">
+              <PropertyRef Name="COMMISSIONTYPEID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="COMMISSIONTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GENDER_OFFICERCADET">
+          <End Type="DBGAFPAYModel.GENDER" Role="GENDER" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GENDER">
+              <PropertyRef Name="GENDERID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="GENDERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GENERALSTATUS_OFFICERCADET">
+          <End Type="DBGAFPAYModel.GENERALSTATUS" Role="GENERALSTATUS" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GENERALSTATUS">
+              <PropertyRef Name="GENERALSTATUSID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="GENERALSTATUSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MILITARYLEVSTEP_OFFICERCADET">
+          <End Type="DBGAFPAYModel.MILITARYLEVSTEP" Role="MILITARYLEVSTEP" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MILITARYLEVSTEP">
+              <PropertyRef Name="MILITARYLEVSTEPID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="MILITARYLEVSTEPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERCADET_OFFICERCADETBANK">
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADETBANK" Role="OFFICERCADETBANK" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Principal>
+            <Dependent Role="OFFICERCADETBANK">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERCADET_OFFICERCADETIMAGE">
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADETIMAGE" Role="OFFICERCADETIMAGE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Principal>
+            <Dependent Role="OFFICERCADETIMAGE">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERCADET_OFFICERCADETPAYROLL">
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADETPAYROLL" Role="OFFICERCADETPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Principal>
+            <Dependent Role="OFFICERCADETPAYROLL">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERCADET_OFFICERCADETTRIALPAY">
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADETTRIALPAY" Role="OFFICERCADETTRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Principal>
+            <Dependent Role="OFFICERCADETTRIALPAY">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERCADET_OFFICERINTAKE">
+          <End Type="DBGAFPAYModel.OFFICERINTAKE" Role="OFFICERINTAKE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERINTAKE">
+              <PropertyRef Name="OFFICERINTAKEID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERINTAKEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RANK_OFFICERCADET">
+          <End Type="DBGAFPAYModel.RANK" Role="RANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RANK">
+              <PropertyRef Name="RANKID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="RANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REGION_OFFICERCADET">
+          <End Type="DBGAFPAYModel.REGION" Role="REGION" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="REGIONID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="REGIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RELIGION_OFFICERCADET">
+          <End Type="DBGAFPAYModel.RELIGION" Role="RELIGION" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RELIGION">
+              <PropertyRef Name="RELIGIONID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="RELIGIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SERVICE_OFFICERCADET">
+          <End Type="DBGAFPAYModel.SERVICE" Role="SERVICE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="SERVICEID" />
+            </Principal>
+            <Dependent Role="OFFICERCADET">
+              <PropertyRef Name="SERVICEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7293,16 +7455,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="ALLOWANCE">
-            <EntityTypeMapping TypeName="DBGAFPAYModel.ALLOWANCE">
-              <MappingFragment StoreEntitySet="ALLOWANCE">
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="ISTAXABLE" ColumnName="ISTAXABLE" />
-                <ScalarProperty Name="ALLOWANCENAME" ColumnName="ALLOWANCENAME" />
-                <ScalarProperty Name="ALLOWANCEID" ColumnName="ALLOWANCEID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BANK">
             <EntityTypeMapping TypeName="DBGAFPAYModel.BANK">
               <MappingFragment StoreEntitySet="BANK">
@@ -7396,6 +7548,8 @@
           <EntitySetMapping Name="JUNIORCE">
             <EntityTypeMapping TypeName="DBGAFPAYModel.JUNIORCE">
               <MappingFragment StoreEntitySet="JUNIORCE">
+                <ScalarProperty Name="ISDISABLED" ColumnName="ISDISABLED" />
+                <ScalarProperty Name="GRADEID" ColumnName="GRADEID" />
                 <ScalarProperty Name="PROVIDENTFUNDID" ColumnName="PROVIDENTFUNDID" />
                 <ScalarProperty Name="CIVILIANLEVSTEPID" ColumnName="CIVILIANLEVSTEPID" />
                 <ScalarProperty Name="BLOODGROUPID" ColumnName="BLOODGROUPID" />
@@ -7621,37 +7775,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OFFICERCADET">
-            <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERCADET">
-              <MappingFragment StoreEntitySet="OFFICERCADET">
-                <ScalarProperty Name="OFFICERINTAKE" ColumnName="OFFICERINTAKE" />
-                <ScalarProperty Name="MILITARYLEVSTEPID" ColumnName="MILITARYLEVSTEPID" />
-                <ScalarProperty Name="GENERALSTATUSID" ColumnName="GENERALSTATUSID" />
-                <ScalarProperty Name="RANKID" ColumnName="RANKID" />
-                <ScalarProperty Name="SERVICEID" ColumnName="SERVICEID" />
-                <ScalarProperty Name="BLOODGROUPID" ColumnName="BLOODGROUPID" />
-                <ScalarProperty Name="GENDERID" ColumnName="GENDERID" />
-                <ScalarProperty Name="REGIONID" ColumnName="REGIONID" />
-                <ScalarProperty Name="RELIGIONID" ColumnName="RELIGIONID" />
-                <ScalarProperty Name="COMMISSIONTYPEID" ColumnName="COMMISSIONTYPEID" />
-                <ScalarProperty Name="UPDATEDBY" ColumnName="UPDATEDBY" />
-                <ScalarProperty Name="DATETIMEUPDATED" ColumnName="DATETIMEUPDATED" />
-                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
-                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
-                <ScalarProperty Name="HOMETOWN" ColumnName="HOMETOWN" />
-                <ScalarProperty Name="OFFICERENDDATE" ColumnName="OFFICERENDDATE" />
-                <ScalarProperty Name="OFFICERSTARTDATE" ColumnName="OFFICERSTARTDATE" />
-                <ScalarProperty Name="SERVICENUMBER" ColumnName="SERVICENUMBER" />
-                <ScalarProperty Name="RESADDRESS" ColumnName="RESADDRESS" />
-                <ScalarProperty Name="EMAILADDRESS" ColumnName="EMAILADDRESS" />
-                <ScalarProperty Name="PHONENUMBER" ColumnName="PHONENUMBER" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="OTHERNAME" ColumnName="OTHERNAME" />
-                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
-                <ScalarProperty Name="OFFICERCADETID" ColumnName="OFFICERCADETID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OFFICERCADETBANK">
             <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERCADETBANK">
               <MappingFragment StoreEntitySet="OFFICERCADETBANK">
@@ -7716,15 +7839,6 @@
                 <ScalarProperty Name="PICTUREPATH" ColumnName="PICTUREPATH" />
                 <ScalarProperty Name="PICTURENAME" ColumnName="PICTURENAME" />
                 <ScalarProperty Name="OFFICERID" ColumnName="OFFICERID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFFICERINTAKE">
-            <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERINTAKE">
-              <MappingFragment StoreEntitySet="OFFICERINTAKE">
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="OFFICERINTAKENAME" ColumnName="OFFICERINTAKENAME" />
-                <ScalarProperty Name="OFFICERINTAKEID" ColumnName="OFFICERINTAKEID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7932,38 +8046,6 @@
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="RELIGIONNAME" ColumnName="RELIGIONNAME" />
                 <ScalarProperty Name="RELIGIONID" ColumnName="RELIGIONID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SENIORCE">
-            <EntityTypeMapping TypeName="DBGAFPAYModel.SENIORCE">
-              <MappingFragment StoreEntitySet="SENIORCE">
-                <ScalarProperty Name="PROVIDENTFUNDID" ColumnName="PROVIDENTFUNDID" />
-                <ScalarProperty Name="BLOODGROUPID" ColumnName="BLOODGROUPID" />
-                <ScalarProperty Name="CIVILIANLEVSTEPID" ColumnName="CIVILIANLEVSTEPID" />
-                <ScalarProperty Name="GENERALSTATUSID" ColumnName="GENERALSTATUSID" />
-                <ScalarProperty Name="GENDERID" ColumnName="GENDERID" />
-                <ScalarProperty Name="REGIONID" ColumnName="REGIONID" />
-                <ScalarProperty Name="RELIGIONID" ColumnName="RELIGIONID" />
-                <ScalarProperty Name="TITLEID" ColumnName="TITLEID" />
-                <ScalarProperty Name="UNITID" ColumnName="UNITID" />
-                <ScalarProperty Name="ISMEDICAL" ColumnName="ISMEDICAL" />
-                <ScalarProperty Name="SSNITNUMBER" ColumnName="SSNITNUMBER" />
-                <ScalarProperty Name="DATEPROMOTED" ColumnName="DATEPROMOTED" />
-                <ScalarProperty Name="DATEEMPLOYED" ColumnName="DATEEMPLOYED" />
-                <ScalarProperty Name="UPDATEDBY" ColumnName="UPDATEDBY" />
-                <ScalarProperty Name="DATETIMEUPDATED" ColumnName="DATETIMEUPDATED" />
-                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
-                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
-                <ScalarProperty Name="HOMETOWN" ColumnName="HOMETOWN" />
-                <ScalarProperty Name="SERVICENUMBER" ColumnName="SERVICENUMBER" />
-                <ScalarProperty Name="RESADDRESS" ColumnName="RESADDRESS" />
-                <ScalarProperty Name="EMAILADDRESS" ColumnName="EMAILADDRESS" />
-                <ScalarProperty Name="PHONENUMBER" ColumnName="PHONENUMBER" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="OTHERNAME" ColumnName="OTHERNAME" />
-                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
-                <ScalarProperty Name="SENIORCEID" ColumnName="SENIORCEID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8307,6 +8389,99 @@
             </EndProperty>
             <Condition ColumnName="PROVIDENTFUNDID" IsNull="false" />
           </AssociationSetMapping>
+          <EntitySetMapping Name="GRADE">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.GRADE">
+              <MappingFragment StoreEntitySet="GRADE">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="GRADENAME" ColumnName="GRADENAME" />
+                <ScalarProperty Name="GRADEID" ColumnName="GRADEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ALLOWANCE">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.ALLOWANCE">
+              <MappingFragment StoreEntitySet="ALLOWANCE">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="ALLOWANCENAME" ColumnName="ALLOWANCENAME" />
+                <ScalarProperty Name="ALLOWANCEID" ColumnName="ALLOWANCEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SENIORCE">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.SENIORCE">
+              <MappingFragment StoreEntitySet="SENIORCE">
+                <ScalarProperty Name="ISDISABLED" ColumnName="ISDISABLED" />
+                <ScalarProperty Name="GRADEID" ColumnName="GRADEID" />
+                <ScalarProperty Name="PROVIDENTFUNDID" ColumnName="PROVIDENTFUNDID" />
+                <ScalarProperty Name="BLOODGROUPID" ColumnName="BLOODGROUPID" />
+                <ScalarProperty Name="CIVILIANLEVSTEPID" ColumnName="CIVILIANLEVSTEPID" />
+                <ScalarProperty Name="GENERALSTATUSID" ColumnName="GENERALSTATUSID" />
+                <ScalarProperty Name="GENDERID" ColumnName="GENDERID" />
+                <ScalarProperty Name="REGIONID" ColumnName="REGIONID" />
+                <ScalarProperty Name="RELIGIONID" ColumnName="RELIGIONID" />
+                <ScalarProperty Name="TITLEID" ColumnName="TITLEID" />
+                <ScalarProperty Name="UNITID" ColumnName="UNITID" />
+                <ScalarProperty Name="ISMEDICAL" ColumnName="ISMEDICAL" />
+                <ScalarProperty Name="SSNITNUMBER" ColumnName="SSNITNUMBER" />
+                <ScalarProperty Name="DATEPROMOTED" ColumnName="DATEPROMOTED" />
+                <ScalarProperty Name="DATEEMPLOYED" ColumnName="DATEEMPLOYED" />
+                <ScalarProperty Name="UPDATEDBY" ColumnName="UPDATEDBY" />
+                <ScalarProperty Name="DATETIMEUPDATED" ColumnName="DATETIMEUPDATED" />
+                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
+                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
+                <ScalarProperty Name="HOMETOWN" ColumnName="HOMETOWN" />
+                <ScalarProperty Name="SERVICENUMBER" ColumnName="SERVICENUMBER" />
+                <ScalarProperty Name="RESADDRESS" ColumnName="RESADDRESS" />
+                <ScalarProperty Name="EMAILADDRESS" ColumnName="EMAILADDRESS" />
+                <ScalarProperty Name="PHONENUMBER" ColumnName="PHONENUMBER" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="OTHERNAME" ColumnName="OTHERNAME" />
+                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+                <ScalarProperty Name="SENIORCEID" ColumnName="SENIORCEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFFICERINTAKE">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERINTAKE">
+              <MappingFragment StoreEntitySet="OFFICERINTAKE">
+                <ScalarProperty Name="COMMISSIONTYPEID" ColumnName="COMMISSIONTYPEID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="OFFICERINTAKENAME" ColumnName="OFFICERINTAKENAME" />
+                <ScalarProperty Name="OFFICERINTAKEID" ColumnName="OFFICERINTAKEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFFICERCADET">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERCADET">
+              <MappingFragment StoreEntitySet="OFFICERCADET">
+                <ScalarProperty Name="OFFICERINTAKEID" ColumnName="OFFICERINTAKEID" />
+                <ScalarProperty Name="MILITARYLEVSTEPID" ColumnName="MILITARYLEVSTEPID" />
+                <ScalarProperty Name="GENERALSTATUSID" ColumnName="GENERALSTATUSID" />
+                <ScalarProperty Name="RANKID" ColumnName="RANKID" />
+                <ScalarProperty Name="SERVICEID" ColumnName="SERVICEID" />
+                <ScalarProperty Name="BLOODGROUPID" ColumnName="BLOODGROUPID" />
+                <ScalarProperty Name="GENDERID" ColumnName="GENDERID" />
+                <ScalarProperty Name="REGIONID" ColumnName="REGIONID" />
+                <ScalarProperty Name="RELIGIONID" ColumnName="RELIGIONID" />
+                <ScalarProperty Name="COMMISSIONTYPEID" ColumnName="COMMISSIONTYPEID" />
+                <ScalarProperty Name="UPDATEDBY" ColumnName="UPDATEDBY" />
+                <ScalarProperty Name="DATETIMEUPDATED" ColumnName="DATETIMEUPDATED" />
+                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
+                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
+                <ScalarProperty Name="HOMETOWN" ColumnName="HOMETOWN" />
+                <ScalarProperty Name="OFFICERENDDATE" ColumnName="OFFICERENDDATE" />
+                <ScalarProperty Name="OFFICERSTARTDATE" ColumnName="OFFICERSTARTDATE" />
+                <ScalarProperty Name="SERVICENUMBER" ColumnName="SERVICENUMBER" />
+                <ScalarProperty Name="RESADDRESS" ColumnName="RESADDRESS" />
+                <ScalarProperty Name="EMAILADDRESS" ColumnName="EMAILADDRESS" />
+                <ScalarProperty Name="PHONENUMBER" ColumnName="PHONENUMBER" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="OTHERNAME" ColumnName="OTHERNAME" />
+                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+                <ScalarProperty Name="OFFICERCADETID" ColumnName="OFFICERCADETID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

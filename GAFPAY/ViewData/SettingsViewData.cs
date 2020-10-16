@@ -66,6 +66,14 @@ namespace GAFPAY.ViewData
             SelectList getBankMainList=new SelectList(bankMain,"BankNameID","BankNameX");
             return getBankMainList;
         }
+        public SelectList getGrade()
+        {
+            var grade = db.GRADE.Where(a=>a.STATUS==1).OrderBy(a=>a.GRADENAME).ToList();
+            SelectList getGradeList=new SelectList(grade,"GradeID","GradeName");
+            return getGradeList;
+        }
+
+
 
         public SelectList getRecruitRanks()
         {
@@ -120,12 +128,12 @@ namespace GAFPAY.ViewData
             return getBlodGroupList;
         }
 
-        //public SelectList getOfficerIntake()
-        //{
-        //    var officerIntake = db.OFFICERINTAKE.Where(a => a.STATUS == 1).OrderBy(a=>a.OFFICERINTAKENAME).ToList();
-        //    SelectList getOfficerIntakeList=new SelectList(officerIntake,"OfficerIntakeID","OfficerIntakeName");
-        //    return getOfficerIntakeList;
-        //}
+        public SelectList getOfficerIntake(int id)
+        {
+            var officerIntake = db.OFFICERINTAKE.Where(a => a.STATUS == 1 && a.COMMISSIONTYPEID==id).Select(a=>new {a.OFFICERINTAKEID,a.OFFICERINTAKENAME}).OrderBy(a => a.OFFICERINTAKENAME).ToList();
+            SelectList getOfficerIntakeList = new SelectList(officerIntake, "OfficerIntakeID", "OfficerIntakeName");
+            return getOfficerIntakeList;
+        }
 
         public SelectList getCommissionType()
         {
@@ -262,6 +270,16 @@ namespace GAFPAY.ViewData
             return mLevStep;
         }
 
+        public List<Grade> GetGradeList()
+        {
+            var grade = db.GRADE.Where(a => a.STATUS == 1).Select(a => new Grade()
+            {
+                GradeName = a.GRADENAME,
+                GradeID = a.GRADEID
+            }).OrderBy(a => a.GradeName).ToList();
+            return grade;
+        }
+
         public List<Title> GetTitleList()
         {
             var title = db.TITLE.Select(a => new Title
@@ -382,16 +400,17 @@ namespace GAFPAY.ViewData
             return bloodGroups;
         }
 
-        //public List<OfficerIntake> GetOfficerIntakeList()
-        //{
-        //    var intakes = db.OFFICERINTAKE.Where(a => a.STATUS == 1).Select(a => new OfficerIntake()
-        //    {
-        //        OfficerIntakeID = a.OFFICERINTAKEID,
-        //        OfficerIntakeName = a.OFFICERINTAKENAME,
-        //        Status = a.STATUS
-        //    }).OrderBy(a => a.OfficerIntakeName).ToList();
-        //    return intakes;
-        //}
+        public List<OfficerIntake> GetOfficerIntakeListX()
+        {
+            var intakes = db.OFFICERINTAKE.Where(a => a.STATUS == 1).Select(a => new OfficerIntake()
+            {
+                OfficerIntakeID = a.OFFICERINTAKEID,
+                OfficerIntakeName = a.OFFICERINTAKENAME,
+                Status = a.STATUS,
+                CommissionTypeName = a.COMMISSIONTYPE.COMMISSIONTYPENAME
+            }).OrderBy(a => a.OfficerIntakeName).ToList();
+            return intakes;
+        }
 
         public List<CommissionType> GetCommissionTypeList()
         {
@@ -438,8 +457,7 @@ namespace GAFPAY.ViewData
             var allowances = db.ALLOWANCE.Where(a => a.STATUS == 1).Select(a => new Allowance()
             {
                 AllowanceID = a.ALLOWANCEID,
-                AllowanceName = a.ALLOWANCENAME,
-                IsTaxable = a.ISTAXABLE,
+                AllowanceName = a.ALLOWANCENAME, 
                 Status = a.STATUS
             }).OrderBy(a => a.AllowanceName).ToList();
             return allowances;

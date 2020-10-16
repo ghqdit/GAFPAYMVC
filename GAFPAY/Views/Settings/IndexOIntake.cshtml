@@ -24,6 +24,7 @@
             <tr>
 
                 <th></th>
+                <th>Commission</th>
                 <th>Officer Intake</th> 
                 <th></th>
             </tr>
@@ -32,6 +33,7 @@
             {
             <tr>
                 <td></td>
+                <td>@item.CommissionTypeName</td>  
                 <td>@item.OfficerIntakeName</td>  
                 <td class="text-center">
                     <a class="" href="@Url.Action("EditOIntake",new {id=item.OfficerIntakeID})"><i class="fas fa-pencil-alt"></i></a>|
@@ -39,17 +41,6 @@
 
                 </td>
 
-                @*@if (User.IsInRole("AccountAdmin") || User.IsInRole("SuperUser"))
-                    {
-                        <td class="text-center">
-
-                            <a class="" href="@Url.Action("EditExpense", new {id = item.ExpenseID})"><i class="fas fa-pencil-alt"></i></a> |
-
-                            <a class="" onclick="removeItem(@item.ExpenseID, '@item.Detail', '@item.Date')"><i class="fas fa-trash-alt"></i></a>
-
-
-                        </td>
-                    }*@
             </tr>
         }
     </table>

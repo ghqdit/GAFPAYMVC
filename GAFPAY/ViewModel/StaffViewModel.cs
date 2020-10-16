@@ -46,11 +46,18 @@ namespace GAFPAY.ViewModel
         [Required]
         [StringLength(30,ErrorMessage = "{0} must be {1} characters long.")]
         public string ResAddress { get; set; }
+        [Required]
+        [Display(Name = "Account Number")] 
+        [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 10)]
+        public string AccountNumber { get; set; }
         public DateTime DateTimeInserted { get; set; }
         public DateTime DateTimeUpdated { get; set; }
         public string InsertedBy { get; set; }
         public string UpdatedBy { get; set; } 
-        public bool IsMedical { get; set; }
+        [Display(Name = "Medical")]
+        public int IsMedical { get; set; }
+        [Display(Name = "Disabled")]
+        public int IsDisabled { get; set; }
         [Display(Name = "Region")]
         [Required] 
         public int RegionID { get; set; } 
@@ -67,10 +74,7 @@ namespace GAFPAY.ViewModel
         [Display(Name = "Blood Group ")]
         public int BloodGroupID { get; set; } 
         [Display(Name = "Status")]
-        public int GeneralStatusID   { get; set; }
-        [StringLength(15,ErrorMessage = "{0} must be between {2} and {1} characters.",MinimumLength = 10)]
-        [Display(Name = "Account Number")]
-        public string AccountNumber { get; set; }
+        public int GeneralStatusID   { get; set; } 
         [Display(Name = "Branch")]
         [Required]
         public int BankID { get; set; }
@@ -203,10 +207,13 @@ namespace GAFPAY.ViewModel
         [StringLength(15,ErrorMessage = "{0} must be {1} characters long.")]
         public string SSNITNo { get; set; }
         [Display(Name = "MEDP Code")]
-        [StringLength(5,ErrorMessage = "{0} must be {1} characters long.")]
+        [StringLength(5,ErrorMessage = "{0} must be between {2} and {1} characters long.",MinimumLength = 4)]
         public string MedPCode { get; set; }
         [Display(Name = "Provident Fund")] 
         public int ProvidentID   { get; set; }
+        [Display(Name = "Grade")]
+        public int GradeID { get; set; }
+
 
         public List<StaffAllowance> JuniorCEAllowancesList { get; set; }
         public List<StaffDeduction> JuniorCEDeductionsList { get; set; }
@@ -220,17 +227,43 @@ namespace GAFPAY.ViewModel
         public SelectList TitleList { get; set; }
         public SelectList CLevStepList { get; set; }
         public SelectList IsMedicalList { get; set; }
+        public SelectList GradeList { get; set; }
+
+        public SelectList IsDisabledList { get; set; }
         [NotMapped]
         //[Required]
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImageUpload { get; set; }
         public SelectList ProvidentFundList { get; internal set; }
+        public string ImageName { get; set; }
+        public string TitleName { get; set; }
     }
 
-    
+    public class JuniorCEAllowance
+    {
+        public int JuniorCEAllowanceID { get; set; }
+        public int JuniorCEID { get; set; }
+        public string AllowanceName { get; set; }
+        public decimal Amount { get; set; }
+        public List<JuniorCEAllowance> JuniorCEAllowanceDetails { get; set; }
+    }
+    public class SeniorCEAllowance
+    {
+        public int SeniorCEAllowanceID { get; set; }
+        public int SeniorCEID { get; set; }
+        public string AllowanceName { get; set; }
+        public decimal Amount { get; set; }
+        public List<SeniorCEAllowance> SeniorCEAllowanceDetails { get; set; }
+    }
+
+
     public class SeniorCE : StaffViewModel
     {
-        public int SeniorCEID { get; set; }
+       
+        public int SeniorCEID { get; set; } 
+        public int CLevStepID;
+        public int GradeID;
+        public int ProvidentID;
 
         [Display(Name = "Title")]
         public int TitleID { get; set; }
@@ -263,6 +296,15 @@ namespace GAFPAY.ViewModel
         //[Required]
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImageUpload { get; set; }
+
+        public SelectList TitleList { get; set; }
+        public SelectList CLevStepList { get; set; }
+        public SelectList IsMedicalList { get; set; }
+        public SelectList IsDisabledList { get; set; }
+        public SelectList ProvidentFundList { get; set; }
+        public SelectList GradeList { get; set; }
+        public string ImageName { get; set; }
+        public string TitleName { get; set; }
     }
 
     public class Soldier : StaffViewModel
@@ -434,6 +476,25 @@ namespace GAFPAY.ViewModel
          
     }
 
+    public class JuniorCEBank
+    {
+
+        public int JuniorCEID  { get; set; }
+        [Display(Name = "Branch")]
+        [Required]
+        public int BankID { get; set; }
+        [Display(Name = "Bank")]    
+        [Required]
+        public int BankNameID { get; set; } 
+        public SelectList BankList { get; set; }
+        public SelectList BankNameList { get; set; }  
+        [Display(Name = "Account Number")]
+        [Required]
+        [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 10)]
+        public string AccountNumber { get; set; }
+         
+    }
+
 
 
     public class OfficerCadet : StaffViewModel
@@ -453,7 +514,7 @@ namespace GAFPAY.ViewModel
         public int CommissionTypeID { get; set; }
         [Display(Name = "Intake")]
         [Required]
-        public int OfficerIntake { get; set; }
+        public int OfficerIntakeID { get; set; }    
         public DateTime OfficerEndDate { get; internal set; }
         [Display(Name = "Start Date")]
         public DateTime OfficerStartDate { get; set; }

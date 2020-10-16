@@ -219,6 +219,17 @@ namespace GAFPAY.ViewModel
         public bool IsEdit { get; set; }
     }
 
+    public class Grade
+    {
+        public int GradeID   { get; set; }
+
+        [Display(Name = "Grade")]
+        [Required(ErrorMessage = "{0} is required.")]
+        [StringLength(50, ErrorMessage = "{0} must be {1} characters long.")]
+        public string GradeName { get; set; }
+        public int Status { get; set; }
+        public bool IsEdit { get; set; }
+    }
 
     public class BloodGroup
     {
@@ -240,6 +251,13 @@ namespace GAFPAY.ViewModel
         public string OfficerIntakeName { get; set; }
         public int Status { get; set; }
         public bool IsEdit { get; set; }
+        public string CommissionTypeName { get; set; }
+        [Display(Name = "Commission Type")]
+        [Required]
+        public int CommissionTypeID { get; set; }
+
+        public SelectList CommissionTypeList { get; set; }
+        public SelectList OfficerIntakeList { get; set; }
     }
 
     public class CommissionType
@@ -274,6 +292,8 @@ namespace GAFPAY.ViewModel
         public SelectList ServiceList { get; set; }
         public string ServiceName { get; set; }
     }
+
+
 
     public class TrainingCenter
     {

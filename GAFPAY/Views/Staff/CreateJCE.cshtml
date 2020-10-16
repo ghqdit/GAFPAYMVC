@@ -1,7 +1,481 @@
-﻿
+﻿@model GAFPAY.ViewModel.JuniorCE
 @{
-    ViewBag.Title = "CreateJCE";
+    ViewBag.Title = "Create JCE";
 }
 
-<h2>CreateJCE</h2>
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
 
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item"> <a href="@Url.Action("IndexJCE","Staff")"> Junior CE</a> </li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "NewFormX" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                        <div id="stepwizard">
+                            <ul>
+                                <li><a href="#step1">Step 1<br /><small> Personal Info </small></a></li>
+                                <li><a href="#step2">Step 2<br /><small> Employment Info </small></a></li>
+                                <li><a href="#step3">Step 3<br /><small> Bank Info </small></a></li>
+
+                            </ul>
+                            <div>
+                                <div id="step1">
+                                    .
+                                    <div class="row">
+                                        <div class="col-md-3 offset-1">
+                                            <div class="card card-user">
+                                                <br /><br />
+                                                <div class="content">
+                                                    <div class="author">
+
+                                                        <h4>Junior CE Picture</h4>
+
+                                                        @if (Model.ImageName == null)
+                                                        {
+
+                                                            <img src="~/Content/pictures/OfficerCadet/default.jpg" alt="Alternate Pic" id="JuniorCEPic" height="200" width="200" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/Content/pictures/OfficerCadet/@Model.ImageName " alt="Alternate Text" id="JuniorCEPic" height="200" width="200" />
+
+                                                        }
+
+                                                        <br /><br />
+                                                        <input type="file" name="ImageUpload" onchange="readURL(this);">
+                                                    </div>
+
+                                                </div>
+                                                <hr>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-8 " id="" style="">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.TitleID)
+                                                        @Html.DropDownListFor(model => model.TitleID, Model.TitleList, "Select Title", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.Surname)
+                                                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", placeholder = "Surname" } })
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.Othername)
+                                                        @Html.EditorFor(model => model.Othername, new { htmlAttributes = new { @class = "form-control", placeholder = "Other Name" } })
+
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.DOB)
+                                                        <input type="text" id="DOB" name="DOB" readonly="readonly" class="form-control"/>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.GenderID)
+                                                        @Html.DropDownListFor(model => model.GenderID, Model.GenderList, "Select Gender", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.ServiceNumber)
+                                                        <input type="number" id="ServiceNumber" name="ServiceNumber" class="form-control" />
+
+                                                    </div>
+                                                </div>
+                                                 
+                                            </div>
+                                            <br />
+
+                                            <div class="row">
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.PhoneNumber)
+                                                        <input type="number" id="PhoneNumber" name="PhoneNumber" class="form-control PhoneNumber" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-8">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.EmailAddress)
+                                                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Email Address" } })
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <br />
+
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.RegionID)
+                                                        @Html.DropDownListFor(model => model.RegionID, Model.RegionList, "Select Home Region", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.Hometown)
+                                                        @Html.EditorFor(model => model.Hometown, new { htmlAttributes = new { @class = "form-control", placeholder = "Hometown" } })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.BloodGroupID)
+                                                        @Html.DropDownListFor(model => model.BloodGroupID, Model.BloodGroupList, "Select Blood Group", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <br />
+
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.ResAddress)
+                                                        @Html.EditorFor(model => model.ResAddress, new {htmlAttributes = new {@class = "form-control", placeholder = "Residential Address"}})
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.ReligionID)
+                                                        @Html.DropDownListFor(model => model.ReligionID, Model.ReligionList, "Select Religion", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                               
+
+
+                                <div id="step2">
+                                    .
+
+                                    <div class="row">
+
+                                        <div class="col-md-10 offset-1">
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.DateEmployed)
+                                                        <input type="text" id="DateEmployed" name="DateEmployed" readonly="readonly" class="form-control" />
+  
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.UnitID)
+                                                        @Html.DropDownListFor(model => model.UnitID, Model.UnitList, "Select Unit", htmlAttributes: new {@class = "form-control"})
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.GradeID)
+                                                        @Html.DropDownListFor(model => model.GradeID, Model.GradeList, "Select Grade", htmlAttributes: new {@class = "form-control"})
+
+                                                    </div>
+                                                </div>
+                                                
+
+                                            </div>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.SSNITNo)
+                                                        @Html.EditorFor(model => model.SSNITNo, new { htmlAttributes = new { @class = "form-control", placeholder = "SSNIT No" } })
+                                                         
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.ProvidentID)
+                                                        @Html.DropDownListFor(model => model.ProvidentID, Model.ProvidentFundList, "Select Provident Fund", htmlAttributes: new {@class = "form-control"})
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.IsDisabled)
+                                                        @Html.DropDownListFor(model => model.IsDisabled, Model.IsDisabledList, "Select Disablilty ", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br/>
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.CLevStepID)
+                                                        @Html.DropDownListFor(model => model.CLevStepID, Model.CLevStepList, "Select Lev Step", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.IsMedical)
+                                                        @Html.DropDownListFor(model => model.IsMedical, Model.IsMedicalList, "Select Medical Status", htmlAttributes: new {@class = "form-control", onchange = "SetMedPDiv(this)"})
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="showMedPCode" id="showMedPCode">
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <br/>
+                                              
+
+                                           
+                                        </div>
+                                    </div>
+                                </div>   <div id="step3">
+                                    .
+
+                                    <div class="row">
+
+                                        <div class="col-md-10 offset-1">
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.BankNameID)
+                                                        @Html.DropDownListFor(model => model.BankNameID, Model.BankNameList, "Select Bank", htmlAttributes: new { @class = "form-control", onchange = "populateBankBranch(this)" })
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.BankID)
+                                                        @Html.DropDownListFor(model => model.BankID, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Branch", htmlAttributes: new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.AccountNumber)
+                                                        @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Account Number" } })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <br />
+                                            <br />
+                                            <br />
+
+                                            <div class="row">
+                                                <div class="col-md-2 offset-md-10">
+
+                                                    <a class="btn btn-lg btn-primary pull-right" id="" onclick="sendForm()" style="color: white;background-color:blue;">Save</a>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    }
+                    @Html.Action("_MEDPCodeBox", "Staff")
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+    
+    function populateBankBranch(e) {
+        var BankNameID = $('#BankNameID').val();
+
+        var items = '<option value="">Select Branch </option>';
+        if (BankNameID !== undefined) {
+            $.post("@Url.Action("FillBankBranch", "Settings")" + "?id=" + BankNameID, function(data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    items += "<option value='" + data[i].BANKID + "'>" + data[i].BANKBRANCH + "</option>";
+
+                }
+                $('#BankID').empty().append(items);
+            });
+        }
+         //populateRecruitCourse(ServiceID);
+    }
+   
+
+    $(document).on("keypress keyup blur", '.PhoneNumber', function (event) {
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        if (event.which != 8 && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+
+    function SetMedPDiv(e) {
+        var selected1 = $(e).val();
+        var content;
+
+        if (selected1 == 1) {
+
+            content = $("#MedPDiv").html();
+        } else {
+            content = $("#EmptyDiv1").html();
+        }
+
+        $("#showMedPCode").html(content);
+
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#JuniorCEPic')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(250);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(function () {
+        $("#DOB").datepicker({
+            dateFormat: 'dd-MM-yy',
+            maxDate: 0,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+    $(function () {
+        $("#DateEmployed").datepicker({
+            dateFormat: 'dd-MM-yy',
+            maxDate: 0,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+     
+
+    $(function() {
+        $('#stepwizard').smartWizard({
+            theme: 'arrows',
+            transitionEffect: 'fade',
+            transitionSpeed: '400'
+        });
+    });
+
+
+    function sendForm() {
+
+        var form = $('#NewFormX').get(0);
+
+        $.ajax({
+            url: "@Url.Action("CreateJCE", "Staff")",
+            type: "POST",
+            data: new FormData(form),
+            processData: false,
+            contentType: false,
+
+            success: function (data) {
+                if (data.Success) {
+                    swal({
+                        title: "Success",
+                        html: data.Message + " saved successfully",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#1E90FF",
+                        confirmButtonText: "OK",
+                        timer: 4000,
+
+                    }).then((result) => {
+                        //redirection happens here
+                        window.location.href = '@Url.Action("IndexJCE", "Staff")';
+                    })
+
+                } else {
+                    var error;
+                    if (data.ErrorMessage) {
+                        error = data.ErrorMessage;
+                    } else {
+                        error = "Error while processing. Please try again";
+                    }
+                    swal("Error", error, "error");
+                    //swal("error", "error");
+                }
+
+            }
+        });
+    }
+
+</script>
