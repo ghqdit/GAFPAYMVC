@@ -24,8 +24,7 @@
             <tr>
 
                 <th></th>
-                <th>Allowance</th>
-                <th>Taxable</th>
+                <th>Allowance</th> 
                 <th></th>
             </tr>
         </thead>
@@ -33,8 +32,7 @@
             {
             <tr>
                 <td></td>
-                <td>@item.AllowanceName</td>
-                <td>@item.IsTaxable</td>
+                <td>@item.AllowanceName</td> 
                 <td class="text-center">
                     <a class="" href="@Url.Action("EditAllowance",new {id=item.AllowanceID})"><i class="fas fa-pencil-alt"></i></a>|
                     <a class="" onclick="removeItem(@item.AllowanceID,'@item.AllowanceName')"><i class="fas fa-trash-alt"></i></a>

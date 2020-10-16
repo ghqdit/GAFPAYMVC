@@ -219,16 +219,16 @@
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.CommissionTypeID)
-                                                        @Html.DropDownListFor(model => model.CommissionTypeID, Model.CommissionTypeList, "Select Commission Type", htmlAttributes: new {@class = "form-control"})
+                                                        @Html.DropDownListFor(model => model.CommissionTypeID, Model.CommissionTypeList, "Select Commission Type", htmlAttributes: new {@class = "form-control", onchange = "populateOfficerIntake(this)" })
 
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
-                                                        @Html.LabelFor(model => model.OfficerIntake)
-                                                        @Html.EditorFor(model => model.OfficerIntake, new { htmlAttributes = new { @class = "form-control", placeholder = "Officer Intake" } })
-                                                         
+                                                        @Html.LabelFor(model => model.OfficerIntakeID)
+                                                        @Html.DropDownListFor(model => model.OfficerIntakeID, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Officer Intake", htmlAttributes: new { @class = "form-control" })
+
                                                     </div>
                                                 </div>  
                                             </div>
@@ -326,6 +326,22 @@
 
                 }
                 $('#BankID').empty().append(items);
+            });
+        }
+         //populateRecruitCourse(ServiceID);
+    }
+    function populateOfficerIntake(e) {
+        var CommissionTypeID = $('#CommissionTypeID').val();
+
+        var items = '<option value="">Select Officer Intake </option>';
+        if (CommissionTypeID !== undefined) {
+            $.post("@Url.Action("FillOIntake", "Settings")" + "?id=" + CommissionTypeID, function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    items += "<option value='" + data[i].OFFICERINTAKEID + "'>" + data[i].OFFICERINTAKENAME + "</option>";
+
+                }
+                $('#OfficerIntakeID').empty().append(items);
             });
         }
          //populateRecruitCourse(ServiceID);

@@ -27,7 +27,6 @@ namespace GAFPAY.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ALLOWANCE> ALLOWANCE { get; set; }
         public virtual DbSet<BANK> BANK { get; set; }
         public virtual DbSet<BANKNAME> BANKNAME { get; set; }
         public virtual DbSet<BLOODGROUP> BLOODGROUP { get; set; }
@@ -54,14 +53,12 @@ namespace GAFPAY.Models
         public virtual DbSet<OFFICER> OFFICER { get; set; }
         public virtual DbSet<OFFICERALLOWANCE> OFFICERALLOWANCE { get; set; }
         public virtual DbSet<OFFICERBANK> OFFICERBANK { get; set; }
-        public virtual DbSet<OFFICERCADET> OFFICERCADET { get; set; }
         public virtual DbSet<OFFICERCADETBANK> OFFICERCADETBANK { get; set; }
         public virtual DbSet<OFFICERCADETIMAGE> OFFICERCADETIMAGE { get; set; }
         public virtual DbSet<OFFICERCADETPAYROLL> OFFICERCADETPAYROLL { get; set; }
         public virtual DbSet<OFFICERCADETTRIALPAY> OFFICERCADETTRIALPAY { get; set; }
         public virtual DbSet<OFFICERDEDUCTION> OFFICERDEDUCTION { get; set; }
         public virtual DbSet<OFFICERIMAGE> OFFICERIMAGE { get; set; }
-        public virtual DbSet<OFFICERINTAKE> OFFICERINTAKE { get; set; }
         public virtual DbSet<OFFICERMEDP> OFFICERMEDP { get; set; }
         public virtual DbSet<OFFICERPAYROLL> OFFICERPAYROLL { get; set; }
         public virtual DbSet<OFFICERPAYROLLALLOWANCE> OFFICERPAYROLLALLOWANCE { get; set; }
@@ -79,7 +76,6 @@ namespace GAFPAY.Models
         public virtual DbSet<RECRUITTRIALPAY> RECRUITTRIALPAY { get; set; }
         public virtual DbSet<REGION> REGION { get; set; }
         public virtual DbSet<RELIGION> RELIGION { get; set; }
-        public virtual DbSet<SENIORCE> SENIORCE { get; set; }
         public virtual DbSet<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         public virtual DbSet<SENIORCEBANK> SENIORCEBANK { get; set; }
         public virtual DbSet<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
@@ -107,6 +103,11 @@ namespace GAFPAY.Models
         public virtual DbSet<TITLE> TITLE { get; set; }
         public virtual DbSet<TRAININGCENTER> TRAININGCENTER { get; set; }
         public virtual DbSet<UNIT> UNIT { get; set; }
+        public virtual DbSet<GRADE> GRADE { get; set; }
+        public virtual DbSet<ALLOWANCE> ALLOWANCE { get; set; }
+        public virtual DbSet<SENIORCE> SENIORCE { get; set; }
+        public virtual DbSet<OFFICERINTAKE> OFFICERINTAKE { get; set; }
+        public virtual DbSet<OFFICERCADET> OFFICERCADET { get; set; }
     
         public virtual ObjectResult<procGetRecruitTrialPayList_Result2> procGetRecruitTrialPayList(Nullable<int> yearPrev, Nullable<int> prev, Nullable<int> yearCurr, Nullable<int> curr, Nullable<int> yearNext, Nullable<int> next)
         {

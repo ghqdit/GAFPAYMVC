@@ -18,9 +18,9 @@ namespace GAFPAY.Models
         public RANK()
         {
             this.OFFICER = new HashSet<OFFICER>();
-            this.OFFICERCADET = new HashSet<OFFICERCADET>();
             this.RECRUIT = new HashSet<RECRUIT>();
             this.SOLDIER = new HashSet<SOLDIER>();
+            this.OFFICERCADET = new HashSet<OFFICERCADET>();
         }
     
         public int RANKID { get; set; }
@@ -33,11 +33,11 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICER> OFFICER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RECRUIT> RECRUIT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIER> SOLDIER { get; set; }
         public virtual SERVICE SERVICE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
     }
 }

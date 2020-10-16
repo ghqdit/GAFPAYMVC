@@ -226,6 +226,9 @@
     <Compile Include="Models\GENERALSTATUS.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GRADE.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JUNIORCE.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
@@ -1987,6 +1990,15 @@
     <Content Include="Views\Pay\IndexOCTrialPay.cshtml" />
     <Content Include="Views\Pay\CreateOCProcess.cshtml" />
     <Content Include="Views\Pay\CreateOCBatch.cshtml" />
+    <Content Include="Views\Staff\_MEDPCodeBox.cshtml" />
+    <Content Include="Views\Settings\IndexGrade.cshtml" />
+    <Content Include="Views\Settings\EditorGrade.cshtml" />
+    <Content Include="Views\Staff\EditJCEBank.cshtml" />
+    <Content Include="Views\Staff\CreateSCE.cshtml" />
+    <Content Include="Views\Staff\IndexSCE.cshtml" />
+    <Content Include="Views\Pay\IndexJCEAllowance.cshtml" />
+    <Content Include="Views\Pay\JCEAllowance.cshtml" />
+    <Content Include="Views\Home\_PromotionMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

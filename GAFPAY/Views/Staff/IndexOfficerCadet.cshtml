@@ -79,7 +79,7 @@
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
-                        url: "@Url.Action("RemoveOIntake","Settings")",
+                        url: "@Url.Action("RemoveOfficerCadet","Staff")",
                         type: 'POST',
                     data: 'id=' + X,
                     dataType: 'json'
@@ -97,7 +97,7 @@
 
 
                         })
-                        window.location.href = '@Url.Action("IndexOIntake", "Settings")';
+                        window.location.href = '@Url.Action("IndexOfficerCadet", "Staff")';
 
                     })
                     .fail(function () {

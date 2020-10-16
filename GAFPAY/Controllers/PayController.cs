@@ -431,6 +431,42 @@ namespace GAFPAY.Controllers
         /*-----------------------------------------End Officer Trial Pay--------------------------------------   */
 
 
+        /*-----------------------------------------Start Junior CE Allowance--------------------------------------   */
+
+        public ActionResult IndexJCEAllowance()
+        {
+            List<JuniorCE> getCurrentJCEList = staffViewData.GetCurrentJuniorCEList();
+            return View("IndexJCEAllowance", getCurrentJCEList); 
+        }
+
+        public ActionResult JCEAllowance(int id)
+        {
+            var allow = db.JUNIORCEALLOWANCE.Where(a => a.JUNIORCEID == id && a.STATUS == 1).ToList();
+            var JCEAllow=new JuniorCEAllowance();
+            JCEAllow.JuniorCEAllowanceDetails=new List<JuniorCEAllowance>();
+            foreach (var details in allow)
+            {
+                var JCEA=new JuniorCEAllowance();
+                JCEA.JuniorCEAllowanceID = details.JUNIORCEALLOWANCESID;
+                JCEA.JuniorCEID = details.JUNIORCEID;
+                JCEA.AllowanceName = details.ALLOWANCE.ALLOWANCENAME;
+                JCEA.Amount = details.AMOUNT; 
+
+                JCEAllow.JuniorCEAllowanceDetails.Add(JCEA); 
+
+            }
+            var jce = db.JUNIORCE.Find(id);
+            ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
+            JCEAllow.JuniorCEID = id;
+            return View("JCEAllowance",JCEAllow);
+        }
+
+        /*-----------------------------------------End Junior CE Allowance--------------------------------------   */
+        
+        
+
+
+
 
 
 

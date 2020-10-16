@@ -1,8 +1,9 @@
-﻿@using GAFPAY.ViewModel
-@model List<JuniorCE>
+﻿
+@using GAFPAY.ViewModel
+@model List<Grade>
 
 @{
-    ViewBag.Title = "Junior CE";
+    ViewBag.Title = "Grade";
 }
 
 
@@ -17,16 +18,14 @@
 </div>
 
 <div class="main-page">
-    <a href="@Url.Action("CreateJCE")" class="btn btn-primary"><i class="fas fa-plus" aria-hidden="true"></i> Add New</a>
+    <a href="@Url.Action("CreateGrade")" class="btn btn-primary"><i class="fas fa-plus" aria-hidden="true"></i> Add New</a>
     <br /><br />
     <table class="table table-striped" id="tableX">
         <thead>
             <tr>
 
                 <th></th>
-                <th>Svc Number</th>
-                <th>Name</th>
-                <th>Unit</th>
+                <th>Grade</th>
                 <th></th>
             </tr>
         </thead>
@@ -34,16 +33,13 @@
             {
             <tr>
                 <td></td>
-                <td>@item.ServiceNumber</td>
-                <td>@item.TitleName @item.Surname  @item.Othername </td>
-                <td>@item.UnitName </td>
+                <td>@item.GradeName</td>
                 <td class="text-center">
-                    <a class="" href="@Url.Action("EditJCE",new {id=item.JuniorCEID})"><i class="fas fa-pencil-alt"></i></a>|
-                    <a class="" href="@Url.Action("EditJCEBank",new {id=item.JuniorCEID})"><i class="fas fa-credit-card"></i></a>|
-                    <a class="" onclick="removeItemx(@item.JuniorCEID,'@item.Surname')"><i class="fas fa-trash-alt"></i></a>
+                    <a class="" href="@Url.Action("EditGrade",new {id=item.GradeID})"><i class="fas fa-pencil-alt"></i></a>|
+                    <a class="" onclick="removeItem(@item.GradeID,'@item.GradeName')"><i class="fas fa-trash-alt"></i></a>
 
                 </td>
-
+                 
             </tr>
         }
     </table>
@@ -65,7 +61,7 @@
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
-                        url: "@Url.Action("RemoveJCE","Staff")",
+                        url: "@Url.Action("RemoveGrade","Settings")",
                         type: 'POST',
                     data: 'id=' + X,
                     dataType: 'json'
@@ -83,7 +79,7 @@
 
 
                         })
-                        window.location.href = '@Url.Action("IndexJCE", "Staff")';
+                        window.location.href = '@Url.Action("IndexGrade", "Settings")';
 
                     })
                     .fail(function () {

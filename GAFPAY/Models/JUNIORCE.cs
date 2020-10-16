@@ -49,6 +49,8 @@ namespace GAFPAY.Models
         public int BLOODGROUPID { get; set; }
         public int CIVILIANLEVSTEPID { get; set; }
         public int PROVIDENTFUNDID { get; set; }
+        public int GRADEID { get; set; }
+        public bool ISDISABLED { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual CIVILIANLEVSTEP CIVILIANLEVSTEP { get; set; }
@@ -70,5 +72,6 @@ namespace GAFPAY.Models
         public virtual RELIGION RELIGION { get; set; }
         public virtual TITLE TITLE { get; set; }
         public virtual UNIT UNIT { get; set; }
+        public virtual GRADE GRADE { get; set; }
     }
 }

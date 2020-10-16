@@ -35,7 +35,18 @@
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="~/favicon.png" />
-    
+    <style>
+        /*chrome, safari, edge opera*/
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /*firefox*/
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
 
 </head>
 <body>
@@ -99,6 +110,9 @@
 
                     <li>
                         @Html.Action("_DeductionsMenu", "Home")
+                    </li>
+                    <li>
+                        @Html.Action("_PromotionMenu", "Home")
                     </li>
                     <li>
                         @Html.Action("_TrialPayMenu", "Home")

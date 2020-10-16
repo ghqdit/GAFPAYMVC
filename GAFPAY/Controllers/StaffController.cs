@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -335,6 +336,7 @@ namespace GAFPAY.Controllers
             model.ServiceList = settingsViewData.getServices();
             model.GeneralStatusList = settingsViewData.getGeneralStatus(); 
             model.CommissionTypeList = settingsViewData.getCommissionType();
+            //model.OfficerIntake=settingsViewData.geto
             model.BankNameList = settingsViewData.getBankNames();
             return View("CreateOfficerCadet",model);
         }
@@ -380,7 +382,7 @@ namespace GAFPAY.Controllers
                 oc.OFFICERSTARTDATE = data.OfficerStartDate;
                 oc.SERVICEID = data.ServiceID;
                 oc.BLOODGROUPID = data.BloodGroupID;
-                oc.OFFICERINTAKE = data.OfficerIntake;
+                oc.OFFICERINTAKEID = data.OfficerIntakeID;
                 oc.COMMISSIONTYPEID = data.CommissionTypeID;
                 oc.GENERALSTATUSID = genStatus;
                 oc.MILITARYLEVSTEPID = ocLevStep;
@@ -633,7 +635,22 @@ namespace GAFPAY.Controllers
 
         /*-----------------------------End Oficer Cadet------------------------------------*/
 
+        
 
+
+        /*-----------------------------Start Partial View content------------------------------------*/
+
+        public ActionResult _MEDPCodeBox()
+        {
+            var medP=new JuniorCE();
+            return PartialView(medP);
+        }
+
+
+
+        /*-----------------------------End Partial View content------------------------------------*/
+
+             
 
 
         /*-----------------------------Start Junior CE------------------------------------*/
@@ -647,6 +664,7 @@ namespace GAFPAY.Controllers
         public ActionResult CreateJCE()
         {
             var model = new JuniorCE();
+            model.IsMedical = 0;
             model.GenderList = settingsViewData.getGenders();
             model.RegionList = settingsViewData.getRegion();
             model.ReligionList = settingsViewData.getReligion();
@@ -658,7 +676,9 @@ namespace GAFPAY.Controllers
             model.CLevStepList = settingsViewData.getJCELevStep();
             model.UnitList = settingsViewData.getUnits();
             model.IsMedicalList = settingsViewData.getYesNo();
+            model.IsDisabledList = settingsViewData.getYesNo();
             model.ProvidentFundList = settingsViewData.getProvidentFund();
+            model.GradeList = settingsViewData.getGrade();
 
 
             return View("CreateJCE", model);
@@ -670,9 +690,14 @@ namespace GAFPAY.Controllers
         {
             if (ModelState.IsValid)
             {
-                var jce=new JUNIORCE(); 
+                if (data.IsMedical == 1 && data.MedPCode == null)
+                {
+                    errorMessage = "MED P Code is required";
+                    return Json(success ? JsonResponse.SuccessResponse("Junior CE") : JsonResponse.ErrorResponse(errorMessage));
+                }
+                var jce = new JUNIORCE();
                 var genStatus = 1;
-             
+
 
                 jce.SURNAME = data.Surname;
                 jce.OTHERNAME = data.Othername;
@@ -686,10 +711,16 @@ namespace GAFPAY.Controllers
                 jce.HOMETOWN = data.Hometown;
                 jce.RESADDRESS = data.ResAddress;
                 jce.DATEEMPLOYED = data.DateEmployed;
-                jce.UNITID = data.UnitID; 
-                jce.BLOODGROUPID = data.BloodGroupID; 
+                jce.DATEPROMOTED = data.DateEmployed;
+                jce.SSNITNUMBER = data.SSNITNo;
+                jce.ISMEDICAL = Convert.ToBoolean(data.IsMedical);
+                jce.ISDISABLED = Convert.ToBoolean(data.IsDisabled);
+                jce.UNITID = data.UnitID;
+                jce.BLOODGROUPID = data.BloodGroupID;
                 jce.GENERALSTATUSID = genStatus;
-                jce.CIVILIANLEVSTEPID=data.CLevStepID;
+                jce.CIVILIANLEVSTEPID = data.CLevStepID;
+                jce.TITLEID = data.TitleID;
+                jce.GRADEID = data.GradeID;
                 //jce.INSERTEDBY = User.Identity.Name;
                 jce.INSERTEDBY = "admin";
                 jce.DATETIMEINSERTED = DateTime.Now;
@@ -714,11 +745,6 @@ namespace GAFPAY.Controllers
 
                 db.JUNIORCEBANK.Add(jceBank);
 
-                
-               
-                
-
-
                 if (data.ImageUpload != null)
                 {
                     var jcePic = new JUNIORCEIMAGE();
@@ -727,19 +753,172 @@ namespace GAFPAY.Controllers
                     var picUrl = new Uri(Request.Url, Url.Content(staffViewData.storeJCEImage(imageUpload, jceID)));
                     var PicPath = jceID + ".jpg";
                     jcePic.PICTUREPATH = PicPath;
-                    jcePic.JUNIORCEID = jceID; 
+                    jcePic.JUNIORCEID = jceID;
                     db.JUNIORCEIMAGE.Add(jcePic);
 
                 }
-                if (data.IsMedical)
+
+                if (data.IsMedical == 1)
                 {
-                    var jceMed=new JUNIORCEMEDP();
+                    var jceMed = new JUNIORCEMEDP();
                     jceMed.JUNIORCEID = jceID;
                     jceMed.MEDPCODE = data.MedPCode;
 
                     db.JUNIORCEMEDP.Add(jceMed);
-                     
+
                 }
+
+                //getting the const pay
+                var levstepID = data.CLevStepID;
+                var civilLevStep = db.CIVILIANLEVSTEP.FirstOrDefault(a => a.CIVILIANLEVSTEPID == levstepID);
+                var constPay = civilLevStep.CONSTPAY;
+
+
+                //Allowances insertion
+                //var jceID = 1000;
+                var clothingAmount = 40;
+                var clothingAllowanceID = 1;
+
+                var rationAllowanceID = 2;
+                var rationAmount = 10;
+
+                var disableID = 4;
+                var disableRate = Convert.ToDecimal(0.2);
+                var disabilityAmount = disableRate * constPay;
+
+
+
+
+                var allowances = db.ALLOWANCE.Where(a => a.STATUS == 2).ToList();
+                foreach (var item in allowances)
+                {
+                    var jceallow = new JUNIORCEALLOWANCE();
+                    if (item.ALLOWANCEID == clothingAllowanceID)
+                    {
+                        jceallow.AMOUNT = clothingAmount;
+                    }
+                    else if (item.ALLOWANCEID == rationAllowanceID)
+                    {
+                        jceallow.AMOUNT = rationAmount;
+                    }
+                    jceallow.STATUS = 1;
+                    jceallow.ALLOWANCEID = item.ALLOWANCEID;
+                    jceallow.JUNIORCEID = jceID;
+
+                    db.JUNIORCEALLOWANCE.Add(jceallow);
+
+                }
+
+                if (data.IsDisabled == 1)
+                {
+                    var disableAllow = new JUNIORCEALLOWANCE();
+                    disableAllow.ALLOWANCEID = disableID;
+                    disableAllow.AMOUNT = disabilityAmount;
+                    disableAllow.STATUS = 1;
+                    disableAllow.JUNIORCEID = jceID;
+
+                    db.JUNIORCEALLOWANCE.Add(disableAllow);
+                }
+                 
+                //Deductions insertion
+                var taxID = 5;
+                var ssnitID = 4;
+                var CEWelfareID = 6;
+                var provDeductionID = 2;
+                var CEWelfareAmount = Convert.ToDecimal(15);
+                var tax = Convert.ToDecimal(0);
+                var tax1 = Convert.ToDecimal(0);
+                var tax2 = Convert.ToDecimal(0);
+                var tax3 = Convert.ToDecimal(0);
+                var tax4 = Convert.ToDecimal(0);
+                var taxValue1 = Convert.ToDecimal(100);
+                var taxValue2 = Convert.ToDecimal(120);
+                var taxValue3 = Convert.ToDecimal(3000);
+                var taxValue4 = Convert.ToDecimal(16461);
+                var taxRate1 = Convert.ToDecimal(0.05);
+                var taxRate2 = Convert.ToDecimal(0.10);
+                var taxRate3 = Convert.ToDecimal(0.175);
+                var taxRate4 = Convert.ToDecimal(0.25);
+                
+
+
+                var ssnitRate = Convert.ToDecimal(18.5);
+                var welfareID = 6;
+                var providentID = data.ProvidentID;
+
+                var provident = db.PROVIDENTFUND.Find(providentID);
+                var provRate =Convert.ToDecimal(provident.PROVIDENTRATE);
+
+                var provDeduction = (provRate/100)*constPay;
+                var ssnitDeduction = (ssnitRate/100)*constPay;
+
+                var taxCredit = (constPay - provDeduction);
+                
+                tax1 = taxValue1*taxRate1;
+                taxCredit = taxCredit - taxValue1;
+
+                if (taxCredit > 0 && taxCredit <= taxValue2)
+                {
+                    tax2 = taxCredit*taxRate2;
+                    taxCredit = taxCredit - taxValue2;
+                }
+                else if (taxCredit >= taxValue2)  
+                {
+                    tax2 = taxValue2*taxRate2;
+                    taxCredit = taxCredit - taxValue2;
+                }
+                 
+                if (taxCredit>0 && taxCredit<=taxValue3)
+                {
+                    tax3 = taxCredit*taxRate3;
+                    taxCredit = taxCredit - taxValue3;
+                }
+                else if (taxCredit>=taxValue3)  
+                {
+                    tax3 = taxValue3*taxRate3;
+                    taxCredit = taxCredit - taxValue3;
+                }
+
+                if (taxCredit>0 && taxCredit<=taxValue4)
+                {
+                    tax4 = taxCredit*taxRate4;
+                    taxCredit = taxCredit - taxValue4;
+                }
+                else if (taxCredit>=taxValue4)  
+                {
+                    tax4 = taxValue4*taxRate4;
+                    taxCredit = taxCredit - taxValue4;
+                }
+                  
+                tax = tax1 + tax2 + tax3 + tax4;
+
+                var deductions = db.DEDUCTION.Where(a => a.STATUS == 2).ToList();
+                foreach (var items in deductions)
+                {
+                    var jcededuc = new JUNIORCEDEDUCTION();
+                    if (items.DEDUCTIONID==welfareID)
+                    {
+                        jcededuc.DEDUCTIONAMOUNT = CEWelfareAmount;
+                        
+                    }else if (items.DEDUCTIONID==ssnitID)
+                    {
+                        jcededuc.DEDUCTIONAMOUNT = ssnitDeduction;
+                    }
+                    else if (items.DEDUCTIONID==taxID)
+                    {
+                        jcededuc.DEDUCTIONAMOUNT = tax;
+                    }else if (items.DEDUCTIONID==provDeductionID)
+                    {
+                        jcededuc.DEDUCTIONAMOUNT = provDeduction;
+                    }
+
+                    jcededuc.STATUS = 1;
+                    jcededuc.DEDUCTIONID = items.DEDUCTIONID;
+                    jcededuc.JUNIORCEID = jceID;
+
+                    db.JUNIORCEDEDUCTION.Add(jcededuc);
+
+                }      
                   
                 try
                 {
@@ -884,31 +1063,31 @@ namespace GAFPAY.Controllers
 
         public ActionResult EditJCEBank(int id)
         {
-            var model = new OfficerCadetBank();
-            var oc = db.OFFICERCADETBANK.Find(id);
+            var model = new JuniorCEBank();
+            var jce = db.JUNIORCEBANK.Find(id);
 
-            if (oc != null)
+            if (jce != null)
             {
                 model.BankNameList = settingsViewData.getBankNames();
                 //model.AccountNumber = rec.ACCOUNTNUMBER;
             }
             else
             {
-                ViewBag.ErrorMessage = "Officer Cadet bank does not exist. Kinldy contact Database Administrator for assistance";
+                ViewBag.ErrorMessage = "Junior CE bank does not exist. Kinldy contact Database Administrator for assistance";
                 return View("Error");
             }
 
-            return View("EditOfficerCadetBank", model);
+            return View("EditJCEBank", model);
         }
 
         [HttpPost]
-        public ActionResult EditJCEBank(int id, OfficerCadetBank data)
+        public ActionResult EditJCEBank(int id, JuniorCEBank data)
         {
             if (ModelState.IsValid)
             {
-                var rec = db.OFFICERCADETBANK.Find(id);
-                rec.OCACCOUNTNUMBER = data.AccountNumber;
-                rec.BANKID = data.BankID;
+                var jce = db.JUNIORCEBANK.Find(id);
+                jce.ACCOUNTNUMBER = data.AccountNumber;
+                jce.BANKID = data.BankID;
 
                 try
                 {
@@ -929,18 +1108,467 @@ namespace GAFPAY.Controllers
             }
 
 
-            return Json(success ? JsonResponse.SuccessResponse("Officer Cadet Bank") : JsonResponse.ErrorResponse(errorMessage));
+            return Json(success ? JsonResponse.SuccessResponse("Junior CE Bank") : JsonResponse.ErrorResponse(errorMessage));
         }
 
 
 
         public ActionResult RemoveJCE()
         {
-            return Json(success ? JsonResponse.SuccessResponse("Officer Cadet") : JsonResponse.ErrorResponse(errorMessage));
+            return Json(success ? JsonResponse.SuccessResponse("Junior CE") : JsonResponse.ErrorResponse(errorMessage));
         }
 
 
         /*-----------------------------End Junior CE------------------------------------*/
+
+        /*-----------------------------Start Senior CE------------------------------------*/
+
+        public ActionResult IndexSCE()
+        {
+            List<SeniorCE> getCurrentSCEList = staffViewData.GetCurrentSeniorCEList();
+            return View("IndexSCE", getCurrentSCEList);
+        }
+
+        public ActionResult CreateSCE()
+        {
+            var model = new SeniorCE();
+            model.IsMedical = 0;
+            model.GenderList = settingsViewData.getGenders();
+            model.RegionList = settingsViewData.getRegion();
+            model.ReligionList = settingsViewData.getReligion();
+            model.BloodGroupList = settingsViewData.getBloodGroups();
+            model.RankList = settingsViewData.getRecruitRanks();
+            model.TitleList = settingsViewData.getTitles(); 
+            model.GeneralStatusList = settingsViewData.getGeneralStatus(); 
+            model.BankNameList = settingsViewData.getBankNames();
+            model.CLevStepList = settingsViewData.getJCELevStep();
+            model.UnitList = settingsViewData.getUnits();
+            model.IsMedicalList = settingsViewData.getYesNo();
+            model.IsDisabledList = settingsViewData.getYesNo();
+            model.ProvidentFundList = settingsViewData.getProvidentFund();
+            model.GradeList = settingsViewData.getGrade();
+            
+            return View("CreateSCE", model);
+        }
+
+
+        [HttpPost]
+        public ActionResult CreateSCE(SeniorCE data)
+        {
+            if (ModelState.IsValid)
+            {
+                if (data.IsMedical == 1 && data.MedPCode == null)
+                {
+                    errorMessage = "MED P Code is required";
+                    return Json(success ? JsonResponse.SuccessResponse("Junior CE") : JsonResponse.ErrorResponse(errorMessage));
+                }
+                var sce = new SENIORCE();
+                var genStatus = 1;
+
+
+                sce.SURNAME = data.Surname;
+                sce.OTHERNAME = data.Othername;
+                sce.GENDERID = data.GenderID;
+                sce.SERVICENUMBER = data.ServiceNumber;
+                sce.DOB = data.DOB;
+                sce.RELIGIONID = data.ReligionID;
+                sce.PHONENUMBER = data.PhoneNumber;
+                sce.EMAILADDRESS = data.EmailAddress;
+                sce.REGIONID = data.RegionID;
+                sce.HOMETOWN = data.Hometown;
+                sce.RESADDRESS = data.ResAddress;
+                sce.DATEEMPLOYED = data.DateEmployed;
+                sce.DATEPROMOTED = data.DateEmployed;
+                sce.SSNITNUMBER = data.SSNITNo;
+                sce.ISMEDICAL = Convert.ToBoolean(data.IsMedical);
+                sce.ISDISABLED = Convert.ToBoolean(data.IsDisabled);
+                sce.UNITID = data.UnitID;
+                sce.BLOODGROUPID = data.BloodGroupID;
+                sce.GENERALSTATUSID = genStatus;
+                sce.CIVILIANLEVSTEPID = data.CLevStepID;
+                sce.TITLEID = data.TitleID;
+                sce.GRADEID = data.GradeID;
+                //jce.INSERTEDBY = User.Identity.Name;
+                sce.INSERTEDBY = "admin";
+                sce.DATETIMEINSERTED = DateTime.Now;
+                sce.PROVIDENTFUNDID = data.ProvidentID;
+
+
+                db.SENIORCE.Add(sce);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+                var sceID = sce.SENIORCEID;
+                var sceBank = new SENIORCEBANK();
+                sceBank.ACCOUNTNUMBER = data.AccountNumber;
+                sceBank.BANKID = data.BankID;
+                sceBank.SENIORCEID = sceID;
+
+                db.SENIORCEBANK.Add(sceBank);
+
+                if (data.ImageUpload != null)
+                {
+                    var scePic = new SENIORCEIMAGE();
+                    HttpPostedFileBase imageUpload = data.ImageUpload;
+                    byte[] picBytes = staffViewData.processImage(imageUpload);
+                    var picUrl = new Uri(Request.Url, Url.Content(staffViewData.storeSCEImage(imageUpload, sceID)));
+                    var PicPath = sceID + ".jpg";
+                    scePic.PICTUREPATH = PicPath;
+                    scePic.SENIORCEID = sceID;
+                    db.SENIORCEIMAGE.Add(scePic);
+
+                }
+
+                if (data.IsMedical == 1)
+                {
+                    var sceMed = new SENIORCEMEDP();
+                    sceMed.SENIORCEID = sceID;
+                    sceMed.MEDPCODE = data.MedPCode;
+
+                    db.SENIORCEMEDP.Add(sceMed);
+
+                }
+
+                //getting the const pay
+                var levstepID = data.CLevStepID;
+                var civilLevStep = db.CIVILIANLEVSTEP.FirstOrDefault(a => a.CIVILIANLEVSTEPID == levstepID);
+                var constPay = civilLevStep.CONSTPAY;
+
+
+                //Allowances insertion
+                //var jceID = 1000;
+                var clothingAmount= 40;
+                var clothingAllowanceID = 1;
+
+                var rationAllowanceID = 2;
+                var rationAmount = 10;
+
+                var disableID = 4;
+                var disableRate = Convert.ToDecimal(0.2);             
+                var disabilityAmount = disableRate * constPay;
+                
+                
+                
+
+                var allowances = db.ALLOWANCE.Where(a => a.STATUS == 2).ToList();
+                foreach (var item in allowances)
+                {
+                    var sceallow=new SENIORCEALLOWANCE();
+                    if (item.ALLOWANCEID==clothingAllowanceID)
+                    {
+                        sceallow.AMOUNT = clothingAmount;
+                    }else if (item.ALLOWANCEID==rationAllowanceID)
+                    {
+                        sceallow.AMOUNT = rationAmount;
+                    }
+                    sceallow.STATUS = 1; 
+                    sceallow.ALLOWANCEID = item.ALLOWANCEID;
+                    sceallow.SENIORCEID = sceID;
+
+                    db.SENIORCEALLOWANCE.Add(sceallow);
+
+                }
+
+                if (data.IsDisabled==1)
+                {
+                    var disableAllow=new SENIORCEALLOWANCE();
+                    disableAllow.ALLOWANCEID = disableID;
+                    disableAllow.AMOUNT = disabilityAmount;
+                    disableAllow.STATUS = 1;
+                    disableAllow.SENIORCEID = sceID;
+
+                    db.SENIORCEALLOWANCE.Add(disableAllow);
+                }
+                 
+
+                //Deductions insertion
+                var taxID = 5;
+                var ssnitID = 4;
+                var CEWelfareID = 6;
+                var provDeductionID = 2;
+                var CEWelfareAmount = Convert.ToDecimal(15);
+                var tax = Convert.ToDecimal(0);
+                var tax1 = Convert.ToDecimal(0);
+                var tax2 = Convert.ToDecimal(0);
+                var tax3 = Convert.ToDecimal(0);
+                var tax4 = Convert.ToDecimal(0);
+                var taxValue1 = Convert.ToDecimal(100);
+                var taxValue2 = Convert.ToDecimal(120);
+                var taxValue3 = Convert.ToDecimal(3000);
+                var taxValue4 = Convert.ToDecimal(16461);
+                var taxRate1 = Convert.ToDecimal(0.05);
+                var taxRate2 = Convert.ToDecimal(0.10);
+                var taxRate3 = Convert.ToDecimal(0.175);
+                var taxRate4 = Convert.ToDecimal(0.25);
+                
+
+
+                var ssnitRate = Convert.ToDecimal(18.5);
+                var welfareID = 6;
+                var providentID = data.ProvidentID;
+
+                var provident = db.PROVIDENTFUND.Find(providentID);
+                var provRate =Convert.ToDecimal(provident.PROVIDENTRATE);
+
+                var provDeduction = (provRate/100)*constPay;
+                var ssnitDeduction = (ssnitRate/100)*constPay;
+
+                var taxCredit = (constPay - provDeduction);
+                
+                tax1 = taxValue1*taxRate1;
+                taxCredit = taxCredit - taxValue1; 
+                tax2 = taxValue2*taxRate2;
+                taxCredit = taxCredit - taxValue2;
+                
+                if (taxCredit>=taxValue3)
+                {
+                    tax3 = taxCredit*taxRate3;
+                    taxCredit = taxCredit - taxValue3;
+                }
+                else
+                {
+                    tax3 = taxValue3*taxRate3;
+                    taxCredit = taxCredit - taxValue3;
+                }
+                 
+
+
+                tax = tax1 + tax2 + tax3 + tax4;
+
+                var deductions = db.DEDUCTION.Where(a => a.STATUS == 2).ToList();
+                foreach (var items in deductions)
+                {
+                    var scededuc = new SENIORCEDEDUCTION();
+                    if (items.DEDUCTIONID==welfareID)
+                    {
+                        scededuc.DEDUCTIONAMOUNT = CEWelfareAmount;
+                        
+                    }else if (items.DEDUCTIONID==ssnitID)
+                    {
+                        scededuc.DEDUCTIONAMOUNT = ssnitDeduction;
+                    }
+                    else if (items.DEDUCTIONID==taxID)
+                    {
+                        scededuc.DEDUCTIONAMOUNT = tax;
+                    }else if (items.DEDUCTIONID==provDeductionID)
+                    {
+                        scededuc.DEDUCTIONAMOUNT = provDeduction;
+                    }
+
+                    scededuc.STATUS = 1;
+                    scededuc.DEDUCTIONID = items.DEDUCTIONID;
+                    scededuc.SENIORCEID = sceID;
+
+                    db.SENIORCEDEDUCTION.Add(scededuc);
+
+                }      
+                  
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        public ActionResult EditSCE(int id)
+        {
+
+            var oc = db.OFFICERCADET.Find(id);
+            var model = new OfficerCadet();
+            var ocPic = db.OFFICERCADETIMAGE.Find(id);
+            if (oc != null)
+            {
+                model.Surname = oc.SURNAME;
+                model.Othername = oc.OTHERNAME;
+                model.GenderID = oc.GENDERID;
+                model.DOB = oc.DOB;
+                model.ServiceNumber = oc.SERVICENUMBER;
+                model.PhoneNumber = oc.PHONENUMBER;
+                model.ReligionID = oc.RELIGIONID;
+                model.EmailAddress = oc.EMAILADDRESS;
+                model.RegionID = oc.REGIONID;
+                model.Hometown = oc.HOMETOWN;
+                model.ResAddress = oc.RESADDRESS;
+                model.GeneralStatusID = oc.GENERALSTATUSID;
+                model.RankID = oc.RANKID;
+                model.ServiceID = oc.SERVICEID;
+                model.BloodGroupID = oc.BLOODGROUPID;
+
+                if (ocPic != null)
+                {
+                    model.ImageName = ocPic.PICTUREPATH;
+                }
+
+
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Officer Cadet does not exist. Kinldy contact Database Administrator for assistance";
+                return View("Error");
+            }
+            model.RankList = settingsViewData.getOfficerCadetRanks(oc.SERVICEID);
+            model.ServiceList = settingsViewData.getServices();
+            model.GeneralStatusList = settingsViewData.getGeneralStatus();
+            model.GenderList = settingsViewData.getGenders();
+            model.ReligionList = settingsViewData.getReligion();
+            model.RegionList = settingsViewData.getRegion();
+            model.BloodGroupList = settingsViewData.getBloodGroups();
+
+            return View("EditOfficerCadet", model);
+        }
+
+        [HttpPost]
+        public ActionResult EditSCE(int id, OfficerCadet data)
+        {
+            if (ModelState.IsValid)
+            {
+                var oc = db.OFFICERCADET.Find(id);
+                oc.SURNAME = data.Surname;
+                oc.OTHERNAME = data.Othername;
+                oc.GENDERID = data.GenderID;
+                oc.DOB = data.DOB;
+                oc.SERVICENUMBER = data.ServiceNumber;
+                oc.RELIGIONID = data.ReligionID;
+                oc.PHONENUMBER = data.PhoneNumber;
+                oc.EMAILADDRESS = data.EmailAddress;
+                oc.REGIONID = data.RegionID;
+                oc.HOMETOWN = data.Hometown;
+                oc.BLOODGROUPID = data.BloodGroupID;
+                oc.RESADDRESS = data.ResAddress;
+                oc.GENERALSTATUSID = data.GeneralStatusID;
+                oc.RANKID = data.RankID;
+
+                if (data.ImageUpload != null)
+                {
+                    var dataPic = db.OFFICERCADETIMAGE.Find(id);
+                    if (dataPic != null)
+                    {
+                        HttpPostedFileBase imageUpload = data.ImageUpload;
+                        byte[] picBytes = staffViewData.processImage(imageUpload);
+                        var picUrl = new Uri(Request.Url, Url.Content(staffViewData.storeOfficerCadetImage(imageUpload, oc.OFFICERCADETID)));
+                        var PicPath = id + ".jpg";
+                        dataPic.PICTUREPATH = PicPath;
+                        dataPic.OFFICERCADETID = id;
+                        //var MIMEType = imageUpload.GetType();
+                    }
+                    else
+                    {
+
+                        var ocPic = new OFFICERCADETIMAGE();
+                        HttpPostedFileBase imageUpload = data.ImageUpload;
+                        byte[] picBytes = staffViewData.processImage(imageUpload);
+                        var picUrl = new Uri(Request.Url, Url.Content(staffViewData.storeOfficerCadetImage(imageUpload, oc.OFFICERCADETID)));
+                        var PicPath = id + ".jpg";
+                        ocPic.PICTUREPATH = PicPath;
+                        ocPic.OFFICERCADETID = id;
+
+                        db.OFFICERCADETIMAGE.Add(ocPic);
+
+                    }
+
+                }
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+            
+            return Json(success ? JsonResponse.SuccessResponse("Officer Cadet") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+
+
+        public ActionResult EditSCEBank(int id)
+        {
+            var model = new JuniorCEBank();
+            var jce = db.JUNIORCEBANK.Find(id);
+
+            if (jce != null)
+            {
+                model.BankNameList = settingsViewData.getBankNames();
+                //model.AccountNumber = rec.ACCOUNTNUMBER;
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Junior CE bank does not exist. Kinldy contact Database Administrator for assistance";
+                return View("Error");
+            }
+
+            return View("EditJCEBank", model);
+        }
+
+        [HttpPost]
+        public ActionResult EditSCEBank(int id, JuniorCEBank data)
+        {
+            if (ModelState.IsValid)
+            {
+                var jce = db.JUNIORCEBANK.Find(id);
+                jce.ACCOUNTNUMBER = data.AccountNumber;
+                jce.BANKID = data.BankID;
+
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE Bank") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+
+
+        public ActionResult RemoveSCE()
+        {
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+
+        /*-----------------------------End Senior CE------------------------------------*/
 
 
 

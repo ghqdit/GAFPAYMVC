@@ -12,28 +12,22 @@ namespace GAFPAY.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SENIORCETRIALPAY
+    public partial class GRADE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SENIORCETRIALPAY()
+        public GRADE()
         {
-            this.SENIORCETRIALPAYALLOWANCE = new HashSet<SENIORCETRIALPAYALLOWANCE>();
-            this.SENIORCETRIALPAYDEDUCTION = new HashSet<SENIORCETRIALPAYDEDUCTION>();
+            this.JUNIORCE = new HashSet<JUNIORCE>();
+            this.SENIORCE = new HashSet<SENIORCE>();
         }
     
-        public int SENIORCETRIALPAYID { get; set; }
-        public System.DateTime PAYDATE { get; set; }
-        public decimal CONSTPAY { get; set; }
-        public decimal NETPAY { get; set; }
-        public System.DateTime DATETIMEINSERTED { get; set; }
-        public string INSERTEDBY { get; set; }
+        public int GRADEID { get; set; }
+        public string GRADENAME { get; set; }
         public int STATUS { get; set; }
-        public int SENIORCEID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCETRIALPAYALLOWANCE> SENIORCETRIALPAYALLOWANCE { get; set; }
+        public virtual ICollection<JUNIORCE> JUNIORCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCETRIALPAYDEDUCTION> SENIORCETRIALPAYDEDUCTION { get; set; }
-        public virtual SENIORCE SENIORCE { get; set; }
+        public virtual ICollection<SENIORCE> SENIORCE { get; set; }
     }
 }

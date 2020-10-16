@@ -48,7 +48,11 @@ namespace GAFPAY.Controllers
         {
             return PartialView();
         }
-         
+
+        public ActionResult _PromotionMenu()
+        {
+            return PartialView();
+        }
 
         public ActionResult About()
         {

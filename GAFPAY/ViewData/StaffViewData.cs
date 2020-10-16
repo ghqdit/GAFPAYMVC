@@ -204,7 +204,7 @@ namespace GAFPAY.ViewData
                 OfficerStartDate = a.OFFICERSTARTDATE, 
                 Hometown = a.HOMETOWN,
                 CommissionTypeName = a.COMMISSIONTYPE.COMMISSIONTYPESHORT, 
-                OfficerIntake = a.OFFICERINTAKE,
+                OfficerIntakeID = a.OFFICERINTAKEID,
                 ReligionName = a.RELIGION.RELIGIONNAME,
                 RegionName = a.REGION.REGIONNAME,
                 GenderName = a.GENDER.GENDERNAME,
@@ -249,6 +249,7 @@ namespace GAFPAY.ViewData
             }).OrderBy(a => a.Surname).ToList();
             return JCE;
         }
+     
         public List<SeniorCE> GetCurrentSeniorCEList()
         {
             var SCE = db.SENIORCE.Where(a => a.GENERALSTATUSID == 1).Select(a => new SeniorCE()
@@ -376,6 +377,16 @@ namespace GAFPAY.ViewData
         {
 
             var uploadDir = "~/Content/pictures/JCE/";
+            var imagePath = Path.Combine(HttpContext.Current.Server.MapPath(uploadDir));
+            var imageUrl = imagePath + id + ".jpg";
+            uploadedFile.SaveAs(imageUrl);
+            return imageUrl;
+
+        }
+        public string storeSCEImage(HttpPostedFileBase uploadedFile, int id)
+        {
+
+            var uploadDir = "~/Content/pictures/SCE/";
             var imagePath = Path.Combine(HttpContext.Current.Server.MapPath(uploadDir));
             var imageUrl = imagePath + id + ".jpg";
             uploadedFile.SaveAs(imageUrl);

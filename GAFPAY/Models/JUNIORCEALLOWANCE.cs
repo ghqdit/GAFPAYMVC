@@ -20,7 +20,7 @@ namespace GAFPAY.Models
         public int ALLOWANCEID { get; set; }
         public int JUNIORCEID { get; set; }
     
-        public virtual ALLOWANCE ALLOWANCE { get; set; }
         public virtual JUNIORCE JUNIORCE { get; set; }
+        public virtual ALLOWANCE ALLOWANCE { get; set; }
     }
 }

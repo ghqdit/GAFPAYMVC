@@ -33,7 +33,6 @@ namespace GAFPAY.Models
     
         public int ALLOWANCEID { get; set; }
         public string ALLOWANCENAME { get; set; }
-        public bool ISTAXABLE { get; set; }
         public int STATUS { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
