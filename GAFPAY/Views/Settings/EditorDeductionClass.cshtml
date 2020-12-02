@@ -34,7 +34,7 @@ else
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.DeductionClassName)
-                            @Html.EditorFor(model => model.DeductionClassName, new { htmlAttributes = new { @class = "form-control", placeholder = "Deduction class" } })
+                            @Html.EditorFor(model => model.DeductionClassName, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                         </div> 
 
                         if (Model.IsEdit)

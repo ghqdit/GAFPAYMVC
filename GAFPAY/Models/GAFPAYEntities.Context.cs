@@ -37,11 +37,8 @@ namespace GAFPAY.Models
         public virtual DbSet<GENDER> GENDER { get; set; }
         public virtual DbSet<GENERALSTATUS> GENERALSTATUS { get; set; }
         public virtual DbSet<JUNIORCE> JUNIORCE { get; set; }
-        public virtual DbSet<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCEBANK> JUNIORCEBANK { get; set; }
-        public virtual DbSet<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
         public virtual DbSet<JUNIORCEIMAGE> JUNIORCEIMAGE { get; set; }
-        public virtual DbSet<JUNIORCEMEDP> JUNIORCEMEDP { get; set; }
         public virtual DbSet<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
         public virtual DbSet<JUNIORCEPAYROLLALLOWANCE> JUNIORCEPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCEPAYROLLDEDUCTION> JUNIORCEPAYROLLDEDUCTION { get; set; }
@@ -59,7 +56,6 @@ namespace GAFPAY.Models
         public virtual DbSet<OFFICERCADETTRIALPAY> OFFICERCADETTRIALPAY { get; set; }
         public virtual DbSet<OFFICERDEDUCTION> OFFICERDEDUCTION { get; set; }
         public virtual DbSet<OFFICERIMAGE> OFFICERIMAGE { get; set; }
-        public virtual DbSet<OFFICERMEDP> OFFICERMEDP { get; set; }
         public virtual DbSet<OFFICERPAYROLL> OFFICERPAYROLL { get; set; }
         public virtual DbSet<OFFICERPAYROLLALLOWANCE> OFFICERPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<OFFICERPAYROLLDEDUCTION> OFFICERPAYROLLDEDUCTION { get; set; }
@@ -76,11 +72,8 @@ namespace GAFPAY.Models
         public virtual DbSet<RECRUITTRIALPAY> RECRUITTRIALPAY { get; set; }
         public virtual DbSet<REGION> REGION { get; set; }
         public virtual DbSet<RELIGION> RELIGION { get; set; }
-        public virtual DbSet<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         public virtual DbSet<SENIORCEBANK> SENIORCEBANK { get; set; }
-        public virtual DbSet<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
         public virtual DbSet<SENIORCEIMAGE> SENIORCEIMAGE { get; set; }
-        public virtual DbSet<SENIORCEMEDP> SENIORCEMEDP { get; set; }
         public virtual DbSet<SENIORCEPAYROLL> SENIORCEPAYROLL { get; set; }
         public virtual DbSet<SENIORCEPAYROLLALLOWANCE> SENIORCEPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<SENIORCEPAYROLLDEDUCTION> SENIORCEPAYROLLDEDUCTION { get; set; }
@@ -93,7 +86,6 @@ namespace GAFPAY.Models
         public virtual DbSet<SOLDIERBANK> SOLDIERBANK { get; set; }
         public virtual DbSet<SOLDIERDEDUCTION> SOLDIERDEDUCTION { get; set; }
         public virtual DbSet<SOLDIERIMAGE> SOLDIERIMAGE { get; set; }
-        public virtual DbSet<SOLDIERMEDP> SOLDIERMEDP { get; set; }
         public virtual DbSet<SOLDIERPAYROLL> SOLDIERPAYROLL { get; set; }
         public virtual DbSet<SOLDIERPAYROLLALLOWANCE> SOLDIERPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<SOLDIERPAYROLLDEDUCTION> SOLDIERPAYROLLDEDUCTION { get; set; }
@@ -103,11 +95,15 @@ namespace GAFPAY.Models
         public virtual DbSet<TITLE> TITLE { get; set; }
         public virtual DbSet<TRAININGCENTER> TRAININGCENTER { get; set; }
         public virtual DbSet<UNIT> UNIT { get; set; }
-        public virtual DbSet<GRADE> GRADE { get; set; }
         public virtual DbSet<ALLOWANCE> ALLOWANCE { get; set; }
         public virtual DbSet<SENIORCE> SENIORCE { get; set; }
-        public virtual DbSet<OFFICERINTAKE> OFFICERINTAKE { get; set; }
         public virtual DbSet<OFFICERCADET> OFFICERCADET { get; set; }
+        public virtual DbSet<OFFICERINTAKE> OFFICERINTAKE { get; set; }
+        public virtual DbSet<GRADE> GRADE { get; set; }
+        public virtual DbSet<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
+        public virtual DbSet<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
+        public virtual DbSet<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
+        public virtual DbSet<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
     
         public virtual ObjectResult<procGetRecruitTrialPayList_Result2> procGetRecruitTrialPayList(Nullable<int> yearPrev, Nullable<int> prev, Nullable<int> yearCurr, Nullable<int> curr, Nullable<int> yearNext, Nullable<int> next)
         {
@@ -165,6 +161,16 @@ namespace GAFPAY.Models
                 new ObjectParameter("next", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<progGetOfficerCadetTrialPayList_Result2>("progGetOfficerCadetTrialPayList", yearPrevParameter, prevParameter, yearCurrParameter, currParameter, yearNextParameter, nextParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> procGetRecruitBatchList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetRecruitBatchList");
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> procGetOCBatchList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetOCBatchList");
         }
     }
 }

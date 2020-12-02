@@ -50,11 +50,11 @@
                                                         @if (Model.ImageName == null)
                                                         {
 
-                                                            <img src="~/Content/pictures/OfficerCadet/default.jpg" alt="Alternate Pic" id="JuniorCEPic" height="200" width="200" />
+                                                            <img src="~/Content/pictures/JCE/default.jpg" alt="Alternate Pic" id="JuniorCEPic" height="200" width="200" />
                                                         }
                                                         else
                                                         {
-                                                            <img src="~/Content/pictures/OfficerCadet/@Model.ImageName " alt="Alternate Text" id="JuniorCEPic" height="200" width="200" />
+                                                            <img src="~/Content/pictures/JCE/@Model.ImageName " alt="Alternate Text" id="JuniorCEPic" height="200" width="200" />
 
                                                         }
 
@@ -79,7 +79,7 @@
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.Surname)
-                                                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", placeholder = "Surname" } })
+                                                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
 
                                                     </div>
                                                 </div>
@@ -87,7 +87,7 @@
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.Othername)
-                                                        @Html.EditorFor(model => model.Othername, new { htmlAttributes = new { @class = "form-control", placeholder = "Other Name" } })
+                                                        @Html.EditorFor(model => model.Othername, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
 
                                                     </div>
                                                 </div>
@@ -111,34 +111,32 @@
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
-                                                        @Html.LabelFor(model => model.ServiceNumber)
-                                                        <input type="number" id="ServiceNumber" name="ServiceNumber" class="form-control" />
-
-                                                    </div>
-                                                </div>
-                                                 
-                                            </div>
-                                            <br />
-
-                                            <div class="row">
-
-                                                <div class="col-sm-4">
-                                                    <div class="input-field">
                                                         @Html.LabelFor(model => model.PhoneNumber)
                                                         <input type="number" id="PhoneNumber" name="PhoneNumber" class="form-control PhoneNumber" />
 
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-8">
+                                                 
+                                            </div>
+                                            <br />
+
+                                            <div class="row"> 
+                                                <div class="col-sm-4">
                                                     <div class="input-field">
-                                                        @Html.LabelFor(model => model.EmailAddress)
-                                                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Email Address" } })
+                                                        @Html.LabelFor(model => model.GhanaPostGPS)
+                                                         @Html.EditorFor(model => model.GhanaPostGPS, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+
 
                                                     </div>
-
                                                 </div>
+                                                <div class="col-sm-8"> 
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.ResAddress)
+                                                        @Html.EditorFor(model => model.ResAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
 
+                                                    </div>
+                                                </div> 
                                             </div>
                                             <br />
 
@@ -154,7 +152,7 @@
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.Hometown)
-                                                        @Html.EditorFor(model => model.Hometown, new { htmlAttributes = new { @class = "form-control", placeholder = "Hometown" } })
+                                                        @Html.EditorFor(model => model.Hometown, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
 
                                                     </div>
                                                 </div>
@@ -170,17 +168,21 @@
                                             <br />
 
                                             <div class="row">
+
+
                                                 <div class="col-sm-8">
                                                     <div class="input-field">
-                                                        @Html.LabelFor(model => model.ResAddress)
-                                                        @Html.EditorFor(model => model.ResAddress, new {htmlAttributes = new {@class = "form-control", placeholder = "Residential Address"}})
+                                                        @Html.LabelFor(model => model.EmailAddress)
+                                                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
 
                                                     </div>
+
                                                 </div>
+                                               
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.ReligionID)
-                                                        @Html.DropDownListFor(model => model.ReligionID, Model.ReligionList, "Select Religion", htmlAttributes: new { @class = "form-control" })
+                                                        @Html.DropDownListFor(model => model.ReligionID, Model.ReligionList, "Select Religion", htmlAttributes: new {@class = "form-control"})
 
                                                     </div>
                                                 </div>
@@ -217,10 +219,17 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                @*<div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.GradeID)
                                                         @Html.DropDownListFor(model => model.GradeID, Model.GradeList, "Select Grade", htmlAttributes: new {@class = "form-control"})
+
+                                                    </div>
+                                                </div>*@
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.ServiceNumber)
+                                                        <input type="number" id="ServiceNumber" name="ServiceNumber" class="form-control" />
 
                                                     </div>
                                                 </div>
@@ -232,7 +241,7 @@
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.SSNITNo)
-                                                        @Html.EditorFor(model => model.SSNITNo, new { htmlAttributes = new { @class = "form-control", placeholder = "SSNIT No" } })
+                                                        @Html.EditorFor(model => model.SSNITNo, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                                                          
                                                     </div>
                                                 </div>
@@ -258,23 +267,30 @@
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.CLevStepID)
-                                                        @Html.DropDownListFor(model => model.CLevStepID, Model.CLevStepList, "Select Lev Step", htmlAttributes: new { @class = "form-control" })
+                                                        @Html.DropDownListFor(model => model.CLevStepID, Model.CLevStepList, "Select Lev Step", htmlAttributes: new { @class = "form-control ", data_live_search = "true" })
 
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.IsMedical)
-                                                        @Html.DropDownListFor(model => model.IsMedical, Model.IsMedicalList, "Select Medical Status", htmlAttributes: new {@class = "form-control", onchange = "SetMedPDiv(this)"})
+                                                       @* @Html.DropDownListFor(model => model.IsMedical, Model.IsMedicalList, "Select Medical Status", htmlAttributes: new {@class = "form-control", onchange = "SetMedPDiv(this)"})*@
+                                                        @Html.DropDownListFor(model => model.IsMedical, Model.IsMedicalList, "Select Medical Status", htmlAttributes: new {@class = "form-control", onchange = "populateMedic(this)" })
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                @*<div class="col-md-4">
                                                     <div class="showMedPCode" id="showMedPCode">
 
                                                     </div>
-                                                </div>
+                                                </div>*@
+                                                <div class="col-sm-4">
+                                                    <div class="input-field">
+                                                        @Html.LabelFor(model => model.GradeID)
+                                                        @Html.DropDownListFor(model => model.GradeID, Model.GradeList, "Select Grade", htmlAttributes: new { @class = "form-control" })
 
+                                                    </div>
+                                                </div>
 
                                             </div>
                                             <br/>
@@ -313,7 +329,7 @@
                                                 <div class="col-sm-8">
                                                     <div class="input-field">
                                                         @Html.LabelFor(model => model.AccountNumber)
-                                                        @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Account Number" } })
+                                                        @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
 
                                                     </div>
                                                 </div>
@@ -340,7 +356,7 @@
                         </div>
 
                     }
-                    @Html.Action("_MEDPCodeBox", "Staff")
+                    @*@Html.Action("_MEDPCodeBox", "Staff")*@
 
                 </div>
             </div>
@@ -352,9 +368,10 @@
 
 
 <script>
-    
+
     function populateBankBranch(e) {
         var BankNameID = $('#BankNameID').val();
+        // var BankNameID = $('#IsMedical').val();
 
         var items = '<option value="">Select Branch </option>';
         if (BankNameID !== undefined) {
@@ -369,7 +386,41 @@
         }
          //populateRecruitCourse(ServiceID);
     }
-   
+ function populateMedic(e) {
+        var isMedical = $('#IsMedical').val();
+        // var BankNameID = $('#IsMedical').val();
+
+        var items = '<option value="">Select Grade </option>';
+        if (BankNameID !== undefined) {
+            $.post("@Url.Action("FillGradeList", "Settings")" + "?id=" + isMedical, function(data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    items += "<option value='" + data[i].GRADEID + "'>" + data[i].GRADENAME + "</option>";
+
+                }
+                $('#GradeID').empty().append(items);
+            });
+        }
+         //populateRecruitCourse(ServiceID);
+    }
+
+    function populateGradeList(e) {
+        var isMedical = $('#IsMedical').val();
+
+        var items = '<option value=">Select Grade</option>';
+        if (isMedical!==undefined) {
+            $.post("@Url.Action("FillGradeList", "Settings")" + "?id=" + isMedical, function(data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    items += "<option value='" + data[i].GRADEID + "'>" + data[i].GRADENAME + "</option>";
+
+                }
+                $('#GradeID').empty().append(items);
+            });
+        }
+         
+    }
+
 
     $(document).on("keypress keyup blur", '.PhoneNumber', function (event) {
         $(this).val($(this).val().replace(/[^0-9]/g, ''));
@@ -378,20 +429,20 @@
         }
     });
 
-    function SetMedPDiv(e) {
-        var selected1 = $(e).val();
-        var content;
+    //function SetMedPDiv(e) {
+    //    var selected1 = $(e).val();
+    //    var content;
 
-        if (selected1 == 1) {
+    //    if (selected1 == 1) {
 
-            content = $("#MedPDiv").html();
-        } else {
-            content = $("#EmptyDiv1").html();
-        }
+    //        content = $("#MedPDiv").html();
+    //    } else {
+    //        content = $("#EmptyDiv1").html();
+    //    }
 
-        $("#showMedPCode").html(content);
+    //    $("#showMedPCode").html(content);
 
-    }
+    //}
 
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -425,7 +476,7 @@
             changeYear: true
         });
     });
-     
+
 
     $(function() {
         $('#stepwizard').smartWizard({

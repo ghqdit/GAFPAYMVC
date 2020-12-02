@@ -10,13 +10,15 @@
 namespace GAFPAY.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class OFFICERMEDP
+    public partial class progGetOfficerCadetTrialPayList_Result
     {
-        public int OFFICERID { get; set; }
-        public string MEDPCODE { get; set; }
-    
-        public virtual OFFICER OFFICER { get; set; }
+        public int OCTRIALPAYID { get; set; }
+        public decimal CONSTPAY { get; set; }
+        public System.DateTime PAYDATE { get; set; }
+        public string SERVICENUMBER { get; set; }
+        public string SURNAME { get; set; }
+        public string OTHERNAME { get; set; }
+        public string RANKNAME { get; set; }
     }
 }

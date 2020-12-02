@@ -10,13 +10,16 @@
 namespace GAFPAY.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class SOLDIERMEDP
+    public partial class procGetRecruitTrialPayList_Result
     {
-        public int SOLDEIRID { get; set; }
-        public string MEDPCODE { get; set; }
-    
-        public virtual SOLDIER SOLDIER { get; set; }
+        public int RTRIALPAYID { get; set; }
+        public System.DateTime PAYDATE { get; set; }
+        public decimal CONSTPAY { get; set; }
+        public int RECRIUTID { get; set; }
+        public string SURNAME { get; set; }
+        public string OTHERNAME { get; set; }
+        public string RANKNAME { get; set; }
+        public string SERVICENUMBER { get; set; }
     }
 }

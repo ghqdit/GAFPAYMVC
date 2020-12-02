@@ -46,6 +46,7 @@ namespace GAFPAY.Models
         public int SERVICEID { get; set; }
         public int GENERALSTATUSID { get; set; }
         public int MILITARYLEVSTEPID { get; set; }
+        public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual GENDER GENDER { get; set; }

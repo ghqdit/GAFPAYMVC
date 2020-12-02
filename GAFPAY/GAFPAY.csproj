@@ -174,6 +174,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PayController.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Extensions\JsonResponse.cs" />
@@ -245,9 +246,6 @@
     <Compile Include="Models\JUNIORCEIMAGE.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\JUNIORCEMEDP.cs">
-      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\JUNIORCEPAYROLL.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
@@ -304,9 +302,6 @@
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OFFICERINTAKE.cs">
-      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OFFICERMEDP.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OFFICERPAYROLL.cs">
@@ -390,9 +385,6 @@
     <Compile Include="Models\SENIORCEIMAGE.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SENIORCEMEDP.cs">
-      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SENIORCEPAYROLL.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
@@ -427,9 +419,6 @@
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SOLDIERIMAGE.cs">
-      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SOLDIERMEDP.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SOLDIERPAYROLL.cs">
@@ -1999,6 +1988,47 @@
     <Content Include="Views\Pay\IndexJCEAllowance.cshtml" />
     <Content Include="Views\Pay\JCEAllowance.cshtml" />
     <Content Include="Views\Home\_PromotionMenu.cshtml" />
+    <Content Include="Views\Settings\IndexRecruitPassout.cshtml" />
+    <Content Include="Views\Settings\PassoutCourse.cshtml" />
+    <Content Include="Views\Settings\IndexOCCmmsn.cshtml" />
+    <Content Include="Views\Settings\IntakeCmmsn.cshtml" />
+    <Content Include="Views\Settings\IndexIntakePromotion.cshtml" />
+    <Content Include="Views\Pay\IndexSCEAllowance.cshtml" />
+    <Content Include="Views\Pay\SCEAllowance.cshtml" />
+    <Content Include="Views\Staff\EditSCE.cshtml" />
+    <Content Include="Views\Home\_ProvidentFund.cshtml" />
+    <Content Include="Views\Staff\EditSCEBank.cshtml" />
+    <Content Include="Views\Staff\EditJCE.cshtml" />
+    <Content Include="Views\Pay\IndexJCEDeduction1.cshtml" />
+    <Content Include="Views\Pay\IndexJCEDeduction2.cshtml" />
+    <Content Include="Views\Pay\IndexSCEDeduction1.cshtml" />
+    <Content Include="Views\Pay\IndexSCEDeduction2.cshtml" />
+    <Content Include="Views\Pay\JCEDeduction1.cshtml" />
+    <Content Include="Views\Pay\JCEDeduction2.cshtml" />
+    <Content Include="Views\Pay\SCEDeduction2.cshtml" />
+    <Content Include="Views\Pay\SCEDeduction1.cshtml" />
+    <Content Include="Views\Staff\IndexJCEProvident.cshtml" />
+    <Content Include="Views\Staff\IndexSCEProvident.cshtml" />
+    <Content Include="Views\Staff\JCEProvident.cshtml" />
+    <Content Include="Views\Staff\SCEProvident.cshtml" />
+    <Content Include="Views\Staff\IndexJCEPromotion.cshtml" />
+    <Content Include="Views\Pay\IndexRecruitBatch.cshtml" />
+    <Content Include="Views\Pay\IndexOCBatch.cshtml" />
+    <Content Include="Views\Settings\IndexMedGrade.cshtml" />
+    <Content Include="Views\Settings\EditorMedGrade.cshtml" />
+    <Content Include="Views\Staff\DetailsJCE.cshtml" />
+    <Content Include="Views\Staff\DetailsSCE.cshtml" />
+    <Content Include="Views\Staff\JCEPromotion.cshtml" />
+    <Content Include="Views\Staff\IndexSCEPromotion.cshtml" />
+    <Content Include="Views\Staff\SCEPromotion.cshtml" />
+    <Content Include="Views\Pay\JCEAllowanceAdd.cshtml" />
+    <Content Include="Views\Pay\SCEAllowanceAdd.cshtml" />
+    <Content Include="Views\Pay\JCEDeduction1Add.cshtml" />
+    <Content Include="Views\Pay\JCEDeduction2Add.cshtml" />
+    <Content Include="Views\Security\DeletedRecruit.cshtml" />
+    <Content Include="Views\Security\DeletedOC.cshtml" />
+    <Content Include="Views\Pay\SCEDeduction2Add.cshtml" />
+    <Content Include="Views\Pay\SCEDeduction1Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

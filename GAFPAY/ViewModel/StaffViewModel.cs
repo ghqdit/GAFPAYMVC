@@ -46,10 +46,13 @@ namespace GAFPAY.ViewModel
         [Required]
         [StringLength(30,ErrorMessage = "{0} must be {1} characters long.")]
         public string ResAddress { get; set; }
-        [Required]
+        //[Required]
         [Display(Name = "Account Number")] 
         [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 10)]
         public string AccountNumber { get; set; }
+        [Display(Name = "Ghana Post GPS")]
+        [StringLength(15,ErrorMessage = "{0} must be between {2} and {1} characters.",MinimumLength = 10)]
+        public string GhanaPostGPS { get; set; }
         public DateTime DateTimeInserted { get; set; }
         public DateTime DateTimeUpdated { get; set; }
         public string InsertedBy { get; set; }
@@ -239,11 +242,55 @@ namespace GAFPAY.ViewModel
         public string TitleName { get; set; }
     }
 
+    public class JuniorCEDetails : JuniorCE
+    {
+        public string BankName  { get; set; }
+        public decimal ConstPay  { get; set; }
+        public string BankBranch { get; set; }
+        public string GradeName { get; set; }
+
+
+        public List<JuniorCEAllowance> JuniorCEAllowanceDetails { get; set; }
+        public List<JuniorCEDeduction1> JuniorCEDeduction1Details { get; set; }
+        public List<JuniorCEDeduction2> JuniorCEDeduction2Details  { get; set; }
+
+        public decimal TotalDeduc{ get; set; }
+        public decimal TotalAllow { get; set; }
+        public decimal TotalBalance { get; set; }
+        public decimal TotalAmountX { get; set; }
+        public decimal NetPay { get; set; }
+         
+
+
+    }
+    public class SeniorCEDetails : SeniorCE
+    {
+        public string BankName  { get; set; }
+        public decimal ConstPay  { get; set; }
+        public string BankBranch { get; set; }
+        public string GradeName { get; set; }
+
+
+        public List<SeniorCEAllowance> SeniorCEAllowanceDetails { get; set; }
+        public List<SeniorCEDeduction1> SeniorCEDeduction1Details { get; set; }
+        public List<SeniorCEDeduction2> SeniorCEDeduction2Details  { get; set; }    
+
+        public decimal TotalDeduc{ get; set; }
+        public decimal TotalAllow { get; set; }
+        public decimal TotalBalance { get; set; }
+        public decimal TotalAmountX { get; set; }
+        public decimal NetPay { get; set; }
+         
+
+
+    }
+
     public class JuniorCEAllowance
     {
         public int JuniorCEAllowanceID { get; set; }
         public int JuniorCEID { get; set; }
         public string AllowanceName { get; set; }
+        public int AllowanceID { get; set; } 
         public decimal Amount { get; set; }
         public List<JuniorCEAllowance> JuniorCEAllowanceDetails { get; set; }
     }
@@ -252,23 +299,142 @@ namespace GAFPAY.ViewModel
         public int SeniorCEAllowanceID { get; set; }
         public int SeniorCEID { get; set; }
         public string AllowanceName { get; set; }
+        public int AllowanceID { get; set; } 
         public decimal Amount { get; set; }
         public List<SeniorCEAllowance> SeniorCEAllowanceDetails { get; set; }
+    }
+
+    public class JuniorCEDeduction1
+    {
+        public int JuniorCEDeductionID   { get; set; }
+        public int JuniorCEID { get; set; }
+        public string DeductionName { get; set; }
+        public int DeductionID   { get; set; }
+        public decimal Amount { get; set; }
+        public List<JuniorCEDeduction1> JuniorCEDeduction1Details { get; set; }
+         
+    }
+
+    public class JuniorCEDeduction2
+    {
+        public int JuniorCEDeductionID { get; set; }
+        public int JuniorCEID { get; set; }
+        public string DeductionName { get; set; }
+        public int DeductionID { get; set; }
+        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Balance { get; set; }
+        public DateTime DeductionDate { get; set; }
+         
+        public List<JuniorCEDeduction2> JuniorCEDeduction2Details { get; set; }
+         
+    }
+
+    public class JuniorCEProvident
+    {
+        public int JuniorCEID { get; set; }
+        [Display(Name = "Provident Fund")]
+        [Required]
+        public int ProvidentID { get; set; }
+        public SelectList ProvidentFundList { get; set; }
+
+
+    }
+
+    public class JuniorCEPromotion
+    {
+        public int JuniorCEID { get; set; }
+
+        [Display(Name = "Grade")]
+        [Required(ErrorMessage = "{0} is required")]
+        public int GradeID { get; set; }
+
+        [Display(Name = "Lev Step")]
+        [Required(ErrorMessage = "{0} is required")]
+        public int CLevStepID { get; set; }
+
+        public DateTime DatePromoted { get; set; }
+        public int IsMedical { get; set; }
+
+        public SelectList GradeList { get; set; }
+        public SelectList CLevStepList { get; set; } 
+
+    }
+
+    public class SeniorCEProvident
+    {
+        public int SeniorCEID { get; set; }
+        [Display(Name = "Provident Fund")]
+        [Required]
+        public int ProvidentID { get; set; }
+        public SelectList ProvidentFundList { get; set; }
+
+
+    }
+    public class SeniorCEPromotion
+    {
+        public int SeniorCEID { get; set; }
+
+        [Display(Name = "Grade")]
+        [Required(ErrorMessage = "{0} is required")]
+        public int GradeID { get; set; }
+
+        [Display(Name = "Lev Step")]
+        [Required(ErrorMessage = "{0} is required")]
+        public int CLevStepID { get; set; }
+
+        public DateTime DatePromoted { get; set; }
+        public int IsMedical { get; set; }
+
+        public SelectList GradeList { get; set; }
+        public SelectList CLevStepList { get; set; } 
+
+    }
+
+    public class SeniorCEDeduction1
+    {
+        public int SeniorCEDeductionID   { get; set; }
+        public int SeniorCEID { get; set; }
+        public string DeductionName { get; set; }
+        public int DeductionID   { get; set; }
+        public decimal Amount { get; set; }
+        public List<SeniorCEDeduction1> SeniorCEDeduction1Details { get; set; }
+         
+    }
+
+    public class SeniorCEDeduction2
+    {
+        public int SeniorCEDeductionID { get; set; }
+        public int SeniorCEID { get; set; }
+        public string DeductionName { get; set; }
+        public int DeductionID { get; set; }
+        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Balance { get; set; }
+        public DateTime DeductionDate { get; set; } 
+        public List<SeniorCEDeduction2> SeniorCEDeduction2Details { get; set; }
+         
     }
 
 
     public class SeniorCE : StaffViewModel
     {
        
-        public int SeniorCEID { get; set; } 
-        public int CLevStepID;
-        public int GradeID;
-        public int ProvidentID;
+        public int SeniorCEID { get; set; }
+
+        [Display(Name = "Grade")]
+        [Required]
+        public int GradeID { get; set; }
+        [Display(Name = "Provident Fund")]
+        [Required]
+        public int ProvidentID { get; set; }
 
         [Display(Name = "Title")]
+        [Required]
         public int TitleID { get; set; }
-        [Display(Name = "Lev Step ")]
-        public int CLevStep { get; set; }
+        [Display(Name = "Lev Step")]
+        [Required]
+        public int CLevStepID { get; set; }
 
         [Display(Name = "Employment Date ")]
         [Required]
@@ -419,6 +585,7 @@ namespace GAFPAY.ViewModel
         public string RankNameShort { get; set; }
     }
 
+   
     public class RecruitPay : Recruit
     {
         public int PayID { get; set; }
@@ -480,6 +647,25 @@ namespace GAFPAY.ViewModel
     {
 
         public int JuniorCEID  { get; set; }
+        [Display(Name = "Branch")]
+        [Required]
+        public int BankID { get; set; }
+        [Display(Name = "Bank")]    
+        [Required]
+        public int BankNameID { get; set; } 
+        public SelectList BankList { get; set; }
+        public SelectList BankNameList { get; set; }  
+        [Display(Name = "Account Number")]
+        [Required]
+        [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 10)]
+        public string AccountNumber { get; set; }
+         
+    }
+
+    public class SeniorCEBank
+    {
+
+        public int SeniorCEID  { get; set; }
         [Display(Name = "Branch")]
         [Required]
         public int BankID { get; set; }

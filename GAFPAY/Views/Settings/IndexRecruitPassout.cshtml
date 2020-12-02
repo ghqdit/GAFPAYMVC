@@ -1,0 +1,47 @@
+﻿@using GAFPAY.ViewModel
+@model List<RecruitCourse>
+
+@{
+    ViewBag.Title = "Passout Recruit Course";
+}
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item active"> @ViewBag.Title</> </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+    
+    <br /><br />
+    <table class="table table-striped" id="tableX">
+        <thead>
+            <tr>
+
+                <th></th>
+                <th>Service</th>
+                <th>Course</th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td></td>
+                <td>@item.ServiceName</td>
+                <td>@item.RecruitCourseName</td>
+                <td class="text-center">
+                    <a class="" href="@Url.Action("PassoutCourse",new {id=item.RecruitCourseID})"><i class="icon-trophy menu-icon"></i></a>
+                </td>
+
+            </tr>
+        }
+    </table>
+
+</div>
+<script src="~/Scripts/tableList.js"></script>

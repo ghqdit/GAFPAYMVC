@@ -34,6 +34,12 @@ namespace GAFPAY.Controllers
         {
             return PartialView();
         }
+
+        public ActionResult _ProvidentFund()
+        {
+            return PartialView();
+        }
+
           public ActionResult _TrialPayMenu()
         {
             return PartialView();

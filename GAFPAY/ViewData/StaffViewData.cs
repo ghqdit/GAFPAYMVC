@@ -26,7 +26,7 @@ namespace GAFPAY.ViewData
                          select new Recruit()
                          {
                              RecruitID = rec.RECRIUTID,
-                             Surname =   "("+rec.SERVICENUMBER +") "+ rank.RANKSHORT + " " + rec.SURNAME + " " + rec.OTHERNAME 
+                             Surname =   rec.SERVICENUMBER +" "+ rank.RANKSHORT + " " + rec.SURNAME + " " + rec.OTHERNAME 
                          }
                ).ToList();
             SelectList recruitList = new SelectList(recruit, "RecruitID", "Surname");
@@ -43,7 +43,7 @@ namespace GAFPAY.ViewData
                 select new OfficerCadet()
                 {
                     OfficerCadetID = ocad.OFFICERCADETID,
-                    Surname ="("+ ocad.SERVICENUMBER + ") " + rank.RANKSHORT + " " + ocad.SURNAME + " " + ocad.OTHERNAME
+                    Surname =ocad.SERVICENUMBER + " " + rank.RANKSHORT + " " + ocad.SURNAME + " " + ocad.OTHERNAME
                 }
                 ).ToList();
 
@@ -60,7 +60,7 @@ namespace GAFPAY.ViewData
                 select new JuniorCE()
                 {
                     JuniorCEID = juniorCE.JUNIORCEID,
-                    Surname = "("+juniorCE.SERVICENUMBER + ") " + juniorCE.SURNAME + " " + juniorCE.OTHERNAME
+                    Surname = juniorCE.SERVICENUMBER + " " + juniorCE.SURNAME + " " + juniorCE.OTHERNAME
                 }).ToList();
             SelectList JCEList=new SelectList(JCE,"JuniorCEID","Surname");
             return JCEList;
@@ -76,7 +76,7 @@ namespace GAFPAY.ViewData
                 select new SeniorCE()
                 {
                     SeniorCEID = seniorCE.SENIORCEID,
-                    Surname ="("+ seniorCE.SERVICENUMBER + ") " + seniorCE.SURNAME + " " + seniorCE.OTHERNAME
+                    Surname =seniorCE.SERVICENUMBER + " " + seniorCE.SURNAME + " " + seniorCE.OTHERNAME
                 }).ToList();
             SelectList SCEList=new SelectList(SCE,"SeniorCEID","Surname");
             return SCEList;
@@ -92,7 +92,7 @@ namespace GAFPAY.ViewData
                 select new Soldier()
                 {
                     SoldierID = soja.SOLDEIRID,
-                    Surname ="("+ soja.SERVICENUMBER + ") " + rank.RANKSHORT + " " + soja.SURNAME + " " + soja.OTHERNAME
+                    Surname =soja.SERVICENUMBER + " " + rank.RANKSHORT + " " + soja.SURNAME + " " + soja.OTHERNAME
                 }).ToList();
             SelectList SoldierList=new SelectList(soldier,"SoldierID","Surname");
             return SoldierList;
@@ -107,7 +107,7 @@ namespace GAFPAY.ViewData
                 select new Officer()
                 {
                     OfficerID = ofsa.OFFICERID,
-                    Surname ="("+ ofsa.SERVICENUMBER + ") " + rank.RANKSHORT + " " + ofsa.SURNAME + " " + ofsa.OTHERNAME
+                    Surname = ofsa.SERVICENUMBER + " " + rank.RANKSHORT + " " + ofsa.SURNAME + " " + ofsa.OTHERNAME
                 }).ToList();
             SelectList OfficerList=new SelectList(officer,"OfficeID","Surname");
             return OfficerList;
@@ -122,6 +122,40 @@ namespace GAFPAY.ViewData
         public List<Recruit> GetCurrentRecruitsList()
         {
             var recruits = db.RECRUIT.Where(a => a.GENERALSTATUSID == 1).Select(a => new Recruit()
+            {
+                RecruitID = a.RECRIUTID,
+                Surname = a.SURNAME,
+                Othername = a.OTHERNAME,
+                ServiceID = a.SERVICEID,
+                ServiceNumber = a.SERVICENUMBER,
+                DOB = a.DOB,
+                PhoneNumber = a.PHONENUMBER,
+                ResAddress = a.RESADDRESS,
+                EmailAddress = a.EMAILADDRESS,
+                DateRecruitStart = a.RECRUITSTARTDATE,
+                //DateRecruitEnd = a.RECRUITENDDATE.Value,
+                Hometown = a.HOMETOWN,
+                DateTimeInserted = a.DATETIMEINSERTED,
+                InsertedBy = a.INSERTEDBY, 
+                GenderName = a.GENDER.GENDERNAME,
+                TCName = a.TRAININGCENTER.TCNAME,
+                TCLocation = a.TRAININGCENTER.LOCATION,
+                RegionName = a.REGION.REGIONNAME,
+                RankName = a.RANK.RANKNAME,
+                RankNameShort=a.RANK.RANKSHORT,
+                RCName = a.RECRUITCOURSE.RCNAME,
+                ReligionName = a.RELIGION.RELIGIONNAME,
+                GeneralStatusName = a.GENERALSTATUS.GSNAME,
+                MLevStepName = a.MILITARYLEVSTEP.LEVSTEPNAME,
+                BloodGroupName=a.BLOODGROUP.BLOODGROUPNAME,
+                ServiceName=a.SERVICE.SERVICENAME
+                 
+            }).OrderBy(a => a.Surname).ToList();
+            return recruits; 
+        }
+        public List<Recruit> GetDeletedRecruitsList()
+        {
+            var recruits = db.RECRUIT.Where(a => a.GENERALSTATUSID == 3).Select(a => new Recruit()
             {
                 RecruitID = a.RECRIUTID,
                 Surname = a.SURNAME,
@@ -192,6 +226,37 @@ namespace GAFPAY.ViewData
         public List<OfficerCadet> GetCurrentOfficerCadetList()
         {
             var officerCadet = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == 1).Select(a => new OfficerCadet()
+            {
+                OfficerCadetID = a.OFFICERCADETID,
+                Surname = a.SURNAME,
+                Othername = a.OTHERNAME,
+                DOB = a.DOB,
+                PhoneNumber = a.PHONENUMBER,
+                EmailAddress = a.EMAILADDRESS,
+                ResAddress = a.RESADDRESS,
+                ServiceNumber = a.SERVICENUMBER,
+                OfficerStartDate = a.OFFICERSTARTDATE, 
+                Hometown = a.HOMETOWN,
+                CommissionTypeName = a.COMMISSIONTYPE.COMMISSIONTYPESHORT, 
+                OfficerIntakeID = a.OFFICERINTAKEID,
+                ReligionName = a.RELIGION.RELIGIONNAME,
+                RegionName = a.REGION.REGIONNAME,
+                GenderName = a.GENDER.GENDERNAME,
+                BloodGroupName = a.BLOODGROUP.BLOODGROUPNAME,
+                ServiceName = a.SERVICE.SERVICENAME,
+                RankName = a.RANK.RANKNAME,
+                RankNameShort = a.RANK.RANKSHORT,
+                GeneralStatusName = a.GENERALSTATUS.GSNAME,
+                MLevStepName = a.MILITARYLEVSTEP.LEVSTEPNAME,
+
+            }).OrderBy(a => a.Surname).ToList(); 
+
+            return officerCadet;
+        }
+
+        public List<OfficerCadet> GetDeletedOfficerCadetList()
+        {
+            var officerCadet = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == 3).Select(a => new OfficerCadet()
             {
                 OfficerCadetID = a.OFFICERCADETID,
                 Surname = a.SURNAME,

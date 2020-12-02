@@ -31,7 +31,7 @@ namespace GAFPAY.ViewModel
         [Display(Name = "Lev Step")]
         [StringLength(6,ErrorMessage = "{0} must be {1} characters long.")]
         public string LevStepName { get; set; }
-        [Display(Name = "Const Pay")]
+        [Display(Name = "Cons Pay")]
         [Required]
         public decimal ConstPay { get; set; }
         public bool IsSenior { get; set; }
@@ -86,7 +86,7 @@ namespace GAFPAY.ViewModel
         [Required]
         [StringLength(15,ErrorMessage = "{0} must be {1} characters long")]
         public string LevStepName { get; set; }
-        [Display(Name = "Const Pay")]
+        [Display(Name = "Cons Pay")]
         [Required]
         public decimal ConstPay { get; set; }
         public int Status { get; set; }
@@ -215,6 +215,7 @@ namespace GAFPAY.ViewModel
     public class ProvidentFund
     {
         public int ProvidentFundID { get; set; }
+        [Display(Name = "Provident Fund Rate")]
         public double ProvidentRate { get; set; }
         public bool IsEdit { get; set; }
     }
@@ -229,7 +230,14 @@ namespace GAFPAY.ViewModel
         public string GradeName { get; set; }
         public int Status { get; set; }
         public bool IsEdit { get; set; }
+        public bool IsMedical { get; set; }
+        public int MarketPremium { get; set; }
+        public SelectList GradeList { get; set; }
+
+
     }
+
+     
 
     public class BloodGroup
     {
@@ -260,6 +268,12 @@ namespace GAFPAY.ViewModel
         public SelectList OfficerIntakeList { get; set; }
     }
 
+    public class OfficerIntakeCommission : OfficerIntake
+    {
+        [Display(Name = "Commission Date")]
+        [Required]
+        public DateTime Date { get; set; }
+    }
     public class CommissionType
     {
         public int CommissionTypeID { get; set; }
@@ -291,8 +305,15 @@ namespace GAFPAY.ViewModel
         public SelectList RecruitCourseNameList { get; set; }
         public SelectList ServiceList { get; set; }
         public string ServiceName { get; set; }
+         
     }
 
+    public class RecruitCoursePassout:RecruitCourse
+    {
+        [Required]
+        [Display(Name = "Passout Date")]
+        public DateTime Date { get; set; }
+    }
 
 
     public class TrainingCenter

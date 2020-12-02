@@ -34,17 +34,17 @@ else
                          
                         <div class="form-group">
                             @Html.LabelFor(model => model.LevStepName)
-                            @Html.EditorFor(model => model.LevStepName, new { htmlAttributes = new { @class = "form-control", placeholder = "Lev Step" } })
+                            @Html.EditorFor(model => model.LevStepName, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.ConstPay) 
                             @if (Model.IsEdit)
                             {
-                                <input type="number" name="ConstPay" id="ConstPay" class="form-control ConstPay" placeholder="Const Pay" value="@Model.ConstPay" />
+                                <input type="number" name="ConstPay" id="ConstPay" class="form-control ConstPay" placeholder="" value="@Model.ConstPay" />
                             }
                             else
                             {
-                                <input type="number" name="ConstPay" id="ConstPay" class="form-control ConstPay" placeholder="Const Pay" />
+                                <input type="number" name="ConstPay" id="ConstPay" class="form-control ConstPay" placeholder="" />
                             }
                              
                         </div>

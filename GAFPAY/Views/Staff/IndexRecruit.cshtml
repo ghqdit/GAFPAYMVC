@@ -43,7 +43,7 @@
                 <td class="text-center">
                     <a class="" href="@Url.Action("EditRecruit",new {id=item.RecruitID})"><i class="fas fa-pencil-alt"></i></a>|
                     <a class="" href="@Url.Action("EditRecruitBank",new {id=item.RecruitID})"><i class="fas fa-credit-card"></i></a>|
-                    <a class="" onclick="removeItemx(@item.RecruitID,'@item.Surname')"><i class="fas fa-trash-alt"></i></a>
+                    <a class="" onclick="removeItemX(@item.RecruitID,'@item.Surname','@item.Othername')"><i class="fas fa-trash-alt"></i></a>
 
                 </td>
 
@@ -66,10 +66,10 @@
 <script src="~/Scripts/tableList.js"></script>
 <script>
 
-    function removeItem(X,Y) {
+    function removeItem(X,Y,Z) {
         swal({
             title: "Are you sure",
-            text: "Delete " + Y + "?",
+            text: "Delete " + Y + " " + Z + " ?",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -108,6 +108,68 @@
     allowOutsideClick: false
     });
     }
+
+
+
+    function removeItemX(X, Y, Z) {
+        swal({
+            title: "Are you sure",
+            text: "Delete " + Y + " " + Z + " ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Delete ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("RemoveRecruit","Staff")",
+                        type: 'POST',
+                    data: 'id=' + X,
+                    dataType: 'json'
+                })
+                    .done(function (response) {
+                            if (response.Success) {
+                                swal({
+                            title: "Successful",
+                            text: response.Message+ " deleted successfully",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            timer: 5000,
+                            closeOnConfirm: true
+
+
+                        })
+                        window.location.href = '@Url.Action("IndexRecruit", "Staff")';
+
+                            }  else {
+                                var error;
+                                if (response.ErrorMessage) {
+                                    error = response.ErrorMessage;
+                                } else {
+                                    error = "Error while processing. Please try again";
+                                }
+                                swal("Error", error, "error");
+                                //swal("error", "error");
+                            }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    }
+
+
+
+        },
+        @* *@);
+    }
+
 
 
 </script>

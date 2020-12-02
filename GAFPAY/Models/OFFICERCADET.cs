@@ -46,6 +46,7 @@ namespace GAFPAY.Models
         public int GENERALSTATUSID { get; set; }
         public int MILITARYLEVSTEPID { get; set; }
         public int OFFICERINTAKEID { get; set; }
+        public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual COMMISSIONTYPE COMMISSIONTYPE { get; set; }
@@ -58,10 +59,10 @@ namespace GAFPAY.Models
         public virtual ICollection<OFFICERCADETPAYROLL> OFFICERCADETPAYROLL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERCADETTRIALPAY> OFFICERCADETTRIALPAY { get; set; }
-        public virtual OFFICERINTAKE OFFICERINTAKE { get; set; }
         public virtual RANK RANK { get; set; }
         public virtual REGION REGION { get; set; }
         public virtual RELIGION RELIGION { get; set; }
         public virtual SERVICE SERVICE { get; set; }
+        public virtual OFFICERINTAKE OFFICERINTAKE { get; set; }
     }
 }

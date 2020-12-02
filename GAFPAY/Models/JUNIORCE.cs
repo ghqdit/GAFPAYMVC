@@ -17,10 +17,10 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public JUNIORCE()
         {
-            this.JUNIORCEALLOWANCE = new HashSet<JUNIORCEALLOWANCE>();
-            this.JUNIORCEDEDUCTION = new HashSet<JUNIORCEDEDUCTION>();
             this.JUNIORCEPAYROLL = new HashSet<JUNIORCEPAYROLL>();
             this.JUNIORCETRIALPAY = new HashSet<JUNIORCETRIALPAY>();
+            this.JUNIORCEALLOWANCE = new HashSet<JUNIORCEALLOWANCE>();
+            this.JUNIORCEDEDUCTION = new HashSet<JUNIORCEDEDUCTION>();
         }
     
         public int JUNIORCEID { get; set; }
@@ -51,18 +51,14 @@ namespace GAFPAY.Models
         public int PROVIDENTFUNDID { get; set; }
         public int GRADEID { get; set; }
         public bool ISDISABLED { get; set; }
+        public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual CIVILIANLEVSTEP CIVILIANLEVSTEP { get; set; }
         public virtual GENDER GENDER { get; set; }
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
         public virtual JUNIORCEBANK JUNIORCEBANK { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
         public virtual JUNIORCEIMAGE JUNIORCEIMAGE { get; set; }
-        public virtual JUNIORCEMEDP JUNIORCEMEDP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -73,5 +69,9 @@ namespace GAFPAY.Models
         public virtual TITLE TITLE { get; set; }
         public virtual UNIT UNIT { get; set; }
         public virtual GRADE GRADE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
     }
 }

@@ -24,6 +24,8 @@ namespace GAFPAY.Models
         public int GRADEID { get; set; }
         public string GRADENAME { get; set; }
         public int STATUS { get; set; }
+        public int MARKETPREM { get; set; }
+        public bool ISMEDICAL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JUNIORCE> JUNIORCE { get; set; }

@@ -1,0 +1,49 @@
+﻿@using GAFPAY.ViewModel
+@model List<SeniorCE>
+
+@{
+    ViewBag.Title = "Senior CE";
+}
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item active"> @ViewBag.Title</> </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+    <br /><br />
+    <table class="table table-striped" id="tableX">
+        <thead>
+            <tr>
+
+                <th></th>
+                <th>Svc Number</th>
+                <th>Name</th>
+                <th>Unit</th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td></td>
+                <td>@item.ServiceNumber</td>
+                <td>@item.TitleName @item.Surname  @item.Othername </td>
+                <td>@item.UnitName </td>
+                <td class="text-center">
+                    <a class="" href="@Url.Action("SCEDeduction2Add",new {id=item.SeniorCEID})"><i class="fas fa-plus"></i></a> | 
+                    <a class="" href="@Url.Action("SCEDeduction2",new {id=item.SeniorCEID})"><i class="fas fa-eye"></i></a> 
+                </td>
+
+            </tr>
+        }
+    </table>
+
+</div>
+<script src="~/Scripts/tableList.js"></script>

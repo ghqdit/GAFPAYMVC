@@ -14,14 +14,18 @@ namespace GAFPAY.Models
     
     public partial class JUNIORCEDEDUCTION
     {
-        public int JUNIORCEDEDUCTIONID { get; set; }
+        public int DEDUCTIONID { get; set; }
+        public int JUNIORCEID { get; set; }
         public Nullable<decimal> TOTALAMOUNT { get; set; }
         public Nullable<System.DateTime> DEDUCTIONDATE { get; set; }
         public decimal DEDUCTIONAMOUNT { get; set; }
         public Nullable<decimal> BALANCE { get; set; }
         public int STATUS { get; set; }
-        public int DEDUCTIONID { get; set; }
-        public int JUNIORCEID { get; set; }
+        public System.Guid ID { get; set; }
+        public System.DateTime DATETIMEINSERTED { get; set; }
+        public string INSERTEDBY { get; set; }
+        public Nullable<System.DateTime> DATETIMEUPDATED { get; set; }
+        public string UPDATEDBY { get; set; }
     
         public virtual DEDUCTION DEDUCTION { get; set; }
         public virtual JUNIORCE JUNIORCE { get; set; }

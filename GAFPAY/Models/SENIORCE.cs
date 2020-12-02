@@ -17,10 +17,10 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SENIORCE()
         {
-            this.SENIORCEALLOWANCE = new HashSet<SENIORCEALLOWANCE>();
-            this.SENIORCEDEDUCTION = new HashSet<SENIORCEDEDUCTION>();
             this.SENIORCEPAYROLL = new HashSet<SENIORCEPAYROLL>();
             this.SENIORCETRIALPAY = new HashSet<SENIORCETRIALPAY>();
+            this.SENIORCEALLOWANCE = new HashSet<SENIORCEALLOWANCE>();
+            this.SENIORCEDEDUCTION = new HashSet<SENIORCEDEDUCTION>();
         }
     
         public int SENIORCEID { get; set; }
@@ -51,27 +51,27 @@ namespace GAFPAY.Models
         public int PROVIDENTFUNDID { get; set; }
         public int GRADEID { get; set; }
         public bool ISDISABLED { get; set; }
+        public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual CIVILIANLEVSTEP CIVILIANLEVSTEP { get; set; }
         public virtual GENDER GENDER { get; set; }
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
-        public virtual GRADE GRADE { get; set; }
         public virtual PROVIDENTFUND PROVIDENTFUND { get; set; }
         public virtual REGION REGION { get; set; }
         public virtual RELIGION RELIGION { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         public virtual SENIORCEBANK SENIORCEBANK { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
         public virtual SENIORCEIMAGE SENIORCEIMAGE { get; set; }
-        public virtual SENIORCEMEDP SENIORCEMEDP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCEPAYROLL> SENIORCEPAYROLL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCETRIALPAY> SENIORCETRIALPAY { get; set; }
         public virtual TITLE TITLE { get; set; }
         public virtual UNIT UNIT { get; set; }
+        public virtual GRADE GRADE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
     }
 }

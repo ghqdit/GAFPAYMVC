@@ -25,8 +25,19 @@ namespace GAFPAY.ViewData
         public SelectList getYesNo()
         {
             Dictionary<int, string> response = new Dictionary<int, string>();  
-            response.Add(0,"No");
+           
             response.Add(1,"Yes");
+            response.Add(0,"No");
+            SelectList resp = new SelectList(response, "Key", "Value");
+            return resp; 
+
+        }
+        public SelectList getYesNoMedical()
+        {
+            Dictionary<int, string> response = new Dictionary<int, string>();  
+           
+            response.Add(1,"Yes");
+            response.Add(2,"No");
             SelectList resp = new SelectList(response, "Key", "Value");
             return resp; 
 
@@ -52,6 +63,13 @@ namespace GAFPAY.ViewData
             var banks = db.BANK.Where(a=>a.STATUS==1 && a.BANKNAMEID==id).Select(a=> new {a.BANKID,a.BANKBRANCH}).OrderBy(a=>a.BANKBRANCH).ToList();
             SelectList getBanksList=new SelectList(banks,"BankID","BankBranch");
             return getBanksList;
+        }
+        public SelectList getGradeX(int id)
+        {
+            var idX = Convert.ToBoolean(id);
+            var grades = db.GRADE.Where(a=>a.STATUS==1 && a.ISMEDICAL==idX).Select(a=> new {a.GRADEID,a.GRADENAME}).OrderBy(a=>a.GRADENAME).ToList();
+            SelectList getGradesList=new SelectList(grades,"GradeID","GradeName");
+            return getGradesList;
         }
         public SelectList getProvidentFund()
         {
@@ -272,13 +290,27 @@ namespace GAFPAY.ViewData
 
         public List<Grade> GetGradeList()
         {
-            var grade = db.GRADE.Where(a => a.STATUS == 1).Select(a => new Grade()
+            var grade = db.GRADE.Where(a => a.STATUS == 1 && a.ISMEDICAL==false).Select(a => new Grade()
             {
                 GradeName = a.GRADENAME,
-                GradeID = a.GRADEID
+                GradeID = a.GRADEID,
+                IsMedical = a.ISMEDICAL
             }).OrderBy(a => a.GradeName).ToList();
             return grade;
         }
+        public List<Grade> GetMedGradeList()
+        {
+            var grade = db.GRADE.Where(a => a.STATUS == 1 && a.ISMEDICAL).Select(a => new Grade()
+            {
+                GradeName = a.GRADENAME,
+                GradeID = a.GRADEID,
+                MarketPremium = a.MARKETPREM,
+                IsMedical = a.ISMEDICAL
+            }).OrderBy(a => a.GradeName).ToList();
+            return grade;
+        }
+
+
 
         public List<Title> GetTitleList()
         {
@@ -400,9 +432,20 @@ namespace GAFPAY.ViewData
             return bloodGroups;
         }
 
-        public List<OfficerIntake> GetOfficerIntakeListX()
+        public List<OfficerIntake> GetOfficerIntakeList()
         {
             var intakes = db.OFFICERINTAKE.Where(a => a.STATUS == 1).Select(a => new OfficerIntake()
+            {
+                OfficerIntakeID = a.OFFICERINTAKEID,
+                OfficerIntakeName = a.OFFICERINTAKENAME,
+                Status = a.STATUS,
+                CommissionTypeName = a.COMMISSIONTYPE.COMMISSIONTYPENAME
+            }).OrderBy(a => a.OfficerIntakeName).ToList();
+            return intakes;
+        }
+        public List<OfficerIntake> GetOfficerPromotionList()
+        {
+            var intakes = db.OFFICERINTAKE.Where(a => a.STATUS == 1 && a.ISPROMOTED==false).Select(a => new OfficerIntake()
             {
                 OfficerIntakeID = a.OFFICERINTAKEID,
                 OfficerIntakeName = a.OFFICERINTAKENAME,
@@ -436,6 +479,18 @@ namespace GAFPAY.ViewData
             return recCourses;
         }
 
+        //public List<OfficerIntake> GetOfficerInakeList()
+        //{
+        //    var ointake = db.OFFICERINTAKE.Where(a => a.STATUS == 1).Select(a => new OfficerIntake()
+        //    {
+        //        OfficerIntakeID = a.OFFICERINTAKEID,
+        //        CommissionTypeID = a.COMMISSIONTYPEID,
+        //        OfficerIntakeName = a.OFFICERINTAKENAME
+
+        //    }).OrderBy(a => a.OfficerIntakeName).ToList();
+        //    return ointake;
+        //} 
+
         public List<TrainingCenter> GetTrainingCenterList()
         {
             var trainingCenters = db.TRAININGCENTER.Where(a => a.STATUS == 1).Select(a => new TrainingCenter()
@@ -454,7 +509,7 @@ namespace GAFPAY.ViewData
 
         public List<Allowance> GetAllowanceList()
         {
-            var allowances = db.ALLOWANCE.Where(a => a.STATUS == 1).Select(a => new Allowance()
+            var allowances = db.ALLOWANCE.Where(a => a.STATUS == 1 || a.STATUS==2).Select(a => new Allowance()
             {
                 AllowanceID = a.ALLOWANCEID,
                 AllowanceName = a.ALLOWANCENAME, 
@@ -465,7 +520,7 @@ namespace GAFPAY.ViewData
 
         public List<Deduction> GetDeductionList()
         {
-            var deductions = db.DEDUCTION.Where(a => a.STATUS == 1).Select(a => new Deduction()
+            var deductions = db.DEDUCTION.Where(a => a.STATUS == 1|| a.STATUS==2).Select(a => new Deduction()
             {
                 DeductionID = a.DEDUCTIONID,
                 DeductionName = a.DEDUCTIONNAME,
@@ -485,9 +540,9 @@ namespace GAFPAY.ViewData
                 Status = a.STATUS
             }).OrderBy(a => a.DeductionClassName).ToList();
             return deductionClass;
-        } 
+        }
 
-
+     
 
 
         /*----------------------------- End Generate List for Views under settings-----------------------*/

@@ -14,13 +14,17 @@ namespace GAFPAY.Models
     
     public partial class JUNIORCEALLOWANCE
     {
-        public int JUNIORCEALLOWANCESID { get; set; }
+        public System.Guid ID { get; set; }
+        public int JUNIORCEID { get; set; }
+        public int ALLOWANCEID { get; set; }
         public decimal AMOUNT { get; set; }
         public int STATUS { get; set; }
-        public int ALLOWANCEID { get; set; }
-        public int JUNIORCEID { get; set; }
+        public string INSERTEDBY { get; set; }
+        public System.DateTime DATETIMEINSERTED { get; set; }
+        public string UPDATEDBY { get; set; }
+        public Nullable<System.DateTime> DATETIMEUPDATED { get; set; }
     
-        public virtual JUNIORCE JUNIORCE { get; set; }
         public virtual ALLOWANCE ALLOWANCE { get; set; }
+        public virtual JUNIORCE JUNIORCE { get; set; }
     }
 }

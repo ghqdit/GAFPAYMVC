@@ -8,9 +8,27 @@
     </a>
     <div class="collapse" id="sec">
         <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="#">Users</a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Users</a></li>
             <li class="nav-item"> <a class="nav-link" href="#"> User Roles</a></li>
             <li class="nav-item"> <a class="nav-link" href="#"> Reset Passwords</a></li>
+
+        </ul>
+    </div>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" data-toggle="collapse" href="#staffdel" aria-expanded="false" aria-controls="staffdel">
+        <span class="menu-title">Removed Staff</span>
+        <i class="icon-people menu-icon"></i>
+    </a>
+    <div class="collapse" id="staffdel">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("DeletedRecruit","Security")"> Recruits</a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("DeletedOC","Security")"> Officer Cadets</a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Junior CEs</a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers</a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Senior CEs</a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers</a></li>
             
         </ul>
     </div>

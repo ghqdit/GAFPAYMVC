@@ -1202,7 +1202,7 @@ namespace GAFPAY.Controllers
 
         public ActionResult IndexOIntake()
         {
-            List<OfficerIntake> getOIntakeList = settingsViewData.GetOfficerIntakeListX();
+            List<OfficerIntake> getOIntakeList = settingsViewData.GetOfficerIntakeList();
             return View("IndexOIntake", getOIntakeList);
         }
 
@@ -2557,6 +2557,8 @@ namespace GAFPAY.Controllers
                 var g = new GRADE();
                 g.GRADENAME = data.GradeName; 
                 g.STATUS = 1;
+                g.ISMEDICAL = false;
+                g.MARKETPREM = 0;
 
                 db.GRADE.Add(g);
 
@@ -2590,6 +2592,7 @@ namespace GAFPAY.Controllers
             {
                 model.IsEdit = true;
                 model.GradeName = g.GRADENAME;
+                
                 
             }
             else
@@ -2647,6 +2650,124 @@ namespace GAFPAY.Controllers
         }
 
         /*----------------------------------------- End Grade -----------------------------------------------------  */
+        
+        /*----------------------------------------- Start Medical Grade  -----------------------------------------------------  */
+
+        public ActionResult IndexMedGrade()
+        {
+            List<Grade> gradeList = settingsViewData.GetMedGradeList();
+            return View("IndexMedGrade", gradeList);
+        }
+
+
+        public ActionResult CreateMedGrade()
+        {
+            var model = new Grade(); 
+             
+            return View("EditorMedGrade", model);
+        }
+        [HttpPost]
+        public ActionResult CreateMedGrade(Grade data)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var g = new GRADE();
+                g.GRADENAME = data.GradeName; 
+                g.STATUS = 1;
+                g.MARKETPREM = data.MarketPremium;
+                g.ISMEDICAL = true;
+                db.GRADE.Add(g);
+
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Medical Grade") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+
+        public ActionResult EditMedGrade(int id)
+        {
+            var g = db.GRADE.Find(id);
+            var model = new Grade();
+            if (g != null)
+            {
+                model.IsEdit = true;
+                model.GradeName = g.GRADENAME;
+                model.MarketPremium = g.MARKETPREM;
+
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Medical Grade does not exist. Kinldy contact Database Administrator for assistance";
+                return View("Error");
+            }
+            return View("EditorMedGrade", model);
+        }
+        [HttpPost]
+        public ActionResult EditMedGrade(int id, Grade data)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var g = db.GRADE.Find(id);
+                g.GRADENAME = data.GradeName;
+                g.MARKETPREM = data.MarketPremium;
+                 
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Medical Grade") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        public ActionResult RemoveMedGrade(int id) 
+        {
+            var g = db.GRADE.Find(id);
+            g.STATUS = 0;
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+
+                errorMessage = e.Message;
+            }
+            return Json(success ? JsonResponse.SuccessResponse("Medical Grade") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        /*----------------------------------------- End Grade -----------------------------------------------------  */
 
         /*----------------------------------------- Start Fill Training Center -----------------------------------------------------  */
 
@@ -2689,25 +2810,202 @@ namespace GAFPAY.Controllers
             return Json(b.BankBranchList.Items, JsonRequestBehavior.AllowGet);
         }
         /*----------------------------------------- End Bank Branch -----------------------------------------------------  */
+
+        /*----------------------------------------- Start Grade  -----------------------------------------------------  */
+
+        public ActionResult FillGradeList(int id)
+        {
+            var g = new Grade();
+
+            g.GradeList = settingsViewData.getGradeX(id);
+            return Json(g.GradeList.Items, JsonRequestBehavior.AllowGet);
+        }
+        /*----------------------------------------- End Grade -----------------------------------------------------  */
+
+
+
        
         
         /*-----------------------------------------Start Recruit Passout --------------------------------------   */
 
+        public ActionResult IndexRecruitPassout()
+        {
+            var recCourse = settingsViewData.GetRecruitCourseList();
+            return View("IndexRecruitPassout",recCourse);
+        }
+
+        public ActionResult PassoutCourse(int id)
+        {
+            var recCourse = db.RECRUITCOURSE.Find(id);
+            var model=new RecruitCoursePassout();
+            model.RecruitCourseID = recCourse.RCID;
+            model.RecruitCourseName = recCourse.RCNAME;
+            model.ServiceID = recCourse.SERVICEID;
+            model.ServiceName = recCourse.SERVICE.SERVICENAME;
+            
+            return View("PassoutCourse",model);
+        }
+
+        [HttpPost]
+        public ActionResult PassoutCourse(RecruitCoursePassout data,int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var recCourse = db.RECRUITCOURSE.Find(id);
+                recCourse.STATUS = 2;
+                var gid = 1;
+                var passoutID = 4;
+
+                var recruits = db.RECRUIT.Where(a => a.GENERALSTATUSID == gid && a.RCID == id).ToList();
+
+                foreach (var item in recruits)
+                {
+                    item.GENERALSTATUSID = passoutID;
+                    item.RECRUITENDDATE = data.Date;
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+            
+            return Json(success ? JsonResponse.SuccessResponse("Course Passout") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
 
 
         /*-----------------------------------------End Recruit Passout --------------------------------------   */
-  
+
         /*-----------------------------------------Start Officer Cadet Promotion --------------------------------------   */
 
+        public ActionResult IndexIntakePromotion()
+        {
+            var intake = settingsViewData.GetOfficerPromotionList();
+            return View("IndexIntakePromotion",intake);
+        }
 
+        public ActionResult IntakePromotion(int id)
+        {
+            var ointake = db.OFFICERINTAKE.Find(id);
+            var model = new OfficerIntake();
+            var gid = 1;
+            var ocLevStep = 62;
+            var armyRankSnr = 53;
+            var armyRankJnr = 54;
+            var navyRankSnr = 58;
+            var navyRankJnr = 57;
+            var airfRankSnr = 56;
+            var airfRankJnr = 55;
+            ointake.ISPROMOTED = true;
+            var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == gid && a.OFFICERINTAKEID == id).ToList();
+            foreach (var item in oc)
+            {
+                if (item.RANKID==armyRankJnr)
+                {
+                    item.RANKID = armyRankSnr;
+                }else if (item.RANKID==navyRankJnr)
+                {
+                    item.RANKID = navyRankSnr;
+                }else if (item.RANKID==airfRankJnr)
+                {
+                    item.RANKID = airfRankSnr;
+                }
+                item.MILITARYLEVSTEPID = ocLevStep;
+
+            }
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.Message;
+            }
+
+
+
+            return Json(success ? JsonResponse.SuccessResponse("Intake Promotion") : JsonResponse.ErrorResponse(errorMessage));
+        }
 
         /*-----------------------------------------End Officer Cadet Promotion --------------------------------------   */
 
         /*-----------------------------------------Start Officer Cadet Commission --------------------------------------   */
+        public ActionResult IndexOCCmmsn()
+        {
+            var intake = settingsViewData.GetOfficerIntakeList();
+            return View("IndexOCCmmsn", intake);
+        }
+
+        public ActionResult IntakeCmmsn(int id)
+        {
+            var ointake = db.OFFICERINTAKE.Find(id);
+            ointake.ISPROMOTED = true;
+            var model = new OfficerIntakeCommission();
+            model.OfficerIntakeID = ointake.OFFICERINTAKEID;
+            model.OfficerIntakeName = ointake.OFFICERINTAKENAME;
+            model.CommissionTypeName = ointake.COMMISSIONTYPE.COMMISSIONTYPENAME;
+            
+            return View("IntakeCmmsn", model);
+        }
+
+        [HttpPost]
+        public ActionResult IntakeCmmsn(OfficerIntakeCommission data, int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var intake = db.OFFICERINTAKE.Find(id);
+                intake.STATUS = 2;
+                var gid = 1;
+                var passoutID = 4;
+                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == gid && a.OFFICERINTAKEID == id).ToList();
+
+                foreach (var item in oc)
+                {
+                    item.GENERALSTATUSID = passoutID;
+                    item.OFFICERENDDATE = data.Date;
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }  
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
 
 
-
+            return Json(success ? JsonResponse.SuccessResponse("Intake Commission") : JsonResponse.ErrorResponse(errorMessage));
+        }
+        
         /*-----------------------------------------End Officer Cadet Commission --------------------------------------   */
+
+
+       
+
+
 
 
     }

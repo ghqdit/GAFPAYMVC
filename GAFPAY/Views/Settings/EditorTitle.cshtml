@@ -35,7 +35,7 @@ else
                             @Html.HiddenFor(model=>model.TitleID)
                             @Html.LabelFor(model => model.TitleName)
 
-                            @Html.EditorFor(model => model.TitleName, new {htmlAttributes = new {@class = "form-control", placeholder = "Title"}})
+                            @Html.EditorFor(model => model.TitleName, new {htmlAttributes = new {@class = "form-control", placeholder = ""}})
                         </div>
                         if (Model.IsEdit)
                         {

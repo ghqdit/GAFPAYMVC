@@ -60,7 +60,6 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERDEDUCTION> OFFICERDEDUCTION { get; set; }
         public virtual OFFICERIMAGE OFFICERIMAGE { get; set; }
-        public virtual OFFICERMEDP OFFICERMEDP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERPAYROLL> OFFICERPAYROLL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

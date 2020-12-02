@@ -39,6 +39,7 @@
                 <td>@item.UnitName </td>
                 <td class="text-center">
                     <a class="" href="@Url.Action("EditJCE",new {id=item.JuniorCEID})"><i class="fas fa-pencil-alt"></i></a>|
+                    <a class="" href="@Url.Action("DetailsJCE",new {id=item.JuniorCEID})"><i class="fas fa-eye"></i></a>|
                     <a class="" href="@Url.Action("EditJCEBank",new {id=item.JuniorCEID})"><i class="fas fa-credit-card"></i></a>|
                     <a class="" onclick="removeItemx(@item.JuniorCEID,'@item.Surname')"><i class="fas fa-trash-alt"></i></a>
 

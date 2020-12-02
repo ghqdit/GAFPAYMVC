@@ -35,5 +35,16 @@ namespace GAFPAY.ViewModel
         public int OfficerCadetID  { get; set; }
     }
 
+    public class RecruitBatchTrial
+    {
+        public DateTime PayDate { get; set; }
+
+    }
+
+    public class OCBatchTrial
+    {
+        public DateTime PayDate { get; set; }
+
+    }
 
 }
