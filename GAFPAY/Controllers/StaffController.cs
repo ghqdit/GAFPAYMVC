@@ -15,6 +15,7 @@ namespace GAFPAY.Controllers
 {
     public class StaffController : Controller
     {
+
         private StaffViewData staffViewData = new StaffViewData();
         private SettingsViewData settingsViewData = new SettingsViewData();
         private PayrollViewData payViewData=new PayrollViewData();
