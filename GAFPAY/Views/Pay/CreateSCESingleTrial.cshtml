@@ -1,0 +1,186 @@
+﻿@model GAFPAY.ViewModel.SCETrialPay
+@{
+    ViewBag.Title = "Process SCE Trial Pay";
+}
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title</h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index", "Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item"> <a href="@Url.Action("IndexSCEBatchTrial","Pay")"> Senior CE Trial Pay</a> </li> 
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "NewFormX" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row">
+
+                            <div class="col-md-10 offset-1">
+
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="input-field">
+                                            @Html.LabelFor(model => model.MonthID)
+                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Month", htmlAttributes: new { @class = "form-control" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="input-field">
+                                            @Html.LabelFor(model => model.SCEID)
+                                            @Html.DropDownListFor(model => model.SCEID, Model.StaffList, "Select Senior CE", htmlAttributes: new { @class = "form-control" })
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <br />
+                                <br />
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-md-2 offset-md-10">
+
+                                        <a class="btn btn-lg btn-primary pull-right" id="" onclick="sendForm()" style="color: white; background-color: blue;">Save</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function sendForm() {
+        var form = $('#NewFormX').get(0);
+        swal({
+            title: "Trial Process",
+            text: "Are you sure you want to process?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Process ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("CreateSCESingleTrial","Pay")",
+                        type: 'POST',
+                    data: new FormData(form),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " saved successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#1E90FF",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
+
+
+                            })
+                            window.location.href = '@Url.Action("Index", "Home")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    }
+
+
+
+    },
+        @* *@);
+    }
+
+</script>
+<script>
+
+    @*function sendForm() {
+
+        var form = $('#NewFormX').get(0);
+
+        $.ajax({
+            url: "@Url.Action("CreateRecruitProcess", "Pay")",
+            type: "POST",
+            data: new FormData(form),
+            processData: false,
+            contentType: false,
+
+            success: function (data) {
+                if (data.Success) {
+                    swal({
+                        title: "Success",
+                        html: data.Message + " saved successfully",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#1E90FF",
+                        confirmButtonText: "OK",
+                        timer: 4000,
+
+                    }).then((result) => {
+                        //redirection happens here
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    })
+
+                } else {
+                    var error;
+                    if (data.ErrorMessage) {
+                        error = data.ErrorMessage;
+                    }
+                    else {
+                        error = "Error while processing. Please try again";
+                    }
+                    swal("Error", error, "error");
+                    //swal("error", "error");
+                }
+
+            }
+        });
+    }*@
+
+
+</script>

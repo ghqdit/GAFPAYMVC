@@ -24,16 +24,18 @@ namespace GAFPAY.Models
         public int OTRIALPAYID { get; set; }
         public System.DateTime PAYDATE { get; set; }
         public decimal CONSTPAY { get; set; }
-        public decimal NETPAY { get; set; }
+        public Nullable<decimal> NETPAY { get; set; }
         public System.DateTime DATETIMEINSERTED { get; set; }
         public string INSERTEDBY { get; set; }
         public int STATUS { get; set; }
         public int OFFICERID { get; set; }
+        public int BANKID { get; set; }
     
         public virtual OFFICER OFFICER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERTRIALPAYALLOWANCE> OFFICERTRIALPAYALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERTRIALPAYDEDUCTION> OFFICERTRIALPAYDEDUCTION { get; set; }
+        public virtual BANK BANK { get; set; }
     }
 }

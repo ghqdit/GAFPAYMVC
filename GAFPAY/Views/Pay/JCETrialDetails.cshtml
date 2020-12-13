@@ -1,0 +1,99 @@
+﻿@using GAFPAY.ViewModel
+@model List<JCEBatchTrialDetails>
+
+@{
+    ViewBag.Title = "Trial Pay for " + ViewBag.Date.ToString("MMMM yyyy");
+}
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item"> <a href="@Url.Action("IndexJCEBatchTrial","Pay")"> Junior CE Trial Pay</a> </li>
+            <li class="breadcrumb-item active"> @ViewBag.Title</> </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+
+    <br /><br />
+    <table class="table table-striped" id="tableX">
+        <thead>
+            <tr>
+
+                <th></th>
+                <th>Name</th>
+                <th>Cons Pay</th>
+                <th>Net Pay</th>
+                <th></th>
+                 
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td></td>
+                <td>@item.ServiceNumber @item.Surname @item.Othernames</td>
+                <td>@item.ConstPay </td>
+                <td>@item.NetPay </td>
+                <td class="text-center">
+                    <a class="" href="@Url.Action("JCETrialPayDetails","Pay",new {id=item.TrialPayID} )"><i class="icon-calculator menu-icon"></i></a> |
+                    <a class="" onclick="removeItem('@item.PayDate.ToString("MMMM yyyy")', '@item.Surname','@item.Othernames','@item.TrialPayID')"><i class="fas fa-trash-alt"></i></a>
+
+                </td> 
+            </tr>
+        }
+    </table>
+
+</div>
+<script src="~/Scripts/tableList.js"></script>
+<script>
+
+    function removeItem(A,B,C,D) {
+        swal({
+            title: "Are you sure",
+            text: "Delete "+ A +" Trial Pay for " + B + " "+C +"?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Delete",
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("RemoveJCETrial","Pay")",
+                        type: 'POST',
+                    data: 'id=' + D,
+                    dataType: 'json'
+                })
+                    .done(function (response) {
+                        swal({
+                            title: "Successful",
+                            text: response.Message+ " deleted successfully",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            timer: 5000,
+                            closeOnConfirm: true
+
+
+                        })
+                        window.location.href = '@Url.Action("IndexJCEBatchTrial", "Pay")';
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    },
+    allowOutsideClick: false
+    });
+    }
+
+
+</script>

@@ -17,10 +17,11 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public JUNIORCE()
         {
-            this.JUNIORCEPAYROLL = new HashSet<JUNIORCEPAYROLL>();
-            this.JUNIORCETRIALPAY = new HashSet<JUNIORCETRIALPAY>();
             this.JUNIORCEALLOWANCE = new HashSet<JUNIORCEALLOWANCE>();
             this.JUNIORCEDEDUCTION = new HashSet<JUNIORCEDEDUCTION>();
+            this.DELETEDJUNIORCE = new HashSet<DELETEDJUNIORCE>();
+            this.JUNIORCEPAYROLL = new HashSet<JUNIORCEPAYROLL>();
+            this.JUNIORCETRIALPAY = new HashSet<JUNIORCETRIALPAY>();
         }
     
         public int JUNIORCEID { get; set; }
@@ -59,10 +60,6 @@ namespace GAFPAY.Models
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
         public virtual JUNIORCEBANK JUNIORCEBANK { get; set; }
         public virtual JUNIORCEIMAGE JUNIORCEIMAGE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
         public virtual PROVIDENTFUND PROVIDENTFUND { get; set; }
         public virtual REGION REGION { get; set; }
         public virtual RELIGION RELIGION { get; set; }
@@ -73,5 +70,11 @@ namespace GAFPAY.Models
         public virtual ICollection<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDJUNIORCE> DELETEDJUNIORCE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
     }
 }

@@ -27,6 +27,14 @@ namespace GAFPAY.Models
             this.RECRUITTRIALPAY = new HashSet<RECRUITTRIALPAY>();
             this.SENIORCEBANK = new HashSet<SENIORCEBANK>();
             this.SOLDIERBANK = new HashSet<SOLDIERBANK>();
+            this.OFFICERPAYROLL = new HashSet<OFFICERPAYROLL>();
+            this.OFFICERTRIALPAY = new HashSet<OFFICERTRIALPAY>();
+            this.SENIORCEPAYROLL = new HashSet<SENIORCEPAYROLL>();
+            this.SENIORCETRIALPAY = new HashSet<SENIORCETRIALPAY>();
+            this.SOLDIERPAYROLL = new HashSet<SOLDIERPAYROLL>();
+            this.SOLDIERTRIALPAY = new HashSet<SOLDIERTRIALPAY>();
+            this.JUNIORCEPAYROLL = new HashSet<JUNIORCEPAYROLL>();
+            this.JUNIORCETRIALPAY = new HashSet<JUNIORCETRIALPAY>();
         }
     
         public int BANKID { get; set; }
@@ -56,5 +64,21 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIERBANK> SOLDIERBANK { get; set; }
         public virtual BANKNAME BANKNAME { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFFICERPAYROLL> OFFICERPAYROLL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFFICERTRIALPAY> OFFICERTRIALPAY { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEPAYROLL> SENIORCEPAYROLL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCETRIALPAY> SENIORCETRIALPAY { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SOLDIERPAYROLL> SOLDIERPAYROLL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SOLDIERTRIALPAY> SOLDIERTRIALPAY { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
     }
 }

@@ -24,16 +24,18 @@ namespace GAFPAY.Models
         public int SOLDIERPAYROLLID { get; set; }
         public System.DateTime PAYDATE { get; set; }
         public decimal CONSTPAY { get; set; }
-        public decimal NETPAY { get; set; }
+        public Nullable<decimal> NETPAY { get; set; }
         public System.DateTime DATETIMEINSERTED { get; set; }
         public string INSERTEDBY { get; set; }
         public int STATUS { get; set; }
         public int SOLDEIRID { get; set; }
+        public int BANKID { get; set; }
     
         public virtual SOLDIER SOLDIER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIERPAYROLLALLOWANCE> SOLDIERPAYROLLALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIERPAYROLLDEDUCTION> SOLDIERPAYROLLDEDUCTION { get; set; }
+        public virtual BANK BANK { get; set; }
     }
 }

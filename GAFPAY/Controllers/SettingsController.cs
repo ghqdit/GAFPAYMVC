@@ -16,6 +16,27 @@ namespace GAFPAY.Controllers
     public class SettingsController : Controller
     {
         private SettingsViewData settingsViewData =new SettingsViewData();
+
+        private int PresentGeneralStatusID = 1;
+        private int PassoutGeneralStatusID = 4;
+        private int RecruitCourseEndID = 2;
+        private int OfficerCadetIntakeEndID = 2;
+
+        private int JuniorCadetLevStepID = 61;
+        private int SeniorCadetLevStepID = 62;
+        private int RecruitLevStepID = 2;
+
+        private int RecruitRankID = 52;
+
+        private int ArmyCadetRankID = 54;
+        private int NavyCadetRankID = 58;
+        private int AirForceCadetRankID = 55;
+
+        private int ArmySeniorCadetRankID = 53;
+        private int NavySeniorCadetRankID = 58;
+        private int AirForceSeniorCadetRankID = 56;
+
+
         private bool success = false;
         private string errorMessage = "";
         private DBGAFPAYEntities db=new DBGAFPAYEntities();
@@ -502,7 +523,7 @@ namespace GAFPAY.Controllers
             return View("EditorBloodGroup", model);
         }
         [HttpPost]
-        public ActionResult CreatebloodGroup(BloodGroup data)
+        public ActionResult CreateBloodGroup(BloodGroup data)
         {
 
             if (ModelState.IsValid)
@@ -1700,8 +1721,24 @@ namespace GAFPAY.Controllers
 
                 var ded = new DEDUCTION();
                 ded.DEDUCTIONNAME = data.DeductionName;
-                ded.DEDUCTIONCLASSID = data.DeductionClassID;
+                ded.DEDUCTIONCLASSID = data.DeductionClassID; 
                 ded.STATUS = 1;
+
+                if (data.DeductionClassID==1|| data.DeductionClassID==2|| data.DeductionClassID==3||data.DeductionClassID==9)
+                {
+                    ded.STATUS = 2;
+                }
+
+                if (data.DeductionClassID==5)
+                {
+                    ded.STATUS = 3;
+                }
+               
+                if (data.DeductionClassID==8)
+                {
+                    ded.STATUS = 3;
+                }
+                 
                 db.DEDUCTION.Add(ded);
 
                 try
@@ -2852,15 +2889,13 @@ namespace GAFPAY.Controllers
             if (ModelState.IsValid)
             {
                 var recCourse = db.RECRUITCOURSE.Find(id);
-                recCourse.STATUS = 2;
-                var gid = 1;
-                var passoutID = 4;
-
-                var recruits = db.RECRUIT.Where(a => a.GENERALSTATUSID == gid && a.RCID == id).ToList();
+                recCourse.STATUS = RecruitCourseEndID;
+                
+                var recruits = db.RECRUIT.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID && a.RCID == id).ToList();
 
                 foreach (var item in recruits)
                 {
-                    item.GENERALSTATUSID = passoutID;
+                    item.GENERALSTATUSID = PassoutGeneralStatusID;
                     item.RECRUITENDDATE = data.Date;
                 }
 
@@ -2899,31 +2934,23 @@ namespace GAFPAY.Controllers
 
         public ActionResult IntakePromotion(int id)
         {
-            var ointake = db.OFFICERINTAKE.Find(id);
-            var model = new OfficerIntake();
-            var gid = 1;
-            var ocLevStep = 62;
-            var armyRankSnr = 53;
-            var armyRankJnr = 54;
-            var navyRankSnr = 58;
-            var navyRankJnr = 57;
-            var airfRankSnr = 56;
-            var airfRankJnr = 55;
+            var ointake = db.OFFICERINTAKE.Find(id); 
+             
             ointake.ISPROMOTED = true;
-            var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == gid && a.OFFICERINTAKEID == id).ToList();
+            var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID && a.OFFICERINTAKEID == id).ToList();
             foreach (var item in oc)
             {
-                if (item.RANKID==armyRankJnr)
+                if (item.RANKID==ArmyCadetRankID)
                 {
-                    item.RANKID = armyRankSnr;
-                }else if (item.RANKID==navyRankJnr)
+                    item.RANKID = ArmySeniorCadetRankID;
+                }else if (item.RANKID==NavyCadetRankID)
                 {
-                    item.RANKID = navyRankSnr;
-                }else if (item.RANKID==airfRankJnr)
+                    item.RANKID = NavySeniorCadetRankID;
+                }else if (item.RANKID==AirForceCadetRankID)
                 {
-                    item.RANKID = airfRankSnr;
+                    item.RANKID = AirForceSeniorCadetRankID;
                 }
-                item.MILITARYLEVSTEPID = ocLevStep;
+                item.MILITARYLEVSTEPID = SeniorCadetLevStepID;
 
             }
             try
@@ -2968,14 +2995,13 @@ namespace GAFPAY.Controllers
             if (ModelState.IsValid)
             {
                 var intake = db.OFFICERINTAKE.Find(id);
-                intake.STATUS = 2;
-                var gid = 1;
-                var passoutID = 4;
-                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == gid && a.OFFICERINTAKEID == id).ToList();
+                intake.STATUS =OfficerCadetIntakeEndID;
+                  
+                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID && a.OFFICERINTAKEID == id).ToList();
 
                 foreach (var item in oc)
                 {
-                    item.GENERALSTATUSID = passoutID;
+                    item.GENERALSTATUSID = PassoutGeneralStatusID;
                     item.OFFICERENDDATE = data.Date;
                 }
 

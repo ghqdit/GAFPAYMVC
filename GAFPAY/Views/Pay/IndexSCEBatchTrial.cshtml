@@ -1,8 +1,8 @@
 ﻿@using GAFPAY.ViewModel
-@model List<RecruitBatchTrial>
+@model List<SCEBatchTrial>
 
 @{
-    ViewBag.Title = "Recruit Batch Trial Pay";
+    ViewBag.Title = "SCE Batch Trial Pay";
 }
 
 
@@ -17,14 +17,14 @@
 </div>
 
 <div class="main-page">
-    <a href="@Url.Action("CreateRecruitBatch")" class="btn btn-primary"><i class="fas fa-plus" aria-hidden="true"></i> Add New</a>
+    <a href="@Url.Action("CreateSCEBatchTrial")" class="btn btn-primary"><i class="fas fa-plus" aria-hidden="true"></i> Add New</a>
     <br /><br />
     <table class="table table-striped" id="tableX">
         <thead>
             <tr>
 
                 <th></th>
-                <th>Pay Date</th> 
+                <th>Pay Date</th>
                 <th></th>
 
 
@@ -36,8 +36,8 @@
                 <td></td>
                 <td>@item.PayDate.ToString("MMMM yyyy")</td>
                 <td class="text-center">
-                    <a class="" href="@Url.Action("")"><i class="icon-calculator menu-icon"></i></a>|
-                    <a class="" onclick="removeItem('@item.PayDate.ToString("MMMM yyyy")', '@item.PayDate.ToString("MMMM yyyy")')"><i class="fas fa-trash-alt"></i></a>
+                    <a class="" href="@Url.Action("SCETrialDetails","Pay",new {date=item.PayDate} )"><i class="icon-calculator menu-icon"></i></a> |
+                    <a class="" onclick="removeItem('@item.PayDate.ToString("MMMM yyyy")' , '@item.PayDate.ToString("MMMM yyyy")')"><i class="fas fa-trash-alt"></i></a>
 
                 </td>
 
@@ -63,7 +63,7 @@
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
-                        url: "@Url.Action("RemoveMLevStep","Settings")",
+                        url: "@Url.Action("","")",
                         type: 'POST',
                     data: 'id=' + X,
                     dataType: 'json'
@@ -81,7 +81,7 @@
 
 
                         })
-                        window.location.href = '@Url.Action("IndexMLevStep", "Settings")';
+                        window.location.href = '@Url.Action("", "")';
 
                     })
                     .fail(function () {

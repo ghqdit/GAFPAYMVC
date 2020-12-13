@@ -27,33 +27,33 @@ else
             <div class="card">
                 <div class="card-body">
 
-                    @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "NewFormX" }))
+                    @using (Html.BeginForm("", "", FormMethod.Post, new {@class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "NewFormX"}))
                     {
                         @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.ServiceID)
-                            @Html.DropDownListFor(model => model.ServiceID, Model.ServiceList, "Select Service", htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.ServiceID, Model.ServiceList, "Select Service", htmlAttributes: new {@class = "form-control"})
 
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.TrainingCenterName)
-                            @Html.EditorFor(model => model.TrainingCenterName, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                            @Html.EditorFor(model => model.TrainingCenterName, new {htmlAttributes = new {@class = "form-control", placeholder = ""}})
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Location)
-                            @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                            @Html.EditorFor(model => model.Location, new {htmlAttributes = new {@class = "form-control", placeholder = ""}})
                         </div>
 
                         if (Model.IsEdit)
                         {
-                            <a class="btn btn-md btn-primary" id="" onclick="editForm()" style="color: white;background-color:blue;">Edit</a>
+                            <a class="btn btn-md btn-primary" id="" onclick="editForm()" style="color: white; background-color: blue;">Edit</a>
 
                         }
                         else
                         {
-                            <a class="btn btn-md btn-primary " id="" onclick="sendForm()" style="color: white;background-color:blue;">Save</a>
+                            <a class="btn btn-md btn-primary " id="" onclick="sendForm()" style="color: white; background-color: blue;">Save</a>
 
                         }
 
@@ -64,8 +64,136 @@ else
 
     </div>
 </div>
+
 <script>
     function sendForm() {
+        var form = $('#NewFormX').get(0);
+        swal({
+            title: "Save changes",
+            text: "Are you sure you want to save?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Save ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("CreateTCenter","Settings")",
+                        type: 'POST',
+                    data: new FormData(form),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " saved successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#1E90FF",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
+
+
+                            })
+                            window.location.href = '@Url.Action("IndexTCenter", "Settings")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    }
+
+
+
+    },
+        @* *@);
+    }
+
+    function editForm() {
+        var form = $('#NewFormX').get(0);
+        swal({
+            title: "Save changes",
+            text: "Are you sure you want to save?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Save ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("EditTCenter","Settings")",
+                        type: 'POST',
+                    data: new FormData(form),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " saved successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#1E90FF",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
+
+
+                            })
+                            window.location.href = '@Url.Action("IndexTCenter", "Settings")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    }
+
+
+
+    },
+        @* *@);
+    }
+
+
+</script>
+<script>
+    @*function sendForm() {
 
         var form = $('#NewFormX').get(0);
 
@@ -151,5 +279,5 @@ else
 
             }
         });
-    }
+    }*@
 </script>

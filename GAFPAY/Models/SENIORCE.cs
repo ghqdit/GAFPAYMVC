@@ -21,6 +21,7 @@ namespace GAFPAY.Models
             this.SENIORCETRIALPAY = new HashSet<SENIORCETRIALPAY>();
             this.SENIORCEALLOWANCE = new HashSet<SENIORCEALLOWANCE>();
             this.SENIORCEDEDUCTION = new HashSet<SENIORCEDEDUCTION>();
+            this.DELETEDSENIORCE = new HashSet<DELETEDSENIORCE>();
         }
     
         public int SENIORCEID { get; set; }
@@ -73,5 +74,7 @@ namespace GAFPAY.Models
         public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDSENIORCE> DELETEDSENIORCE { get; set; }
     }
 }

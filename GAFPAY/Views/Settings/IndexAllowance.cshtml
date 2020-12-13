@@ -56,3 +56,66 @@
 
 </div>
 <script src="~/Scripts/tableList.js"></script>
+<script>
+    function removeItem(X, Y) {
+        swal({
+            title: "Are you sure",
+            text: "Delete " + Y + " ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Delete ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("RemoveAllowance","Settings")",
+                        type: 'POST',
+                    data: 'id=' + X,
+                    dataType: 'json'
+                })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " deleted successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
+
+
+                            })
+                            window.location.href = '@Url.Action("IndexAllowance", "Settings")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    }
+
+
+
+    },
+        @* *@);
+    }
+
+
+
+</script>

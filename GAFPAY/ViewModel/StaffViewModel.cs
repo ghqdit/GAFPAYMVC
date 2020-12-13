@@ -258,7 +258,7 @@ namespace GAFPAY.ViewModel
         public decimal TotalAllow { get; set; }
         public decimal TotalBalance { get; set; }
         public decimal TotalAmountX { get; set; }
-        public decimal NetPay { get; set; }
+        public decimal? NetPay { get; set; }
          
 
 
@@ -279,7 +279,7 @@ namespace GAFPAY.ViewModel
         public decimal TotalAllow { get; set; }
         public decimal TotalBalance { get; set; }
         public decimal TotalAmountX { get; set; }
-        public decimal NetPay { get; set; }
+        public decimal? NetPay { get; set; }
          
 
 
@@ -324,7 +324,7 @@ namespace GAFPAY.ViewModel
         public decimal Amount { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal Balance { get; set; }
-        public DateTime DeductionDate { get; set; }
+        public DateTime? DeductionDate { get; set; }
          
         public List<JuniorCEDeduction2> JuniorCEDeduction2Details { get; set; }
          

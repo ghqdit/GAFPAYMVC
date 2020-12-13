@@ -206,6 +206,24 @@
     <Compile Include="Models\DEDUCTIONCLASS.cs">
       <DependentUpon>GAFPAYEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DELETEDJUNIORCE.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DELETEDOFFICER.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DELETEDOFFICERCADET.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DELETEDRECRUIT.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DELETEDSENIORCE.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DELETEDSOLDIER.cs">
+      <DependentUpon>GAFPAYEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GAFPAYEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1965,7 +1983,7 @@
     <Content Include="Views\Staff\CreateRecruit.cshtml" />
     <Content Include="Views\Staff\EditRecruit.cshtml" />
     <Content Include="Views\Staff\EditRecruitBank.cshtml" />
-    <Content Include="Views\Pay\CreateRecruitSingle.cshtml" />
+    <Content Include="Views\Pay\CreateRecruitSingleTrial.cshtml" />
     <Content Include="Views\Pay\IndexRecruitTrialPay.cshtml" />
     <Content Include="Views\Staff\CreateOfficerCadet.cshtml" />
     <Content Include="Views\Staff\IndexOfficerCadet.cshtml" />
@@ -1975,10 +1993,10 @@
     <Content Include="Views\Settings\IndexProvidentFund.cshtml" />
     <Content Include="Views\Staff\IndexJCE.cshtml" />
     <Content Include="Views\Staff\CreateJCE.cshtml" />
-    <Content Include="Views\Pay\CreateRecruitBatch.cshtml" />
+    <Content Include="Views\Pay\CreateRecruitBatchTrial.cshtml" />
     <Content Include="Views\Pay\IndexOCTrialPay.cshtml" />
-    <Content Include="Views\Pay\CreateOCProcess.cshtml" />
-    <Content Include="Views\Pay\CreateOCBatch.cshtml" />
+    <Content Include="Views\Pay\CreateOCSingleTrial.cshtml" />
+    <Content Include="Views\Pay\CreateOCBatchTrial.cshtml" />
     <Content Include="Views\Staff\_MEDPCodeBox.cshtml" />
     <Content Include="Views\Settings\IndexGrade.cshtml" />
     <Content Include="Views\Settings\EditorGrade.cshtml" />
@@ -2012,8 +2030,8 @@
     <Content Include="Views\Staff\JCEProvident.cshtml" />
     <Content Include="Views\Staff\SCEProvident.cshtml" />
     <Content Include="Views\Staff\IndexJCEPromotion.cshtml" />
-    <Content Include="Views\Pay\IndexRecruitBatch.cshtml" />
-    <Content Include="Views\Pay\IndexOCBatch.cshtml" />
+    <Content Include="Views\Pay\IndexRecruitBatchTrial.cshtml" />
+    <Content Include="Views\Pay\IndexOCBatchTrial.cshtml" />
     <Content Include="Views\Settings\IndexMedGrade.cshtml" />
     <Content Include="Views\Settings\EditorMedGrade.cshtml" />
     <Content Include="Views\Staff\DetailsJCE.cshtml" />
@@ -2029,6 +2047,20 @@
     <Content Include="Views\Security\DeletedOC.cshtml" />
     <Content Include="Views\Pay\SCEDeduction2Add.cshtml" />
     <Content Include="Views\Pay\SCEDeduction1Add.cshtml" />
+    <Content Include="Views\Pay\CreateJCESinlgeTrial.cshtml" />
+    <Content Include="Views\Pay\CreateSCESingleTrial.cshtml" />
+    <Content Include="Views\Pay\IndexJCEBatchTrial.cshtml" />
+    <Content Include="Views\Pay\RecruitTrialDetails.cshtml" />
+    <Content Include="Views\Pay\OCTrialDetails.cshtml" />
+    <Content Include="Views\Pay\JCETrialDetails.cshtml" />
+    <Content Include="Views\Pay\CreateJCEBatchTrial.cshtml" />
+    <Content Include="Views\Pay\IndexSCEBatchTrial.cshtml" />
+    <Content Include="Views\Pay\CreateSCEBatchTrial.cshtml" />
+    <Content Include="Views\Pay\SCETrialDetails.cshtml" />
+    <Content Include="Views\Pay\JCETrialPayDetails.cshtml" />
+    <Content Include="Views\Pay\SCETrialPayDetails.cshtml" />
+    <Content Include="Views\Pay\IndexGeneralTrialPay.cshtml" />
+    <Content Include="Views\Pay\GeneralTrialPay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

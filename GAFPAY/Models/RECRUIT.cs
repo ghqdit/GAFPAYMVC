@@ -19,6 +19,7 @@ namespace GAFPAY.Models
         {
             this.RECRUITPAYROLL = new HashSet<RECRUITPAYROLL>();
             this.RECRUITTRIALPAY = new HashSet<RECRUITTRIALPAY>();
+            this.DELETEDRECRUIT = new HashSet<DELETEDRECRUIT>();
         }
     
         public int RECRIUTID { get; set; }
@@ -64,5 +65,7 @@ namespace GAFPAY.Models
         public virtual RELIGION RELIGION { get; set; }
         public virtual SERVICE SERVICE { get; set; }
         public virtual TRAININGCENTER TRAININGCENTER { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDRECRUIT> DELETEDRECRUIT { get; set; }
     }
 }

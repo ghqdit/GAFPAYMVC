@@ -43,7 +43,7 @@
                 <td class="text-center">
                     <a class="" href="@Url.Action("EditOfficerCadet",new {id=item.OfficerCadetID})"><i class="fas fa-pencil-alt"></i></a>|
                     <a class="" href="@Url.Action("EditOfficerCadetBank",new {id=item.OfficerCadetID})"><i class="fas fa-credit-card"></i></a>|
-                    <a class="" onclick="removeItemx(@item.OfficerCadetID,'@item.Surname')"><i class="fas fa-trash-alt"></i></a>
+                    <a class="" onclick="removeItemx(@item.OfficerCadetID,'@item.Surname','@item.Othername')"><i class="fas fa-trash-alt"></i></a>
 
                 </td>
 
@@ -65,8 +65,67 @@
 </div>
 <script src="~/Scripts/tableList.js"></script>
 <script>
+    function removeItemX(X, Y, Z) {
+        swal({
+            title: "Are you sure",
+            text: "Delete " + Y + " " + Z + " ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Delete ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("RemoveOfficerCadet","Staff")",
+                        type: 'POST',
+                    data: 'id=' + X,
+                    dataType: 'json'
+                })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " deleted successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
 
-    function removeItem(X,Y) {
+
+                            })
+                            window.location.href = '@Url.Action("IndexOfficerCadet", "Staff")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
+    }
+
+
+
+    },
+        @* *@);
+    }
+
+
+    @*function removeItem(X,Y) {
         swal({
             title: "Are you sure",
             text: "Delete " + Y + "?",
@@ -107,7 +166,7 @@
     },
     allowOutsideClick: false
     });
-    }
+    }*@
 
 
 </script>

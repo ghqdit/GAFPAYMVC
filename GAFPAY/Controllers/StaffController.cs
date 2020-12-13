@@ -354,11 +354,20 @@ namespace GAFPAY.Controllers
         {
             var rec = db.RECRUIT.Find(id);
             rec.GENERALSTATUSID = DeletedGeneralStatusID;
-            errorMessage = "cannot delete";
+            //errorMessage = "cannot delete";
+
+            var deleteRec = new DELETEDRECRUIT();
+            deleteRec.DATETIMEDELETED=DateTime.Now;
+            deleteRec.DELETEDBY = "admin";
+            deleteRec.DELETEDBY = User.Identity.Name;
+            deleteRec.RECRUITID = id;
+            deleteRec.STATUS = 1;
+            db.DELETEDRECRUIT.Add(deleteRec);
+
             try
             {
-               // db.SaveChanges();
-                //success = true;
+                db.SaveChanges();
+                success = true;
             }
             catch (Exception e)
             {
@@ -704,6 +713,15 @@ namespace GAFPAY.Controllers
             var oc = db.OFFICERCADET.Find(id);
             oc.GENERALSTATUSID = DeletedGeneralStatusID;
 
+            var deleteRec = new DELETEDOFFICERCADET();
+            deleteRec.DATETIMEDELETED = DateTime.Now;
+            deleteRec.DELETEDBY = "admin";
+            deleteRec.DELETEDBY = User.Identity.Name;
+            deleteRec.OFFICERCADETID = id;
+            deleteRec.STATUS = 1;
+            db.DELETEDOFFICERCADET.Add(deleteRec);
+
+
             try
             {
                 db.SaveChanges();
@@ -775,11 +793,15 @@ namespace GAFPAY.Controllers
         {
             if (ModelState.IsValid)
             {
+                #region IsMedical
                 //if (data.IsMedical == 1 && data.MedPCode == null)
                 //{
                 //    errorMessage = "MED P Code is required";
                 //    return Json(success ? JsonResponse.SuccessResponse("Junior CE") : JsonResponse.ErrorResponse(errorMessage));
                 //}
+
+                #endregion
+
 
                 if (data.AccountNumber == null)
                 {
@@ -892,30 +914,59 @@ namespace GAFPAY.Controllers
 
                     db.JUNIORCEALLOWANCE.Add(operationAllow); 
                 }
+
+                #region OldALlowances
+                //var allowances = db.ALLOWANCE.Where(a => a.STATUS == 2).ToList();
+                //foreach (var item in allowances)
+                //{
+                //    var jceallow = new JUNIORCEALLOWANCE(); 
+                //    if (item.ALLOWANCEID == UniformAllowanceID)
+                //    {
+                //        jceallow.AMOUNT = clothingAmount;
+                //    }
+                //    else if (item.ALLOWANCEID == RationAllowanceID)
+                //    {
+                //        jceallow.AMOUNT = rationAmount;
+                //    }
+                //    jceallow.STATUS = 1;
+                //    jceallow.ID = Guid.NewGuid();
+                //    jceallow.ALLOWANCEID = item.ALLOWANCEID;
+                //    jceallow.JUNIORCEID = jceID;
+                //    jceallow.DATETIMEINSERTED = DateTime.Now;
+                //    jceallow.INSERTEDBY = "admin";
+                //    //jceallow.INSERTEDBY = User.Identity.Name;
+
+                //    db.JUNIORCEALLOWANCE.Add(jceallow);
+
+                //}
+                #endregion
+
                  
-                var allowances = db.ALLOWANCE.Where(a => a.STATUS == 2).ToList();
-                foreach (var item in allowances)
-                {
-                    var jceallow = new JUNIORCEALLOWANCE(); 
-                    if (item.ALLOWANCEID == UniformAllowanceID)
-                    {
-                        jceallow.AMOUNT = clothingAmount;
-                    }
-                    else if (item.ALLOWANCEID == RationAllowanceID)
-                    {
-                        jceallow.AMOUNT = rationAmount;
-                    }
-                    jceallow.STATUS = 1;
-                    jceallow.ID = Guid.NewGuid();
-                    jceallow.ALLOWANCEID = item.ALLOWANCEID;
-                    jceallow.JUNIORCEID = jceID;
-                    jceallow.DATETIMEINSERTED = DateTime.Now;
-                    jceallow.INSERTEDBY = "admin";
-                    //jceallow.INSERTEDBY = User.Identity.Name;
+                var UniformAllowance=new JUNIORCEALLOWANCE();
+                UniformAllowance.AMOUNT = clothingAmount;
+                UniformAllowance.STATUS = 1;
+                UniformAllowance.ID=Guid.NewGuid();
+                UniformAllowance.ALLOWANCEID = UniformAllowanceID;
+                UniformAllowance.JUNIORCEID = jceID;
+                UniformAllowance.DATETIMEINSERTED=DateTime.Now;
+                UniformAllowance.INSERTEDBY = "admin";
+                //UniformAllowance.INSERTEDBY = User.Identity.Name;
 
-                    db.JUNIORCEALLOWANCE.Add(jceallow);
+                db.JUNIORCEALLOWANCE.Add(UniformAllowance);
 
-                }
+                var RationAllowance=new JUNIORCEALLOWANCE();
+                RationAllowance.AMOUNT = rationAmount;
+                RationAllowance.STATUS = 1;
+                RationAllowance.ID=Guid.NewGuid();
+                RationAllowance.ALLOWANCEID = RationAllowanceID;
+                RationAllowance.JUNIORCEID = jceID;
+                RationAllowance.DATETIMEINSERTED=DateTime.Now;
+                RationAllowance.INSERTEDBY = "admin";
+                //RationAllowance.INSERTEDBY = User.Identity.Name;
+
+                db.JUNIORCEALLOWANCE.Add(RationAllowance);
+
+
 
                 if (data.IsDisabled == 1)
                 {
@@ -938,7 +989,7 @@ namespace GAFPAY.Controllers
                 var CEWelfareAmount = payViewData.calculateCivilWelfare();
                 var providentAmount = payViewData.calculateProvidentFund(constPay, data.ProvidentID);
                 var tax = payViewData.calculateIncomeTax(constPay, providentAmount);
-                
+                var ssnitAmount = payViewData.calculateSSNIT(constPay); 
                 var providentID = data.ProvidentID;
                  
                 if (providentID != 1)
@@ -955,37 +1006,75 @@ namespace GAFPAY.Controllers
 
                     db.JUNIORCEDEDUCTION.Add(provDed);
                 }
-                 
-                var ssnitAmount = payViewData.calculateSSNIT(constPay); 
 
-                var deductions = db.DEDUCTION.Where(a => a.STATUS == 2).ToList();
-                foreach (var items in deductions)
-                {
-                    var jcededuc = new JUNIORCEDEDUCTION();
-                    if (items.DEDUCTIONID == CEWelfareDeductionID)
-                    {
-                        jcededuc.DEDUCTIONAMOUNT = CEWelfareAmount; 
-                    }
-                    else if (items.DEDUCTIONID == SSNITDeductionID)
-                    {
-                        jcededuc.DEDUCTIONAMOUNT = ssnitAmount;
-                    }
-                    else if (items.DEDUCTIONID == TaxDeductionID)
-                    {
-                        jcededuc.DEDUCTIONAMOUNT = tax;
-                    }
 
-                    jcededuc.STATUS = 1;
-                    jcededuc.DEDUCTIONID = items.DEDUCTIONID;
-                    jcededuc.JUNIORCEID = jceID;
-                    jcededuc.ID= Guid.NewGuid();
-                    jcededuc.INSERTEDBY = "admin";
-                    //jcededuc.INSERTEDBY = User.Identity.Name;
-                    jcededuc.DATETIMEINSERTED = DateTime.Now; 
+                #region OldDeduction
+ //var deductions = db.DEDUCTION.Where(a => a.STATUS == 1).ToList();
+                //foreach (var items in deductions)
+                //{
+                //    var jcededuc = new JUNIORCEDEDUCTION();
+                //    if (items.DEDUCTIONID == CEWelfareDeductionID)
+                //    {
+                //        jcededuc.DEDUCTIONAMOUNT = CEWelfareAmount; 
+                //    }
+                //    else if (items.DEDUCTIONID == SSNITDeductionID)
+                //    {
+                //        jcededuc.DEDUCTIONAMOUNT = ssnitAmount;
+                //    }
+                //    else if (items.DEDUCTIONID == TaxDeductionID)
+                //    {
+                //        jcededuc.DEDUCTIONAMOUNT = tax;
+                //    }
 
-                    db.JUNIORCEDEDUCTION.Add(jcededuc);
+                //    jcededuc.STATUS = 1;
+                //    jcededuc.DEDUCTIONID = items.DEDUCTIONID;
+                //    jcededuc.JUNIORCEID = jceID;
+                //    jcededuc.ID= Guid.NewGuid();
+                //    jcededuc.INSERTEDBY = "admin";
+                //    //jcededuc.INSERTEDBY = User.Identity.Name;
+                //    jcededuc.DATETIMEINSERTED = DateTime.Now; 
 
-                }
+                //    db.JUNIORCEDEDUCTION.Add(jcededuc);
+
+                //}
+                #endregion
+                  
+                var CEWelfareDeduc=new JUNIORCEDEDUCTION(); 
+                CEWelfareDeduc.DEDUCTIONID = CEWelfareDeductionID;
+                CEWelfareDeduc.DEDUCTIONAMOUNT = CEWelfareAmount;
+                CEWelfareDeduc.STATUS = 1;
+                CEWelfareDeduc.JUNIORCEID = jceID;
+                CEWelfareDeduc.ID = Guid.NewGuid();
+                CEWelfareDeduc.INSERTEDBY = "admin";
+                //CEWelfareDeduc.INSERTEDBY = User.Identity.Name;
+                CEWelfareDeduc.DATETIMEINSERTED=DateTime.Now;
+
+                db.JUNIORCEDEDUCTION.Add(CEWelfareDeduc);
+
+                var SSNITDeduc=new JUNIORCEDEDUCTION(); 
+                SSNITDeduc.DEDUCTIONID = SSNITDeductionID;
+                SSNITDeduc.DEDUCTIONAMOUNT = ssnitAmount;
+                SSNITDeduc.STATUS = 1;
+                SSNITDeduc.JUNIORCEID = jceID;
+                SSNITDeduc.ID = Guid.NewGuid();
+                SSNITDeduc.INSERTEDBY = "admin";
+                //SSNITDeduc.INSERTEDBY = User.Identity.Name;
+                SSNITDeduc.DATETIMEINSERTED=DateTime.Now;
+
+                db.JUNIORCEDEDUCTION.Add(SSNITDeduc);
+
+                var TaxDeduc=new JUNIORCEDEDUCTION(); 
+                TaxDeduc.DEDUCTIONID = TaxDeductionID;
+                TaxDeduc.DEDUCTIONAMOUNT = tax;
+                TaxDeduc.STATUS = 1;
+                TaxDeduc.JUNIORCEID = jceID;
+                TaxDeduc.ID = Guid.NewGuid();
+                TaxDeduc.INSERTEDBY = "admin";
+                //TaxDeduc.INSERTEDBY = User.Identity.Name;
+                TaxDeduc.DATETIMEINSERTED=DateTime.Now;
+
+                db.JUNIORCEDEDUCTION.Add(TaxDeduc);
+
 
                 try
                 {
@@ -1084,7 +1173,7 @@ namespace GAFPAY.Controllers
                 jce.HOMETOWN = data.Hometown;
                 jce.BLOODGROUPID = data.BloodGroupID;
                 jce.RESADDRESS = data.ResAddress;
-                jce.GENERALSTATUSID = data.GeneralStatusID;
+                //jce.GENERALSTATUSID = data.GeneralStatusID;
                 jce.DATEEMPLOYED = data.DateEmployed;
                 jce.UNITID = data.UnitID;
                 jce.SSNITNUMBER = data.SSNITNo;
@@ -1207,16 +1296,13 @@ namespace GAFPAY.Controllers
             model.CLevStepName = jce.CIVILIANLEVSTEP.LEVSTEPNAME;
             model.SSNITNo = jce.SSNITNUMBER;
             model.BankBranch = jceBank.BANK.BANKBRANCH;
-            model.BankName = jceBank.BANK.BANKNAME.BANKNAMEX;
-            model.ConstPay = jce.CIVILIANLEVSTEP.CONSTPAY;
+            model.BankName = jceBank.BANK.BANKNAME.BANKNAMEX; 
             model.AccountNumber = jceBank.ACCOUNTNUMBER;
             model.GradeName = jce.GRADE.GRADENAME;
             model.DateEmployed = jce.DATEEMPLOYED;
             model.GenderID = jce.GENDERID;
+              
              
-
-
-            var jceAllow = new JuniorCEAllowance();
             var JCEA = db.JUNIORCEALLOWANCE.Where(a => a.JUNIORCEID == id && a.STATUS == 1);
             model.JuniorCEAllowanceDetails = new List<JuniorCEAllowance>();
             foreach (var details in JCEA)
@@ -1229,31 +1315,56 @@ namespace GAFPAY.Controllers
                 model.JuniorCEAllowanceDetails.Add(Allow);
 
 
-            }
-
-            var jceDeduc = new JuniorCEDeduction2();
-            var JCED = db.JUNIORCEDEDUCTION.Where(a => a.JUNIORCEID == id && a.STATUS == 1 ||a.STATUS==2);
+            } 
+            
+            var JCED = db.JUNIORCEDEDUCTION.Where(a => a.JUNIORCEID == id && a.STATUS == 1 || a.JUNIORCEID==id && a.STATUS==2);
             model.JuniorCEDeduction2Details = new List<JuniorCEDeduction2>();
             foreach (var details in JCED)
             {
                 var Deduc = new JuniorCEDeduction2();
-                Deduc.DeductionID = details.DEDUCTIONID;
-                Deduc.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
-                Deduc.Amount = details.DEDUCTIONAMOUNT;
-                if (details.BALANCE != null)
+                if (details.DEDUCTIONID != CEWelfareDeductionID)
                 {
-                    Deduc.Balance = details.BALANCE.Value;
-                    model.TotalBalance = Deduc.Balance;
+                    Deduc.DeductionID = details.DEDUCTIONID;
+                    Deduc.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
+                    Deduc.Amount = details.DEDUCTIONAMOUNT;
+                    if (details.BALANCE != null)
+                    {
+                        Deduc.Balance = details.BALANCE.Value;
+                        model.TotalBalance = Deduc.Balance;
+                    }
+                    if (details.TOTALAMOUNT != null)
+                    {
+                        Deduc.TotalAmount = details.TOTALAMOUNT.Value;
+                        model.TotalAmountX = Deduc.TotalAmount;
+                    }
+
+                    model.TotalDeduc += Deduc.Amount;
+                    model.JuniorCEDeduction2Details.Add(Deduc);
                 }
-                if (details.TOTALAMOUNT != null)
+                else
                 {
-                    Deduc.TotalAmount = details.TOTALAMOUNT.Value;
-                    model.TotalAmountX = Deduc.TotalAmount;
+                    if (DateTime.Now.Month == 3 || DateTime.Now.Month == 6 || DateTime.Now.Month == 9 || DateTime.Now.Month == 12)
+                    {
+                        Deduc.DeductionID = details.DEDUCTIONID;
+                        Deduc.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
+                        Deduc.Amount = details.DEDUCTIONAMOUNT;
+                        if (details.BALANCE != null)
+                        {
+                            Deduc.Balance = details.BALANCE.Value;
+                            model.TotalBalance = Deduc.Balance;
+                        }
+                        if (details.TOTALAMOUNT != null)
+                        {
+                            Deduc.TotalAmount = details.TOTALAMOUNT.Value;
+                            model.TotalAmountX = Deduc.TotalAmount;
+                        }
+
+                        model.TotalDeduc += Deduc.Amount;
+                        model.JuniorCEDeduction2Details.Add(Deduc);
+
+                    }
                 }
-
-                model.TotalDeduc += Deduc.Amount;
-                model.JuniorCEDeduction2Details.Add(Deduc);
-
+                
             }
             model.NetPay = (model.ConstPay + model.TotalAllow - model.TotalDeduc);
 
@@ -1268,6 +1379,16 @@ namespace GAFPAY.Controllers
         {
             var jce = db.JUNIORCE.Find(id);
             jce.GENERALSTATUSID = DeletedGeneralStatusID;
+
+            var deleteRec = new DELETEDJUNIORCE();
+            deleteRec.DATETIMEDELETED = DateTime.Now;
+            deleteRec.DELETEDBY = "admin";
+            deleteRec.DELETEDBY = User.Identity.Name;
+            deleteRec.JUNIORCEID = id;
+            deleteRec.STATUS = 1;
+            db.DELETEDJUNIORCE.Add(deleteRec);
+
+
             try
             {
                 db.SaveChanges();
@@ -1439,30 +1560,58 @@ namespace GAFPAY.Controllers
                     db.SENIORCEALLOWANCE.Add(operationAllow);
 
 
-                } 
-                var allowances = db.ALLOWANCE.Where(a => a.STATUS == 2).ToList();
-                foreach (var item in allowances)
-                {
-                    var sceallow = new SENIORCEALLOWANCE();
-                    if (item.ALLOWANCEID == UniformAllowanceID)
-                    {
-                        sceallow.AMOUNT = uniformAmount;
-                    }
-                    else if (item.ALLOWANCEID == RationAllowanceID)
-                    {
-                        sceallow.AMOUNT = rationAmount;
-                    }
-                    sceallow.STATUS = 1;
-                    sceallow.ALLOWANCEID = item.ALLOWANCEID;
-                    sceallow.SENIORCEID = sceID;
-                    sceallow.ID=Guid.NewGuid();
-                    sceallow.INSERTEDBY = "admin";
-                    //sceallow.INSERTEDBY = User.Identity.Name;
-                    sceallow.DATETIMEINSERTED=DateTime.Now;
-
-                    db.SENIORCEALLOWANCE.Add(sceallow);
-
                 }
+
+                #region OldAllowance
+                //var allowances = db.ALLOWANCE.Where(a => a.STATUS == 2).ToList();
+                //foreach (var item in allowances)
+                //{
+                //    var sceallow = new SENIORCEALLOWANCE();
+                //    if (item.ALLOWANCEID == UniformAllowanceID)
+                //    {
+                //        sceallow.AMOUNT = uniformAmount;
+                //    }
+                //    else if (item.ALLOWANCEID == RationAllowanceID)
+                //    {
+                //        sceallow.AMOUNT = rationAmount;
+                //    }
+                //    sceallow.STATUS = 1;
+                //    sceallow.ALLOWANCEID = item.ALLOWANCEID;
+                //    sceallow.SENIORCEID = sceID;
+                //    sceallow.ID = Guid.NewGuid();
+                //    sceallow.INSERTEDBY = "admin";
+                //    //sceallow.INSERTEDBY = User.Identity.Name;
+                //    sceallow.DATETIMEINSERTED = DateTime.Now;
+
+                //    db.SENIORCEALLOWANCE.Add(sceallow);
+
+                //} 
+                #endregion
+
+                var UniformAllowance = new SENIORCEALLOWANCE();
+                UniformAllowance.AMOUNT = uniformAmount;
+                UniformAllowance.STATUS = 1;
+                UniformAllowance.ID = Guid.NewGuid();
+                UniformAllowance.ALLOWANCEID = UniformAllowanceID;
+                UniformAllowance.SENIORCEID = sceID;
+                UniformAllowance.DATETIMEINSERTED = DateTime.Now;
+                UniformAllowance.INSERTEDBY = "admin";
+                //UniformAllowance.INSERTEDBY = User.Identity.Name;
+
+                db.SENIORCEALLOWANCE.Add(UniformAllowance);
+
+                var RationAllowance = new SENIORCEALLOWANCE();
+                RationAllowance.AMOUNT = rationAmount;
+                RationAllowance.STATUS = 1;
+                RationAllowance.ID = Guid.NewGuid();
+                RationAllowance.ALLOWANCEID = RationAllowanceID;
+                RationAllowance.SENIORCEID = sceID;
+                RationAllowance.DATETIMEINSERTED = DateTime.Now;
+                RationAllowance.INSERTEDBY = "admin";
+                //RationAllowance.INSERTEDBY = User.Identity.Name;
+
+                db.SENIORCEALLOWANCE.Add(RationAllowance);
+
 
                 if (data.IsDisabled == 1)
                 {
@@ -1479,9 +1628,8 @@ namespace GAFPAY.Controllers
                     db.SENIORCEALLOWANCE.Add(disableAllow);
                 }
                  
-                //Deductions insertion 
-                var providentID = data.ProvidentID;
-                
+                 
+                var providentID = data.ProvidentID; 
                 if (providentID != 1)
                 {
                     var provDed = new SENIORCEDEDUCTION(); 
@@ -1496,36 +1644,75 @@ namespace GAFPAY.Controllers
 
                     db.SENIORCEDEDUCTION.Add(provDed);
                 }
-                 
-                var deductions = db.DEDUCTION.Where(a => a.STATUS == 2).ToList();
-                foreach (var items in deductions)
-                {
-                    var scededuc = new SENIORCEDEDUCTION();
-                    if (items.DEDUCTIONID == CEWelfareDeductionID)
-                    {
-                        scededuc.DEDUCTIONAMOUNT = CEWelfareAmount ;
 
-                    }
-                    else if (items.DEDUCTIONID == SSNITDeductionID)
-                    {
-                        scededuc.DEDUCTIONAMOUNT = SSNITAmount;
-                    }
-                    else if (items.DEDUCTIONID == TaxDeductionID)
-                    {
-                        scededuc.DEDUCTIONAMOUNT = taxAmount;
-                    }
+                //Deductions insertion
+                var CEWelfareDeduc = new SENIORCEDEDUCTION();
+                CEWelfareDeduc.DEDUCTIONID = CEWelfareDeductionID;
+                CEWelfareDeduc.DEDUCTIONAMOUNT = CEWelfareAmount;
+                CEWelfareDeduc.STATUS = 1;
+                CEWelfareDeduc.SENIORCEID = sceID;
+                CEWelfareDeduc.ID = Guid.NewGuid();
+                CEWelfareDeduc.INSERTEDBY = "admin";
+                //CEWelfareDeduc.INSERTEDBY = User.Identity.Name;
+                CEWelfareDeduc.DATETIMEINSERTED = DateTime.Now;
 
-                    scededuc.STATUS = 1;
-                    scededuc.DEDUCTIONID = items.DEDUCTIONID;
-                    scededuc.SENIORCEID = sceID;
-                    scededuc.INSERTEDBY = "admin";
-                    //scededuc.INSERTEDBY = User.Identity.Name;
-                    scededuc.ID=Guid.NewGuid();
+                db.SENIORCEDEDUCTION.Add(CEWelfareDeduc);
 
-                    db.SENIORCEDEDUCTION.Add(scededuc);
+                var SSNITDeduc = new SENIORCEDEDUCTION();
+                SSNITDeduc.DEDUCTIONID = SSNITDeductionID;
+                SSNITDeduc.DEDUCTIONAMOUNT = SSNITAmount;
+                SSNITDeduc.STATUS = 1;
+                SSNITDeduc.SENIORCEID = sceID;
+                SSNITDeduc.ID = Guid.NewGuid();
+                SSNITDeduc.INSERTEDBY = "admin";
+                //SSNITDeduc.INSERTEDBY = User.Identity.Name;
+                SSNITDeduc.DATETIMEINSERTED = DateTime.Now;
 
-                }
+                db.SENIORCEDEDUCTION.Add(SSNITDeduc);
 
+                var TaxDeduc = new SENIORCEDEDUCTION();
+                TaxDeduc.DEDUCTIONID = TaxDeductionID;
+                TaxDeduc.DEDUCTIONAMOUNT = taxAmount;
+                TaxDeduc.STATUS = 1;
+                TaxDeduc.SENIORCEID = sceID;
+                TaxDeduc.ID = Guid.NewGuid();
+                TaxDeduc.INSERTEDBY = "admin";
+                //TaxDeduc.INSERTEDBY = User.Identity.Name;
+                TaxDeduc.DATETIMEINSERTED = DateTime.Now;
+
+                db.SENIORCEDEDUCTION.Add(TaxDeduc);
+
+                #region Old Deduction
+                //var deductions = db.DEDUCTION.Where(a => a.STATUS == 1).ToList();
+                //foreach (var items in deductions)
+                //{
+                //    var scededuc = new SENIORCEDEDUCTION();
+                //    if (items.DEDUCTIONID == CEWelfareDeductionID)
+                //    {
+                //        scededuc.DEDUCTIONAMOUNT = CEWelfareAmount ;
+
+                //    }
+                //    else if (items.DEDUCTIONID == SSNITDeductionID)
+                //    {
+                //        scededuc.DEDUCTIONAMOUNT = SSNITAmount;
+                //    }
+                //    else if (items.DEDUCTIONID == TaxDeductionID)
+                //    {
+                //        scededuc.DEDUCTIONAMOUNT = taxAmount;
+                //    }
+
+                //    scededuc.STATUS = 1;
+                //    scededuc.DEDUCTIONID = items.DEDUCTIONID;
+                //    scededuc.SENIORCEID = sceID;
+                //    scededuc.INSERTEDBY = "admin";
+                //    //scededuc.INSERTEDBY = User.Identity.Name;
+                //    scededuc.ID=Guid.NewGuid();
+
+                //    db.SENIORCEDEDUCTION.Add(scededuc);
+
+                //}  
+
+                #endregion
 
                 try
                 {
@@ -1623,7 +1810,7 @@ namespace GAFPAY.Controllers
                 sce.HOMETOWN = data.Hometown;
                 sce.BLOODGROUPID = data.BloodGroupID;
                 sce.RESADDRESS = data.ResAddress;
-                sce.GENERALSTATUSID = data.GeneralStatusID;
+                //sce.GENERALSTATUSID = data.GeneralStatusID;
                 sce.DATEEMPLOYED = data.DateEmployed;
                 sce.UNITID = data.UnitID;
                 sce.SSNITNUMBER = data.SSNITNo;
@@ -1709,11 +1896,7 @@ namespace GAFPAY.Controllers
             model.GradeName = sce.GRADE.GRADENAME;
             model.DateEmployed = sce.DATEEMPLOYED;
             model.GenderID = sce.GENDERID;
-
-
-
-
-
+            
             var SCEA = db.SENIORCEALLOWANCE.Where(a => a.SENIORCEID == id && a.STATUS == 1);
             model.SeniorCEAllowanceDetails = new List<SeniorCEAllowance>();
             foreach (var details in SCEA)
@@ -1725,29 +1908,58 @@ namespace GAFPAY.Controllers
                 model.TotalAllow += Allow.Amount;
                 model.SeniorCEAllowanceDetails.Add(Allow); 
             }
-
-
-            var SCED = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 1);
+             
+            var SCED = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 1 || a.STATUS==2);
             model.SeniorCEDeduction2Details = new List<SeniorCEDeduction2>();
             foreach (var details in SCED)
             {
                 var Deduc = new SeniorCEDeduction2();
-                Deduc.DeductionID = details.DEDUCTIONID;
-                Deduc.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
-                Deduc.Amount = details.DEDUCTIONAMOUNT;
-                if (details.BALANCE != null)
+                if (details.DEDUCTIONID!=CEWelfareDeductionID)
                 {
-                    Deduc.Balance = details.BALANCE.Value;
-                    model.TotalBalance = Deduc.Balance;
-                }
-                if (details.TOTALAMOUNT != null)
-                {
-                    Deduc.TotalAmount = details.TOTALAMOUNT.Value;
-                    model.TotalAmountX = Deduc.TotalAmount;
+                    Deduc.DeductionID = details.DEDUCTIONID;
+                    Deduc.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
+                    Deduc.Amount = details.DEDUCTIONAMOUNT;
+                    if (details.BALANCE != null)
+                    {
+                        Deduc.Balance = details.BALANCE.Value;
+                        model.TotalBalance = Deduc.Balance;
+                    }
+                    if (details.TOTALAMOUNT != null)
+                    {
+                        Deduc.TotalAmount = details.TOTALAMOUNT.Value;
+                        model.TotalAmountX = Deduc.TotalAmount;
+                    }
+
+                    model.TotalDeduc += Deduc.Amount;
+                    model.SeniorCEDeduction2Details.Add(Deduc);
                 }
 
-                model.TotalDeduc += Deduc.Amount;
-                model.SeniorCEDeduction2Details.Add(Deduc);
+                else
+                {
+                    if (DateTime.Now.Month == 3 || DateTime.Now.Month == 6 || DateTime.Now.Month == 9 || DateTime.Now.Month == 12)
+                    {
+                        Deduc.DeductionID = details.DEDUCTIONID;
+                        Deduc.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
+                        Deduc.Amount = details.DEDUCTIONAMOUNT;
+                        if (details.BALANCE != null)
+                        {
+                            Deduc.Balance = details.BALANCE.Value;
+                            model.TotalBalance = Deduc.Balance;
+                        }
+                        if (details.TOTALAMOUNT != null)
+                        {
+                            Deduc.TotalAmount = details.TOTALAMOUNT.Value;
+                            model.TotalAmountX = Deduc.TotalAmount;
+                        }
+
+                        model.TotalDeduc += Deduc.Amount;
+                        model.SeniorCEDeduction2Details.Add(Deduc);
+
+                    }
+                }
+
+                
+
 
             }
             model.NetPay = (model.ConstPay + model.TotalAllow - model.TotalDeduc);
@@ -1761,8 +1973,8 @@ namespace GAFPAY.Controllers
 
             if (sce != null)
             {
-                model.BankNameList = settingsViewData.getBankNames();
-                //model.AccountNumber = rec.ACCOUNTNUMBER;
+                model.BankNameList = settingsViewData.getBankNames(); 
+
             }
             else
             {
@@ -1811,6 +2023,16 @@ namespace GAFPAY.Controllers
 
             var sce = db.SENIORCE.Find(id);
             sce.GENERALSTATUSID = DeletedGeneralStatusID;
+
+            var deleteRec = new DELETEDSENIORCE();
+            deleteRec.DATETIMEDELETED = DateTime.Now;
+            deleteRec.DELETEDBY = "admin";
+            deleteRec.DELETEDBY = User.Identity.Name;
+            deleteRec.SENIORCEID = id;
+            deleteRec.STATUS = 1;
+            db.DELETEDSENIORCE.Add(deleteRec);
+
+
             try
             {
                 db.SaveChanges();

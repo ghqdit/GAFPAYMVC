@@ -21,6 +21,7 @@ namespace GAFPAY.Models
             this.SOLDIERDEDUCTION = new HashSet<SOLDIERDEDUCTION>();
             this.SOLDIERPAYROLL = new HashSet<SOLDIERPAYROLL>();
             this.SOLDIERTRIALPAY = new HashSet<SOLDIERTRIALPAY>();
+            this.DELETEDSOLDIER = new HashSet<DELETEDSOLDIER>();
         }
     
         public int SOLDEIRID { get; set; }
@@ -49,6 +50,7 @@ namespace GAFPAY.Models
         public int MILITARYLEVSTEPID { get; set; }
         public int UNITID { get; set; }
         public int PROVIDENTFUNDID { get; set; }
+        public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual GENDER GENDER { get; set; }
@@ -71,5 +73,7 @@ namespace GAFPAY.Models
         public virtual ICollection<SOLDIERTRIALPAY> SOLDIERTRIALPAY { get; set; }
         public virtual UNIT UNIT { get; set; }
         public virtual PROVIDENTFUND PROVIDENTFUND1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDSOLDIER> DELETEDSOLDIER { get; set; }
     }
 }

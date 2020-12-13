@@ -19,6 +19,7 @@ namespace GAFPAY.Models
         {
             this.OFFICERCADETPAYROLL = new HashSet<OFFICERCADETPAYROLL>();
             this.OFFICERCADETTRIALPAY = new HashSet<OFFICERCADETTRIALPAY>();
+            this.DELETEDOFFICERCADET = new HashSet<DELETEDOFFICERCADET>();
         }
     
         public int OFFICERCADETID { get; set; }
@@ -64,5 +65,7 @@ namespace GAFPAY.Models
         public virtual RELIGION RELIGION { get; set; }
         public virtual SERVICE SERVICE { get; set; }
         public virtual OFFICERINTAKE OFFICERINTAKE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDOFFICERCADET> DELETEDOFFICERCADET { get; set; }
     }
 }

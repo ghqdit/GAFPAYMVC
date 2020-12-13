@@ -36,7 +36,7 @@
                 <td>@item.CommissionTypeName</td>
                 <td>@item.OfficerIntakeName</td>
                 <td class="text-center"> 
-                    <a class="" onclick="removeItem(@item.OfficerIntakeID,'@item.OfficerIntakeName')"><i class="icon-trophy menu-icon"></i></a> 
+                    <a class="" onclick="promoteItem(@item.OfficerIntakeID,'@item.OfficerIntakeName')"><i class="icon-trophy menu-icon"></i></a> 
                 </td>
 
             </tr>
@@ -45,9 +45,8 @@
 
 </div>
 <script src="~/Scripts/tableList.js"></script>
-<script>
-
-    function removeItem(X,Y) {
+<script> 
+    function promoteItem(X,Y) {
         swal({
             title: "Are you sure",
             text: "Promote " + Y + "?",

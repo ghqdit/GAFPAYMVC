@@ -43,7 +43,7 @@
                                 @for (int i = 0; i < Model.JuniorCEDeduction2Details.Count(); i++)
                                 {
                                     <tr>
-                                        <td>@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].DeductionDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                        <td>@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].DeductionDate, new { htmlAttributes = new {@class = "form-control" } })</td>
                                         <td><input type="text" class="form-control Desc" name="JuniorCEDeduction2Details[i].DeductionName" id="JuniorCEDeduction2Details[i].DeductionName.Desc" value="@Model.JuniorCEDeduction2Details[i].DeductionName " /> </td> 
                                         <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].TotalAmount, new { htmlAttributes = new { @class = "form-control" } })</td>
                                         <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].Amount, new {htmlAttributes = new {@class = "form-control"}})</td>
@@ -154,7 +154,8 @@
     });
 
 
-    function sendForm() {
+
+    @*function sendForm() {
 
         var form = $('#NewFormX').get(0);
 
@@ -195,6 +196,6 @@
 
         }
     });
-    }
+    }*@
 
 </script>

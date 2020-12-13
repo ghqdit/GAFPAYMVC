@@ -1,0 +1,278 @@
+﻿@model GAFPAY.ViewModel.SeniorCEDetails
+
+@{
+    ViewBag.Title = "Pay Details";
+}
+<style>
+    .panel-body {
+        font-size: 20px;
+    }
+
+    .details-info .fields {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 15px;
+        font-weight: normal;
+        border-bottom: solid 0.5px #ddd;
+        padding-bottom: 5px;
+    }
+
+        .details-info .fields label {
+            width: 200px;
+            float: left;
+        }
+
+    p {
+        text-align: right;
+    }
+
+    .details-info .fields span {
+        color: black;
+    }
+
+
+
+    .box-inner {
+        border: 1px solid #DEDEDE;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        box-shadow: 0 0 10px rgba(189, 189, 189, 0.4);
+        -webkit-box-shadow: 0 0 10px rgba(189, 189, 189, 0.4);
+        -moz-box-shadow: 0 0 10px rgba(189, 189, 189, 0.4);
+    }
+
+    .box-header {
+        border: none;
+        padding-top: 5px;
+        border-bottom: 1px solid #DEDEDE;
+        border-radius: 3px 3px 0 0;
+        -webkit-border-radius: 3px 3px 0 0;
+        -moz-border-radius: 3px 3px 0 0;
+        height: 35px;
+        min-height: 35px !important;
+        margin-bottom: 0;
+        font-weight: bold;
+        font-size: 16px;
+        background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(0, 0, 0, 0.1)));
+        background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#1a000000', GradientType=0);
+    }
+
+        .box-header h2 {
+            font-size: 15px;
+            width: auto;
+            clear: none;
+            float: left;
+            line-height: 25px;
+            white-space: nowrap;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .box-header h3 {
+            font-size: 13px;
+            width: auto;
+            clear: none;
+            float: left;
+            line-height: 25px;
+            white-space: nowrap;
+        }
+
+        .box-header h2 > i {
+            margin-top: 1px;
+        }
+
+
+    .box-icon {
+        float: right;
+    }
+
+        .box-icon a {
+            clear: none;
+            float: left;
+            margin: 0 2px;
+            height: 20px;
+            width: 5px;
+            margin-top: 1px;
+        }
+
+            .box-icon a i {
+                margin-left: -6px;
+                top: -1px;
+            }
+
+    .box-content {
+        padding: 10px;
+    }
+
+    .btn-round {
+        border-radius: 40px;
+        -webkit-border-radius: 40px;
+        -moz-border-radius: 40px;
+        font-size: 12px;
+        padding-top: 4px;
+    }
+
+
+    .text-rightX {
+        text-align: left !important;
+    }
+</style>
+
+
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb"> 
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index","Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item"> <a href="@Url.Action("IndexSCEBatchTrial","Pay")"> Senior CE Trial Pay</a> </li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src="~/Content/images/GAF Logo-mini.png" style="width: 150px;" />
+        </div>
+        <div class="col-md-9">
+            <br />
+            <br />
+            <h1 style="text-align: center">MINISTRY OF DEFENCE </h1>
+            <h2 style="text-align: center">SENIOR CIVILIAN TRIAL PAY DETAILS for @ViewBag.PayDate.ToString("MMMM yyyy") </h2>
+        </div>
+    </div>
+    <hr />
+    <div class="col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                @*  <h2>&nbsp; Pay Slip for Period Ending @Model.PayDate.ToString("MMMM yyyy") (@Model.Currency)</h2>*@
+
+            </div>
+            <div class="box-content">
+                <div class="content details-info">
+                    <div class="row">
+                        <div class="col-md-9 offset-md-1">
+
+
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-left"> <strong>SVC No.</strong></td>
+                                                <td class="text-rightX">@Model.ServiceNumber</td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-left"> <strong>Name</strong></td>
+                                                <td class="text-rightX">
+                                                    @Model.Surname, @Model.Othername
+                                                    @if (Model.GenderID == 2)
+                                                    {
+                                                        @Model.TitleName
+
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Unit</strong></td>
+                                                <td class="text-rightX">@Model.UnitName</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Grade</strong></td>
+                                                <td class="text-rightX">@Model.GradeName</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-left"><strong> Bank </strong> </td>
+                                                <td class="text-rightX">@Model.BankName, @Model.BankBranch</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><strong> Account No. </strong> </td>
+                                                <td class="text-rightX">@Model.AccountNumber</td>
+
+
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-left"><strong> Lev Step</strong> </td>
+                                                <td class="text-rightX">@Model.CLevStepName </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-left"><strong> Cons Pay</strong> </td>
+                                                <td class="text-rightX">@Model.ConstPay </td>
+                                            </tr>
+                                            @*<tr>
+                                                    <td class="text-left"><strong> Net Pay</strong> </td>
+                                                    <td class="text-right">@Model.NetPay </td>
+                                                </tr>*@
+
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        &nbsp;&nbsp; Credit
+                                        <tbody>
+                                            @foreach (var item in Model.SeniorCEAllowanceDetails)
+                                            {
+                                                <tr>
+
+                                                    <td class="text-right">@item.AllowanceName</td>
+                                                    <td class="text-right"> @item.Amount.ToString("N") </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td class="text-left"><strong> Total Credit </strong> </td>
+                                                <td class="text-right"> <strong>@Model.TotalAllow.ToString("N") </strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    &nbsp;&nbsp; Debit
+                                    <table class="table">
+                                        <tbody>
+                                            @foreach (var item in Model.SeniorCEDeduction2Details)
+                                            {
+                                                <tr>
+
+                                                    <td class="text-right">@item.DeductionName</td>
+                                                    <td class="text-right"> @item.Amount.ToString("N") </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td class="text-left"><strong> Total Debit</strong></td>
+                                                <td class="text-right"><strong> @Model.TotalDeduc.ToString("N") </strong> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="fields">
+                                        <label><strong> Total Net Payable </strong></label>
+                                        <p><strong>@Model.NetPay  </strong></p>
+                                    </div>
+
+                                </div>
+                                <br /><br>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

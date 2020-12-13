@@ -39,11 +39,9 @@ namespace GAFPAY.Models
         public virtual DbSet<JUNIORCE> JUNIORCE { get; set; }
         public virtual DbSet<JUNIORCEBANK> JUNIORCEBANK { get; set; }
         public virtual DbSet<JUNIORCEIMAGE> JUNIORCEIMAGE { get; set; }
-        public virtual DbSet<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
         public virtual DbSet<JUNIORCEPAYROLLALLOWANCE> JUNIORCEPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCEPAYROLLDEDUCTION> JUNIORCEPAYROLLDEDUCTION { get; set; }
         public virtual DbSet<JUNIORCEPROVIDENT> JUNIORCEPROVIDENT { get; set; }
-        public virtual DbSet<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
         public virtual DbSet<JUNIORCETRIALPAYALLOWANCE> JUNIORCETRIALPAYALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCETRIALPAYDEDUCTION> JUNIORCETRIALPAYDEDUCTION { get; set; }
         public virtual DbSet<MILITARYLEVSTEP> MILITARYLEVSTEP { get; set; }
@@ -104,6 +102,14 @@ namespace GAFPAY.Models
         public virtual DbSet<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
         public virtual DbSet<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         public virtual DbSet<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
+        public virtual DbSet<DELETEDJUNIORCE> DELETEDJUNIORCE { get; set; }
+        public virtual DbSet<DELETEDOFFICER> DELETEDOFFICER { get; set; }
+        public virtual DbSet<DELETEDOFFICERCADET> DELETEDOFFICERCADET { get; set; }
+        public virtual DbSet<DELETEDRECRUIT> DELETEDRECRUIT { get; set; }
+        public virtual DbSet<DELETEDSENIORCE> DELETEDSENIORCE { get; set; }
+        public virtual DbSet<DELETEDSOLDIER> DELETEDSOLDIER { get; set; }
+        public virtual DbSet<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
+        public virtual DbSet<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
     
         public virtual ObjectResult<procGetRecruitTrialPayList_Result2> procGetRecruitTrialPayList(Nullable<int> yearPrev, Nullable<int> prev, Nullable<int> yearCurr, Nullable<int> curr, Nullable<int> yearNext, Nullable<int> next)
         {
@@ -171,6 +177,52 @@ namespace GAFPAY.Models
         public virtual ObjectResult<Nullable<System.DateTime>> procGetOCBatchList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetOCBatchList");
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> procGetJCEBatchList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetJCEBatchList");
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> procGetSCEBatchList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetSCEBatchList");
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> procGetTotalJCETrial(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("procGetTotalJCETrial", dateParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> procGetTotalOCTrial(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("procGetTotalOCTrial", dateParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> procGetTotalRecruitTrial(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("procGetTotalRecruitTrial", dateParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> procGetTotalSCETrial(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("procGetTotalSCETrial", dateParameter);
         }
     }
 }

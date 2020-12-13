@@ -76,6 +76,66 @@
           <Property Name="DEDUCTIONCLASSNAME" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="DELETEDJUNIORCE">
+          <Key>
+            <PropertyRef Name="DELETEDJCEID" />
+          </Key>
+          <Property Name="DELETEDJCEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="datetime" Nullable="false" />
+          <Property Name="DELETEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="JUNIORCEID" Type="int" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DELETEDOFFICER">
+          <Key>
+            <PropertyRef Name="DELETEDOFFICERID" />
+          </Key>
+          <Property Name="DELETEDOFFICERID" Type="int" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="datetime" Nullable="false" />
+          <Property Name="DELETEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="OFFICERID" Type="int" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DELETEDOFFICERCADET">
+          <Key>
+            <PropertyRef Name="DELETEDOCID" />
+          </Key>
+          <Property Name="DELETEDOCID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="datetime" Nullable="false" />
+          <Property Name="DELETEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="OFFICERCADETID" Type="int" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DELETEDRECRUIT">
+          <Key>
+            <PropertyRef Name="DELETEDRECRUITID" />
+          </Key>
+          <Property Name="DELETEDRECRUITID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="datetime" Nullable="false" />
+          <Property Name="DELETEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="RECRUITID" Type="int" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DELETEDSENIORCE">
+          <Key>
+            <PropertyRef Name="DELETEDSCEID" />
+          </Key>
+          <Property Name="DELETEDSCEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="datetime" Nullable="false" />
+          <Property Name="DELETEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="SENIORCEID" Type="int" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DELETEDSOLDIER">
+          <Key>
+            <PropertyRef Name="DELETEDSOLDIERID" />
+          </Key>
+          <Property Name="DELETEDSOLDIERID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="datetime" />
+          <Property Name="DELETEDBY" Type="nvarchar" MaxLength="15" />
+          <Property Name="SOLDIERID" Type="int" />
+          <Property Name="STATUS" Type="int" />
+        </EntityType>
         <EntityType Name="GENDER">
           <Key>
             <PropertyRef Name="GENDERID" />
@@ -166,6 +226,7 @@
             <PropertyRef Name="DEDUCTIONID" />
             <PropertyRef Name="JUNIORCEID" />
           </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DEDUCTIONID" Type="int" Nullable="false" />
           <Property Name="JUNIORCEID" Type="int" Nullable="false" />
           <Property Name="TOTALAMOUNT" Type="decimal" Precision="20" Scale="2" />
@@ -173,7 +234,6 @@
           <Property Name="DEDUCTIONAMOUNT" Type="decimal" Precision="20" Scale="2" Nullable="false" />
           <Property Name="BALANCE" Type="decimal" Precision="20" Scale="2" />
           <Property Name="STATUS" Type="int" Nullable="false" />
-          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="DATETIMEUPDATED" Type="datetime" />
@@ -194,11 +254,12 @@
           <Property Name="JUNIORCEPAYROLLID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="JUNIORCEID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="JUNIORCEPAYROLLALLOWANCE">
           <Key>
@@ -235,11 +296,12 @@
           <Property Name="JUNIORCETRIALPAYID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="JUNIORCEID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="JUNIORCETRIALPAYALLOWANCE">
           <Key>
@@ -281,7 +343,7 @@
           <Property Name="OTHERNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DOB" Type="date" Nullable="false" />
           <Property Name="PHONENUMBER" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="EMAILADDRESS" Type="nvarchar" MaxLength="35" Nullable="false" />
+          <Property Name="EMAILADDRESS" Type="nvarchar" MaxLength="35" />
           <Property Name="RESADDRESS" Type="nvarchar" MaxLength="70" Nullable="false" />
           <Property Name="SERVICENUMBER" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="DATECOMMISSION" Type="date" Nullable="false" />
@@ -302,6 +364,7 @@
           <Property Name="MILITARYLEVSTEPID" Type="int" Nullable="false" />
           <Property Name="UNITID" Type="int" Nullable="false" />
           <Property Name="PROVIDENTFUNDID" Type="int" Nullable="false" />
+          <Property Name="GHANAPOSTGPS" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="OFFICERALLOWANCE">
           <Key>
@@ -430,11 +493,12 @@
           <Property Name="OFFICEPAYROLLID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="OFFICERID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OFFICERPAYROLLALLOWANCE">
           <Key>
@@ -471,11 +535,12 @@
           <Property Name="OTRIALPAYID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="OFFICERID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OFFICERTRIALPAYALLOWANCE">
           <Key>
@@ -704,11 +769,12 @@
           <Property Name="SENIORCEPAYROLLID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="SENIORCEID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SENIORCEPAYROLLALLOWANCE">
           <Key>
@@ -738,11 +804,12 @@
           <Property Name="SENIORCETRIALPAYID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="SENIORCEID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SENIORCETRIALPAYALLOWANCE">
           <Key>
@@ -783,7 +850,7 @@
           <Property Name="OTHERNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DOB" Type="date" Nullable="false" />
           <Property Name="PHONENUMBER" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="EMAILADDRESS" Type="nvarchar" MaxLength="30" />
+          <Property Name="EMAILADDRESS" Type="nvarchar" MaxLength="35" />
           <Property Name="RESADDRESS" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="SERVICENUMBER" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="DATEPASSOUT" Type="date" Nullable="false" />
@@ -804,6 +871,7 @@
           <Property Name="MILITARYLEVSTEPID" Type="int" Nullable="false" />
           <Property Name="UNITID" Type="int" Nullable="false" />
           <Property Name="PROVIDENTFUNDID" Type="int" Nullable="false" />
+          <Property Name="GHANAPOSTGPS" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="SOLDIERALLOWANCE">
           <Key>
@@ -851,11 +919,12 @@
           <Property Name="SOLDIERPAYROLLID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="SOLDEIRID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SOLDIERPAYROLLALLOWANCE">
           <Key>
@@ -892,11 +961,12 @@
           <Property Name="SOLDIERTRIALPAYID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PAYDATE" Type="date" Nullable="false" />
           <Property Name="CONSTPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
-          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="NETPAY" Type="decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="datetime" Nullable="false" />
           <Property Name="INSERTEDBY" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="STATUS" Type="int" Nullable="false" />
           <Property Name="SOLDEIRID" Type="int" Nullable="false" />
+          <Property Name="BANKID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SOLDIERTRIALPAYALLOWANCE">
           <Key>
@@ -1474,6 +1544,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DELETEDJUNIORCE_JUNIORCE">
+          <End Role="JUNIORCE" Type="Self.JUNIORCE" Multiplicity="1" />
+          <End Role="DELETEDJUNIORCE" Type="Self.DELETEDJUNIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCE">
+              <PropertyRef Name="JUNIORCEID" />
+            </Principal>
+            <Dependent Role="DELETEDJUNIORCE">
+              <PropertyRef Name="JUNIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDOFFICER_OFFICER">
+          <End Role="OFFICER" Type="Self.OFFICER" Multiplicity="1" />
+          <End Role="DELETEDOFFICER" Type="Self.DELETEDOFFICER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICER">
+              <PropertyRef Name="OFFICERID" />
+            </Principal>
+            <Dependent Role="DELETEDOFFICER">
+              <PropertyRef Name="OFFICERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDOFFICERCADET_OFFICERCADET">
+          <End Role="OFFICERCADET" Type="Self.OFFICERCADET" Multiplicity="1" />
+          <End Role="DELETEDOFFICERCADET" Type="Self.DELETEDOFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Principal>
+            <Dependent Role="DELETEDOFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDRECRUIT_RECRUIT">
+          <End Role="RECRUIT" Type="Self.RECRUIT" Multiplicity="1" />
+          <End Role="DELETEDRECRUIT" Type="Self.DELETEDRECRUIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RECRUIT">
+              <PropertyRef Name="RECRIUTID" />
+            </Principal>
+            <Dependent Role="DELETEDRECRUIT">
+              <PropertyRef Name="RECRUITID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDSENIORCE_SENIORCE">
+          <End Role="SENIORCE" Type="Self.SENIORCE" Multiplicity="1" />
+          <End Role="DELETEDSENIORCE" Type="Self.DELETEDSENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="DELETEDSENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDSOLDIER_SOLDIER">
+          <End Role="SOLDIER" Type="Self.SOLDIER" Multiplicity="0..1" />
+          <End Role="DELETEDSOLDIER" Type="Self.DELETEDSOLDIER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOLDIER">
+              <PropertyRef Name="SOLDEIRID" />
+            </Principal>
+            <Dependent Role="DELETEDSOLDIER">
+              <PropertyRef Name="SOLDIERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GENDER_JUNIORCE">
           <End Role="GENDER" Type="Self.GENDER" Multiplicity="1" />
           <End Role="JUNIORCE" Type="Self.JUNIORCE" Multiplicity="*" />
@@ -1726,6 +1868,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_JUNIORCEPAYROLL_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="JUNIORCEPAYROLL" Type="Self.JUNIORCEPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="JUNIORCEPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE">
           <End Role="JUNIORCEPAYROLL" Type="Self.JUNIORCEPAYROLL" Multiplicity="1" />
           <End Role="JUNIORCEPAYROLLALLOWANCE" Type="Self.JUNIORCEPAYROLLALLOWANCE" Multiplicity="*" />
@@ -1759,6 +1913,18 @@
             </Principal>
             <Dependent Role="JUNIORCEPROVIDENT">
               <PropertyRef Name="PROVIDENTFUNDID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCETRIALPAY_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="JUNIORCETRIALPAY" Type="Self.JUNIORCETRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="JUNIORCETRIALPAY">
+              <PropertyRef Name="BANKID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2002,6 +2168,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_OFFICERPAYROLL_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="OFFICERPAYROLL" Type="Self.OFFICERPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="OFFICERPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE">
           <End Role="OFFICERPAYROLL" Type="Self.OFFICERPAYROLL" Multiplicity="1" />
           <End Role="OFFICERPAYROLLALLOWANCE" Type="Self.OFFICERPAYROLLALLOWANCE" Multiplicity="*" />
@@ -2035,6 +2213,18 @@
             </Principal>
             <Dependent Role="OFFICERPROVIDENT">
               <PropertyRef Name="PROVIDENTFUNDID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERTRIALPAY_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="OFFICERTRIALPAY" Type="Self.OFFICERTRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="OFFICERTRIALPAY">
+              <PropertyRef Name="BANKID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2422,6 +2612,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SENIORCEPAYROLL_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="SENIORCEPAYROLL" Type="Self.SENIORCEPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SENIORCEPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE">
           <End Role="SENIORCEPAYROLL" Type="Self.SENIORCEPAYROLL" Multiplicity="1" />
           <End Role="SENIORCEPAYROLLALLOWANCE" Type="Self.SENIORCEPAYROLLALLOWANCE" Multiplicity="*" />
@@ -2443,6 +2645,18 @@
             </Principal>
             <Dependent Role="SENIORCEPAYROLLDEDUCTION">
               <PropertyRef Name="SENIORCEPAYROLLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCETRIALPAY_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="SENIORCETRIALPAY" Type="Self.SENIORCETRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SENIORCETRIALPAY">
+              <PropertyRef Name="BANKID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2638,6 +2852,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SOLDIERPAYROLL_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="SOLDIERPAYROLL" Type="Self.SOLDIERPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SOLDIERPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SOLDIERPAYROLL_SOLDIERPAYROLLALLOWANCE">
           <End Role="SOLDIERPAYROLL" Type="Self.SOLDIERPAYROLL" Multiplicity="1" />
           <End Role="SOLDIERPAYROLLALLOWANCE" Type="Self.SOLDIERPAYROLLALLOWANCE" Multiplicity="*" />
@@ -2671,6 +2897,18 @@
             </Principal>
             <Dependent Role="SOLDIERPROVIDENT">
               <PropertyRef Name="PROVIDENTFUNDID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOLDIERTRIALPAY_BANK">
+          <End Role="BANK" Type="Self.BANK" Multiplicity="1" />
+          <End Role="SOLDIERTRIALPAY" Type="Self.SOLDIERTRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SOLDIERTRIALPAY">
+              <PropertyRef Name="BANKID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2782,6 +3020,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="procGetJCEBatchList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="procGetOCBatchList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="procGetRecruitBatchList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="procGetRecruitTrialPayList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2791,6 +3030,19 @@
           <Parameter Name="Curr" Type="int" Mode="In" />
           <Parameter Name="yearNext" Type="int" Mode="In" />
           <Parameter Name="next" Type="int" Mode="In" />
+        </Function>
+        <Function Name="procGetSCEBatchList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="procGetTotalJCETrial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="procGetTotalOCTrial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="procGetTotalRecruitTrial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="procGetTotalSCETrial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date" Type="datetime" Mode="In" />
         </Function>
         <Function Name="progGetOfficerCadetTrialPayList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="yearPrev" Type="int" Mode="In" />
@@ -2809,6 +3061,12 @@
           <EntitySet Name="COMMISSIONTYPE" EntityType="Self.COMMISSIONTYPE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEDUCTION" EntityType="Self.DEDUCTION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEDUCTIONCLASS" EntityType="Self.DEDUCTIONCLASS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELETEDJUNIORCE" EntityType="Self.DELETEDJUNIORCE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELETEDOFFICER" EntityType="Self.DELETEDOFFICER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELETEDOFFICERCADET" EntityType="Self.DELETEDOFFICERCADET" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELETEDRECRUIT" EntityType="Self.DELETEDRECRUIT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELETEDSENIORCE" EntityType="Self.DELETEDSENIORCE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELETEDSOLDIER" EntityType="Self.DELETEDSOLDIER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GENDER" EntityType="Self.GENDER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GENERALSTATUS" EntityType="Self.GENERALSTATUS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRADE" EntityType="Self.GRADE" Schema="dbo" store:Type="Tables" />
@@ -3056,6 +3314,30 @@
             <End Role="DEDUCTIONCLASS" EntitySet="DEDUCTIONCLASS" />
             <End Role="DEDUCTION" EntitySet="DEDUCTION" />
           </AssociationSet>
+          <AssociationSet Name="FK_DELETEDJUNIORCE_JUNIORCE" Association="Self.FK_DELETEDJUNIORCE_JUNIORCE">
+            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
+            <End Role="DELETEDJUNIORCE" EntitySet="DELETEDJUNIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDOFFICER_OFFICER" Association="Self.FK_DELETEDOFFICER_OFFICER">
+            <End Role="OFFICER" EntitySet="OFFICER" />
+            <End Role="DELETEDOFFICER" EntitySet="DELETEDOFFICER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDOFFICERCADET_OFFICERCADET" Association="Self.FK_DELETEDOFFICERCADET_OFFICERCADET">
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+            <End Role="DELETEDOFFICERCADET" EntitySet="DELETEDOFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDRECRUIT_RECRUIT" Association="Self.FK_DELETEDRECRUIT_RECRUIT">
+            <End Role="RECRUIT" EntitySet="RECRUIT" />
+            <End Role="DELETEDRECRUIT" EntitySet="DELETEDRECRUIT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDSENIORCE_SENIORCE" Association="Self.FK_DELETEDSENIORCE_SENIORCE">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="DELETEDSENIORCE" EntitySet="DELETEDSENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDSOLDIER_SOLDIER" Association="Self.FK_DELETEDSOLDIER_SOLDIER">
+            <End Role="SOLDIER" EntitySet="SOLDIER" />
+            <End Role="DELETEDSOLDIER" EntitySet="DELETEDSOLDIER" />
+          </AssociationSet>
           <AssociationSet Name="FK_GENDER_JUNIORCE" Association="Self.FK_GENDER_JUNIORCE">
             <End Role="GENDER" EntitySet="GENDER" />
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
@@ -3140,6 +3422,10 @@
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
             <End Role="JUNIORCEALLOWANCE" EntitySet="JUNIORCEALLOWANCE" />
           </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCEPAYROLL_BANK" Association="Self.FK_JUNIORCEPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
+          </AssociationSet>
           <AssociationSet Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" Association="Self.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE">
             <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
             <End Role="JUNIORCEPAYROLLALLOWANCE" EntitySet="JUNIORCEPAYROLLALLOWANCE" />
@@ -3151,6 +3437,10 @@
           <AssociationSet Name="FK_JUNIORCEPROVIDENT_PROVIDENTFUND" Association="Self.FK_JUNIORCEPROVIDENT_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
             <End Role="JUNIORCEPROVIDENT" EntitySet="JUNIORCEPROVIDENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCETRIALPAY_BANK" Association="Self.FK_JUNIORCETRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
           </AssociationSet>
           <AssociationSet Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" Association="Self.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE">
             <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
@@ -3232,6 +3522,10 @@
             <End Role="COMMISSIONTYPE" EntitySet="COMMISSIONTYPE" />
             <End Role="OFFICERINTAKE" EntitySet="OFFICERINTAKE" />
           </AssociationSet>
+          <AssociationSet Name="FK_OFFICERPAYROLL_BANK" Association="Self.FK_OFFICERPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="OFFICERPAYROLL" EntitySet="OFFICERPAYROLL" />
+          </AssociationSet>
           <AssociationSet Name="FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE" Association="Self.FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE">
             <End Role="OFFICERPAYROLL" EntitySet="OFFICERPAYROLL" />
             <End Role="OFFICERPAYROLLALLOWANCE" EntitySet="OFFICERPAYROLLALLOWANCE" />
@@ -3243,6 +3537,10 @@
           <AssociationSet Name="FK_OFFICERPROVIDENT_PROVIDENTFUND" Association="Self.FK_OFFICERPROVIDENT_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
             <End Role="OFFICERPROVIDENT" EntitySet="OFFICERPROVIDENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERTRIALPAY_BANK" Association="Self.FK_OFFICERTRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="OFFICERTRIALPAY" EntitySet="OFFICERTRIALPAY" />
           </AssociationSet>
           <AssociationSet Name="FK_OFFICERTRIALPAY_OFFICERTRIALPAYALLOWANCE" Association="Self.FK_OFFICERTRIALPAY_OFFICERTRIALPAYALLOWANCE">
             <End Role="OFFICERTRIALPAY" EntitySet="OFFICERTRIALPAY" />
@@ -3372,6 +3670,10 @@
             <End Role="SENIORCE" EntitySet="SENIORCE" />
             <End Role="SENIORCETRIALPAY" EntitySet="SENIORCETRIALPAY" />
           </AssociationSet>
+          <AssociationSet Name="FK_SENIORCEPAYROLL_BANK" Association="Self.FK_SENIORCEPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
+          </AssociationSet>
           <AssociationSet Name="FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE" Association="Self.FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE">
             <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
             <End Role="SENIORCEPAYROLLALLOWANCE" EntitySet="SENIORCEPAYROLLALLOWANCE" />
@@ -3379,6 +3681,10 @@
           <AssociationSet Name="FK_SENIORCEPAYROLL_SENIORCEPAYROLLDEDUCTION" Association="Self.FK_SENIORCEPAYROLL_SENIORCEPAYROLLDEDUCTION">
             <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
             <End Role="SENIORCEPAYROLLDEDUCTION" EntitySet="SENIORCEPAYROLLDEDUCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCETRIALPAY_BANK" Association="Self.FK_SENIORCETRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SENIORCETRIALPAY" EntitySet="SENIORCETRIALPAY" />
           </AssociationSet>
           <AssociationSet Name="FK_SENIORCETRIALPAY_SENIORCETRIALPAYALLOWANCE" Association="Self.FK_SENIORCETRIALPAY_SENIORCETRIALPAYALLOWANCE">
             <End Role="SENIORCETRIALPAY" EntitySet="SENIORCETRIALPAY" />
@@ -3444,6 +3750,10 @@
             <End Role="SOLDIER" EntitySet="SOLDIER" />
             <End Role="SOLDIERTRIALPAY" EntitySet="SOLDIERTRIALPAY" />
           </AssociationSet>
+          <AssociationSet Name="FK_SOLDIERPAYROLL_BANK" Association="Self.FK_SOLDIERPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SOLDIERPAYROLL" EntitySet="SOLDIERPAYROLL" />
+          </AssociationSet>
           <AssociationSet Name="FK_SOLDIERPAYROLL_SOLDIERPAYROLLALLOWANCE" Association="Self.FK_SOLDIERPAYROLL_SOLDIERPAYROLLALLOWANCE">
             <End Role="SOLDIERPAYROLL" EntitySet="SOLDIERPAYROLL" />
             <End Role="SOLDIERPAYROLLALLOWANCE" EntitySet="SOLDIERPAYROLLALLOWANCE" />
@@ -3455,6 +3765,10 @@
           <AssociationSet Name="FK_SOLDIERPROVIDENT_PROVIDENTFUND" Association="Self.FK_SOLDIERPROVIDENT_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
             <End Role="SOLDIERPROVIDENT" EntitySet="SOLDIERPROVIDENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOLDIERTRIALPAY_BANK" Association="Self.FK_SOLDIERTRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SOLDIERTRIALPAY" EntitySet="SOLDIERTRIALPAY" />
           </AssociationSet>
           <AssociationSet Name="FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYALLOWANCE" Association="Self.FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYALLOWANCE">
             <End Role="SOLDIERTRIALPAY" EntitySet="SOLDIERTRIALPAY" />
@@ -3526,11 +3840,9 @@
           <EntitySet Name="JUNIORCE" EntityType="DBGAFPAYModel.JUNIORCE" />
           <EntitySet Name="JUNIORCEBANK" EntityType="DBGAFPAYModel.JUNIORCEBANK" />
           <EntitySet Name="JUNIORCEIMAGE" EntityType="DBGAFPAYModel.JUNIORCEIMAGE" />
-          <EntitySet Name="JUNIORCEPAYROLL" EntityType="DBGAFPAYModel.JUNIORCEPAYROLL" />
           <EntitySet Name="JUNIORCEPAYROLLALLOWANCE" EntityType="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" />
           <EntitySet Name="JUNIORCEPAYROLLDEDUCTION" EntityType="DBGAFPAYModel.JUNIORCEPAYROLLDEDUCTION" />
           <EntitySet Name="JUNIORCEPROVIDENT" EntityType="DBGAFPAYModel.JUNIORCEPROVIDENT" />
-          <EntitySet Name="JUNIORCETRIALPAY" EntityType="DBGAFPAYModel.JUNIORCETRIALPAY" />
           <EntitySet Name="JUNIORCETRIALPAYALLOWANCE" EntityType="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" />
           <EntitySet Name="JUNIORCETRIALPAYDEDUCTION" EntityType="DBGAFPAYModel.JUNIORCETRIALPAYDEDUCTION" />
           <EntitySet Name="MILITARYLEVSTEP" EntityType="DBGAFPAYModel.MILITARYLEVSTEP" />
@@ -3730,14 +4042,6 @@
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
             <End Role="JUNIORCEIMAGE" EntitySet="JUNIORCEIMAGE" />
           </AssociationSet>
-          <AssociationSet Name="FK_JUNIORCE_JUNIORCEPAYROLL" Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL">
-            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
-            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_JUNIORCE_JUNIORCETRIALPAY" Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY">
-            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
-            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
-          </AssociationSet>
           <AssociationSet Name="FK_JUNIORCE_PROVIDENTFUND" Association="DBGAFPAYModel.FK_JUNIORCE_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
@@ -3758,25 +4062,9 @@
             <End Role="UNIT" EntitySet="UNIT" />
             <End Role="JUNIORCE" EntitySet="JUNIORCE" />
           </AssociationSet>
-          <AssociationSet Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE">
-            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
-            <End Role="JUNIORCEPAYROLLALLOWANCE" EntitySet="JUNIORCEPAYROLLALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION">
-            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
-            <End Role="JUNIORCEPAYROLLDEDUCTION" EntitySet="JUNIORCEPAYROLLDEDUCTION" />
-          </AssociationSet>
           <AssociationSet Name="FK_JUNIORCEPROVIDENT_PROVIDENTFUND" Association="DBGAFPAYModel.FK_JUNIORCEPROVIDENT_PROVIDENTFUND">
             <End Role="PROVIDENTFUND" EntitySet="PROVIDENTFUND" />
             <End Role="JUNIORCEPROVIDENT" EntitySet="JUNIORCEPROVIDENT" />
-          </AssociationSet>
-          <AssociationSet Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE">
-            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
-            <End Role="JUNIORCETRIALPAYALLOWANCE" EntitySet="JUNIORCETRIALPAYALLOWANCE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION">
-            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
-            <End Role="JUNIORCETRIALPAYDEDUCTION" EntitySet="JUNIORCETRIALPAYDEDUCTION" />
           </AssociationSet>
           <AssociationSet Name="FK_MILITARYLEVSTEP_OFFICER" Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICER">
             <End Role="MILITARYLEVSTEP" EntitySet="MILITARYLEVSTEP" />
@@ -4197,6 +4485,108 @@
             <End Role="SENIORCE" EntitySet="SENIORCE" />
             <End Role="SENIORCEDEDUCTION" EntitySet="SENIORCEDEDUCTION" />
           </AssociationSet>
+          <EntitySet Name="DELETEDJUNIORCE" EntityType="DBGAFPAYModel.DELETEDJUNIORCE" />
+          <EntitySet Name="DELETEDOFFICER" EntityType="DBGAFPAYModel.DELETEDOFFICER" />
+          <EntitySet Name="DELETEDOFFICERCADET" EntityType="DBGAFPAYModel.DELETEDOFFICERCADET" />
+          <EntitySet Name="DELETEDRECRUIT" EntityType="DBGAFPAYModel.DELETEDRECRUIT" />
+          <EntitySet Name="DELETEDSENIORCE" EntityType="DBGAFPAYModel.DELETEDSENIORCE" />
+          <EntitySet Name="DELETEDSOLDIER" EntityType="DBGAFPAYModel.DELETEDSOLDIER" />
+          <AssociationSet Name="FK_DELETEDJUNIORCE_JUNIORCE" Association="DBGAFPAYModel.FK_DELETEDJUNIORCE_JUNIORCE">
+            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
+            <End Role="DELETEDJUNIORCE" EntitySet="DELETEDJUNIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDOFFICER_OFFICER" Association="DBGAFPAYModel.FK_DELETEDOFFICER_OFFICER">
+            <End Role="OFFICER" EntitySet="OFFICER" />
+            <End Role="DELETEDOFFICER" EntitySet="DELETEDOFFICER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDOFFICERCADET_OFFICERCADET" Association="DBGAFPAYModel.FK_DELETEDOFFICERCADET_OFFICERCADET">
+            <End Role="OFFICERCADET" EntitySet="OFFICERCADET" />
+            <End Role="DELETEDOFFICERCADET" EntitySet="DELETEDOFFICERCADET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDRECRUIT_RECRUIT" Association="DBGAFPAYModel.FK_DELETEDRECRUIT_RECRUIT">
+            <End Role="RECRUIT" EntitySet="RECRUIT" />
+            <End Role="DELETEDRECRUIT" EntitySet="DELETEDRECRUIT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDSENIORCE_SENIORCE" Association="DBGAFPAYModel.FK_DELETEDSENIORCE_SENIORCE">
+            <End Role="SENIORCE" EntitySet="SENIORCE" />
+            <End Role="DELETEDSENIORCE" EntitySet="DELETEDSENIORCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELETEDSOLDIER_SOLDIER" Association="DBGAFPAYModel.FK_DELETEDSOLDIER_SOLDIER">
+            <End Role="SOLDIER" EntitySet="SOLDIER" />
+            <End Role="DELETEDSOLDIER" EntitySet="DELETEDSOLDIER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERPAYROLL_BANK" Association="DBGAFPAYModel.FK_OFFICERPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="OFFICERPAYROLL" EntitySet="OFFICERPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFFICERTRIALPAY_BANK" Association="DBGAFPAYModel.FK_OFFICERTRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="OFFICERTRIALPAY" EntitySet="OFFICERTRIALPAY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCEPAYROLL_BANK" Association="DBGAFPAYModel.FK_SENIORCEPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SENIORCEPAYROLL" EntitySet="SENIORCEPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SENIORCETRIALPAY_BANK" Association="DBGAFPAYModel.FK_SENIORCETRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SENIORCETRIALPAY" EntitySet="SENIORCETRIALPAY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOLDIERPAYROLL_BANK" Association="DBGAFPAYModel.FK_SOLDIERPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SOLDIERPAYROLL" EntitySet="SOLDIERPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOLDIERTRIALPAY_BANK" Association="DBGAFPAYModel.FK_SOLDIERTRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="SOLDIERTRIALPAY" EntitySet="SOLDIERTRIALPAY" />
+          </AssociationSet>
+          <EntitySet Name="JUNIORCEPAYROLL" EntityType="DBGAFPAYModel.JUNIORCEPAYROLL" />
+          <EntitySet Name="JUNIORCETRIALPAY" EntityType="DBGAFPAYModel.JUNIORCETRIALPAY" />
+          <AssociationSet Name="FK_JUNIORCEPAYROLL_BANK" Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCETRIALPAY_BANK" Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_BANK">
+            <End Role="BANK" EntitySet="BANK" />
+            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCE_JUNIORCEPAYROLL" Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL">
+            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
+            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCE_JUNIORCETRIALPAY" Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY">
+            <End Role="JUNIORCE" EntitySet="JUNIORCE" />
+            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE">
+            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
+            <End Role="JUNIORCEPAYROLLALLOWANCE" EntitySet="JUNIORCEPAYROLLALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION">
+            <End Role="JUNIORCEPAYROLL" EntitySet="JUNIORCEPAYROLL" />
+            <End Role="JUNIORCEPAYROLLDEDUCTION" EntitySet="JUNIORCEPAYROLLDEDUCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE">
+            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
+            <End Role="JUNIORCETRIALPAYALLOWANCE" EntitySet="JUNIORCETRIALPAYALLOWANCE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION">
+            <End Role="JUNIORCETRIALPAY" EntitySet="JUNIORCETRIALPAY" />
+            <End Role="JUNIORCETRIALPAYDEDUCTION" EntitySet="JUNIORCETRIALPAYDEDUCTION" />
+          </AssociationSet>
+          <FunctionImport Name="procGetJCEBatchList" ReturnType="Collection(DateTime)" />
+          <FunctionImport Name="procGetSCEBatchList" ReturnType="Collection(DateTime)" />
+          <FunctionImport Name="procGetTotalJCETrial" ReturnType="Collection(Decimal)">
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="procGetTotalOCTrial" ReturnType="Collection(Decimal)">
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="procGetTotalRecruitTrial" ReturnType="Collection(Decimal)">
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="procGetTotalSCETrial" ReturnType="Collection(Decimal)">
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="procGetRecruitTrialPayList_Result">
           <Property Type="Int32" Name="RTRIALPAYID" Nullable="false" />
@@ -4275,6 +4665,14 @@
           <NavigationProperty Name="SENIORCEBANK" Relationship="DBGAFPAYModel.FK_BANK_SENIORCEBANK" FromRole="BANK" ToRole="SENIORCEBANK" />
           <NavigationProperty Name="SOLDIERBANK" Relationship="DBGAFPAYModel.FK_BANK_SOLDIERBANK" FromRole="BANK" ToRole="SOLDIERBANK" />
           <NavigationProperty Name="BANKNAME" Relationship="DBGAFPAYModel.FK_BANKNAME_BANK" FromRole="BANK" ToRole="BANKNAME" />
+          <NavigationProperty Name="OFFICERPAYROLL" Relationship="DBGAFPAYModel.FK_OFFICERPAYROLL_BANK" FromRole="BANK" ToRole="OFFICERPAYROLL" />
+          <NavigationProperty Name="OFFICERTRIALPAY" Relationship="DBGAFPAYModel.FK_OFFICERTRIALPAY_BANK" FromRole="BANK" ToRole="OFFICERTRIALPAY" />
+          <NavigationProperty Name="SENIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_BANK" FromRole="BANK" ToRole="SENIORCEPAYROLL" />
+          <NavigationProperty Name="SENIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_BANK" FromRole="BANK" ToRole="SENIORCETRIALPAY" />
+          <NavigationProperty Name="SOLDIERPAYROLL" Relationship="DBGAFPAYModel.FK_SOLDIERPAYROLL_BANK" FromRole="BANK" ToRole="SOLDIERPAYROLL" />
+          <NavigationProperty Name="SOLDIERTRIALPAY" Relationship="DBGAFPAYModel.FK_SOLDIERTRIALPAY_BANK" FromRole="BANK" ToRole="SOLDIERTRIALPAY" />
+          <NavigationProperty Name="JUNIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_BANK" FromRole="BANK" ToRole="JUNIORCEPAYROLL" />
+          <NavigationProperty Name="JUNIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_BANK" FromRole="BANK" ToRole="JUNIORCETRIALPAY" />
         </EntityType>
         <EntityType Name="BANKNAME">
           <Key>
@@ -4420,8 +4818,6 @@
           <NavigationProperty Name="GENERALSTATUS" Relationship="DBGAFPAYModel.FK_GENERALSTATUS_JUNIORCE" FromRole="JUNIORCE" ToRole="GENERALSTATUS" />
           <NavigationProperty Name="JUNIORCEBANK" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEBANK" FromRole="JUNIORCE" ToRole="JUNIORCEBANK" />
           <NavigationProperty Name="JUNIORCEIMAGE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEIMAGE" FromRole="JUNIORCE" ToRole="JUNIORCEIMAGE" />
-          <NavigationProperty Name="JUNIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" FromRole="JUNIORCE" ToRole="JUNIORCEPAYROLL" />
-          <NavigationProperty Name="JUNIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" FromRole="JUNIORCE" ToRole="JUNIORCETRIALPAY" />
           <NavigationProperty Name="PROVIDENTFUND" Relationship="DBGAFPAYModel.FK_JUNIORCE_PROVIDENTFUND" FromRole="JUNIORCE" ToRole="PROVIDENTFUND" />
           <NavigationProperty Name="REGION" Relationship="DBGAFPAYModel.FK_REGION_JUNIORCE" FromRole="JUNIORCE" ToRole="REGION" />
           <NavigationProperty Name="RELIGION" Relationship="DBGAFPAYModel.FK_RELIGION_JUNIORCE" FromRole="JUNIORCE" ToRole="RELIGION" />
@@ -4433,6 +4829,9 @@
           <Property Name="GHANAPOSTGPS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="JUNIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_JUNIORCEALLOWANCE_JUNIORCE" FromRole="JUNIORCE" ToRole="JUNIORCEALLOWANCE" />
           <NavigationProperty Name="JUNIORCEDEDUCTION" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEDEDUCTION" FromRole="JUNIORCE" ToRole="JUNIORCEDEDUCTION" />
+          <NavigationProperty Name="DELETEDJUNIORCE" Relationship="DBGAFPAYModel.FK_DELETEDJUNIORCE_JUNIORCE" FromRole="JUNIORCE" ToRole="DELETEDJUNIORCE" />
+          <NavigationProperty Name="JUNIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" FromRole="JUNIORCE" ToRole="JUNIORCEPAYROLL" />
+          <NavigationProperty Name="JUNIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" FromRole="JUNIORCE" ToRole="JUNIORCETRIALPAY" />
         </EntityType>
         <EntityType Name="JUNIORCEBANK">
           <Key>
@@ -4453,22 +4852,6 @@
           <Property Name="PICTUREPATH" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEIMAGE" FromRole="JUNIORCEIMAGE" ToRole="JUNIORCE" />
         </EntityType>
-        <EntityType Name="JUNIORCEPAYROLL">
-          <Key>
-            <PropertyRef Name="JUNIORCEPAYROLLID" />
-          </Key>
-          <Property Name="JUNIORCEPAYROLLID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="STATUS" Type="Int32" Nullable="false" />
-          <Property Name="JUNIORCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" FromRole="JUNIORCEPAYROLL" ToRole="JUNIORCE" />
-          <NavigationProperty Name="JUNIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLL" ToRole="JUNIORCEPAYROLLALLOWANCE" />
-          <NavigationProperty Name="JUNIORCEPAYROLLDEDUCTION" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" FromRole="JUNIORCEPAYROLL" ToRole="JUNIORCEPAYROLLDEDUCTION" />
-        </EntityType>
         <EntityType Name="JUNIORCEPAYROLLALLOWANCE">
           <Key>
             <PropertyRef Name="JUNIORCEPAYROLLALLOWANCEID" />
@@ -4477,8 +4860,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="JUNIORCEPAYROLLID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="JUNIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLLALLOWANCE" ToRole="JUNIORCEPAYROLL" />
           <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLLALLOWANCE" ToRole="ALLOWANCE" />
+          <NavigationProperty Name="JUNIORCEPAYROLL" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLLALLOWANCE" ToRole="JUNIORCEPAYROLL" />
         </EntityType>
         <EntityType Name="JUNIORCEPAYROLLDEDUCTION">
           <Key>
@@ -4502,22 +4885,6 @@
           <Property Name="PROVIDENTFUNDID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PROVIDENTFUND" Relationship="DBGAFPAYModel.FK_JUNIORCEPROVIDENT_PROVIDENTFUND" FromRole="JUNIORCEPROVIDENT" ToRole="PROVIDENTFUND" />
         </EntityType>
-        <EntityType Name="JUNIORCETRIALPAY">
-          <Key>
-            <PropertyRef Name="JUNIORCETRIALPAYID" />
-          </Key>
-          <Property Name="JUNIORCETRIALPAYID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="STATUS" Type="Int32" Nullable="false" />
-          <Property Name="JUNIORCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" FromRole="JUNIORCETRIALPAY" ToRole="JUNIORCE" />
-          <NavigationProperty Name="JUNIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAY" ToRole="JUNIORCETRIALPAYALLOWANCE" />
-          <NavigationProperty Name="JUNIORCETRIALPAYDEDUCTION" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" FromRole="JUNIORCETRIALPAY" ToRole="JUNIORCETRIALPAYDEDUCTION" />
-        </EntityType>
         <EntityType Name="JUNIORCETRIALPAYALLOWANCE">
           <Key>
             <PropertyRef Name="JUNIORCETRIALPAYALLOWANCEID" />
@@ -4526,8 +4893,8 @@
           <Property Name="AMOUNT" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
           <Property Name="JUNIORCETRIALPAYID" Type="Int32" Nullable="false" />
           <Property Name="ALLOWANCEID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="JUNIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAYALLOWANCE" ToRole="JUNIORCETRIALPAY" />
           <NavigationProperty Name="ALLOWANCE" Relationship="DBGAFPAYModel.FK_ALLOWANCE_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAYALLOWANCE" ToRole="ALLOWANCE" />
+          <NavigationProperty Name="JUNIORCETRIALPAY" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAYALLOWANCE" ToRole="JUNIORCETRIALPAY" />
         </EntityType>
         <EntityType Name="JUNIORCETRIALPAYDEDUCTION">
           <Key>
@@ -4566,7 +4933,7 @@
           <Property Name="OTHERNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PHONENUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="EMAILADDRESS" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="EMAILADDRESS" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="RESADDRESS" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="SERVICENUMBER" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="DATECOMMISSION" Type="DateTime" Nullable="false" Precision="0" />
@@ -4604,6 +4971,8 @@
           <NavigationProperty Name="SERVICE" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICER" FromRole="OFFICER" ToRole="SERVICE" />
           <NavigationProperty Name="UNIT" Relationship="DBGAFPAYModel.FK_UNIT_OFFICER" FromRole="OFFICER" ToRole="UNIT" />
           <NavigationProperty Name="PROVIDENTFUND1" Relationship="DBGAFPAYModel.OFFICERPROVIDENT" FromRole="OFFICER" ToRole="PROVIDENTFUND" />
+          <Property Name="GHANAPOSTGPS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DELETEDOFFICER" Relationship="DBGAFPAYModel.FK_DELETEDOFFICER_OFFICER" FromRole="OFFICER" ToRole="DELETEDOFFICER" />
         </EntityType>
         <EntityType Name="OFFICERALLOWANCE">
           <Key>
@@ -4705,7 +5074,7 @@
           <Property Name="OFFICEPAYROLLID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
@@ -4713,6 +5082,8 @@
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_OFFICER_OFFICERPAYROLL" FromRole="OFFICERPAYROLL" ToRole="OFFICER" />
           <NavigationProperty Name="OFFICERPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_OFFICERPAYROLL_OFFICERPAYROLLALLOWANCE" FromRole="OFFICERPAYROLL" ToRole="OFFICERPAYROLLALLOWANCE" />
           <NavigationProperty Name="OFFICERPAYROLLDEDUCTION" Relationship="DBGAFPAYModel.FK_OFFICERPAYROLL_OFFICERPAYROLLDEDUCTION" FromRole="OFFICERPAYROLL" ToRole="OFFICERPAYROLLDEDUCTION" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_OFFICERPAYROLL_BANK" FromRole="OFFICERPAYROLL" ToRole="BANK" />
         </EntityType>
         <EntityType Name="OFFICERPAYROLLALLOWANCE">
           <Key>
@@ -4746,7 +5117,7 @@
           <Property Name="OTRIALPAYID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
@@ -4754,6 +5125,8 @@
           <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_OFFICER_OFFICERTRIALPAY" FromRole="OFFICERTRIALPAY" ToRole="OFFICER" />
           <NavigationProperty Name="OFFICERTRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_OFFICERTRIALPAY_OFFICERTRIALPAYALLOWANCE" FromRole="OFFICERTRIALPAY" ToRole="OFFICERTRIALPAYALLOWANCE" />
           <NavigationProperty Name="OFFICERTRIALPAYDEDUCTION" Relationship="DBGAFPAYModel.FK_OFFICERTRIALPAY_OFFICERTRIALPAYDEDUCTION" FromRole="OFFICERTRIALPAY" ToRole="OFFICERTRIALPAYDEDUCTION" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_OFFICERTRIALPAY_BANK" FromRole="OFFICERTRIALPAY" ToRole="BANK" />
         </EntityType>
         <EntityType Name="OFFICERTRIALPAYALLOWANCE">
           <Key>
@@ -4855,6 +5228,7 @@
           <NavigationProperty Name="SERVICE" Relationship="DBGAFPAYModel.FK_SERVICE_RECRUIT" FromRole="RECRUIT" ToRole="SERVICE" />
           <NavigationProperty Name="TRAININGCENTER" Relationship="DBGAFPAYModel.FK_TRAININGCENTER_RECRUIT" FromRole="RECRUIT" ToRole="TRAININGCENTER" />
           <Property Name="GHANAPOSTGPS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DELETEDRECRUIT" Relationship="DBGAFPAYModel.FK_DELETEDRECRUIT_RECRUIT" FromRole="RECRUIT" ToRole="DELETEDRECRUIT" />
         </EntityType>
         <EntityType Name="RECRUITBANK">
           <Key>
@@ -4969,7 +5343,7 @@
           <Property Name="SENIORCEPAYROLLID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
@@ -4977,6 +5351,8 @@
           <NavigationProperty Name="SENIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLALLOWANCE" FromRole="SENIORCEPAYROLL" ToRole="SENIORCEPAYROLLALLOWANCE" />
           <NavigationProperty Name="SENIORCEPAYROLLDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_SENIORCEPAYROLLDEDUCTION" FromRole="SENIORCEPAYROLL" ToRole="SENIORCEPAYROLLDEDUCTION" />
           <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEPAYROLL" FromRole="SENIORCEPAYROLL" ToRole="SENIORCE" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_SENIORCEPAYROLL_BANK" FromRole="SENIORCEPAYROLL" ToRole="BANK" />
         </EntityType>
         <EntityType Name="SENIORCEPAYROLLALLOWANCE">
           <Key>
@@ -5010,7 +5386,7 @@
           <Property Name="SENIORCETRIALPAYID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
@@ -5018,6 +5394,8 @@
           <NavigationProperty Name="SENIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYALLOWANCE" FromRole="SENIORCETRIALPAY" ToRole="SENIORCETRIALPAYALLOWANCE" />
           <NavigationProperty Name="SENIORCETRIALPAYDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_SENIORCETRIALPAYDEDUCTION" FromRole="SENIORCETRIALPAY" ToRole="SENIORCETRIALPAYDEDUCTION" />
           <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCETRIALPAY" FromRole="SENIORCETRIALPAY" ToRole="SENIORCE" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_SENIORCETRIALPAY_BANK" FromRole="SENIORCETRIALPAY" ToRole="BANK" />
         </EntityType>
         <EntityType Name="SENIORCETRIALPAYALLOWANCE">
           <Key>
@@ -5069,7 +5447,7 @@
           <Property Name="OTHERNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PHONENUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="EMAILADDRESS" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="EMAILADDRESS" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="RESADDRESS" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="SERVICENUMBER" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="DATEPASSOUT" Type="DateTime" Nullable="false" Precision="0" />
@@ -5107,6 +5485,8 @@
           <NavigationProperty Name="SOLDIERTRIALPAY" Relationship="DBGAFPAYModel.FK_SOLDIER_SOLDIERTRIALPAY" FromRole="SOLDIER" ToRole="SOLDIERTRIALPAY" />
           <NavigationProperty Name="UNIT" Relationship="DBGAFPAYModel.FK_UNIT_SOLDIER" FromRole="SOLDIER" ToRole="UNIT" />
           <NavigationProperty Name="PROVIDENTFUND1" Relationship="DBGAFPAYModel.SOLDIERPROVIDENT" FromRole="SOLDIER" ToRole="PROVIDENTFUND" />
+          <Property Name="GHANAPOSTGPS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DELETEDSOLDIER" Relationship="DBGAFPAYModel.FK_DELETEDSOLDIER_SOLDIER" FromRole="SOLDIER" ToRole="DELETEDSOLDIER" />
         </EntityType>
         <EntityType Name="SOLDIERALLOWANCE">
           <Key>
@@ -5161,7 +5541,7 @@
           <Property Name="SOLDIERPAYROLLID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
@@ -5169,6 +5549,8 @@
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_SOLDIER_SOLDIERPAYROLL" FromRole="SOLDIERPAYROLL" ToRole="SOLDIER" />
           <NavigationProperty Name="SOLDIERPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_SOLDIERPAYROLL_SOLDIERPAYROLLALLOWANCE" FromRole="SOLDIERPAYROLL" ToRole="SOLDIERPAYROLLALLOWANCE" />
           <NavigationProperty Name="SOLDIERPAYROLLDEDUCTION" Relationship="DBGAFPAYModel.FK_SOLDIERPAYROLL_SOLDIERPAYROLLDEDUCTION" FromRole="SOLDIERPAYROLL" ToRole="SOLDIERPAYROLLDEDUCTION" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_SOLDIERPAYROLL_BANK" FromRole="SOLDIERPAYROLL" ToRole="BANK" />
         </EntityType>
         <EntityType Name="SOLDIERPAYROLLALLOWANCE">
           <Key>
@@ -5202,7 +5584,7 @@
           <Property Name="SOLDIERTRIALPAYID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
-          <Property Name="NETPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
           <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int32" Nullable="false" />
@@ -5210,6 +5592,8 @@
           <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_SOLDIER_SOLDIERTRIALPAY" FromRole="SOLDIERTRIALPAY" ToRole="SOLDIER" />
           <NavigationProperty Name="SOLDIERTRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYALLOWANCE" FromRole="SOLDIERTRIALPAY" ToRole="SOLDIERTRIALPAYALLOWANCE" />
           <NavigationProperty Name="SOLDIERTRIALPAYDEDUCTION" Relationship="DBGAFPAYModel.FK_SOLDIERTRIALPAY_SOLDIERTRIALPAYDEDUCTION" FromRole="SOLDIERTRIALPAY" ToRole="SOLDIERTRIALPAYDEDUCTION" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_SOLDIERTRIALPAY_BANK" FromRole="SOLDIERTRIALPAY" ToRole="BANK" />
         </EntityType>
         <EntityType Name="SOLDIERTRIALPAYALLOWANCE">
           <Key>
@@ -5715,30 +6099,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_JUNIORCE_JUNIORCEPAYROLL">
-          <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="JUNIORCE">
-              <PropertyRef Name="JUNIORCEID" />
-            </Principal>
-            <Dependent Role="JUNIORCEPAYROLL">
-              <PropertyRef Name="JUNIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_JUNIORCE_JUNIORCETRIALPAY">
-          <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="JUNIORCE">
-              <PropertyRef Name="JUNIORCEID" />
-            </Principal>
-            <Dependent Role="JUNIORCETRIALPAY">
-              <PropertyRef Name="JUNIORCEID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_JUNIORCE_PROVIDENTFUND">
           <End Type="DBGAFPAYModel.PROVIDENTFUND" Role="PROVIDENTFUND" Multiplicity="1" />
           <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="*" />
@@ -5799,30 +6159,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE">
-          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" Role="JUNIORCEPAYROLLALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="JUNIORCEPAYROLL">
-              <PropertyRef Name="JUNIORCEPAYROLLID" />
-            </Principal>
-            <Dependent Role="JUNIORCEPAYROLLALLOWANCE">
-              <PropertyRef Name="JUNIORCEPAYROLLID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION">
-          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCEPAYROLLDEDUCTION" Role="JUNIORCEPAYROLLDEDUCTION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="JUNIORCEPAYROLL">
-              <PropertyRef Name="JUNIORCEPAYROLLID" />
-            </Principal>
-            <Dependent Role="JUNIORCEPAYROLLDEDUCTION">
-              <PropertyRef Name="JUNIORCEPAYROLLID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_JUNIORCEPROVIDENT_PROVIDENTFUND">
           <End Type="DBGAFPAYModel.PROVIDENTFUND" Role="PROVIDENTFUND" Multiplicity="1" />
           <End Type="DBGAFPAYModel.JUNIORCEPROVIDENT" Role="JUNIORCEPROVIDENT" Multiplicity="*" />
@@ -5832,30 +6168,6 @@
             </Principal>
             <Dependent Role="JUNIORCEPROVIDENT">
               <PropertyRef Name="PROVIDENTFUNDID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE">
-          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" Role="JUNIORCETRIALPAYALLOWANCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="JUNIORCETRIALPAY">
-              <PropertyRef Name="JUNIORCETRIALPAYID" />
-            </Principal>
-            <Dependent Role="JUNIORCETRIALPAYALLOWANCE">
-              <PropertyRef Name="JUNIORCETRIALPAYID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION">
-          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="1" />
-          <End Type="DBGAFPAYModel.JUNIORCETRIALPAYDEDUCTION" Role="JUNIORCETRIALPAYDEDUCTION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="JUNIORCETRIALPAY">
-              <PropertyRef Name="JUNIORCETRIALPAYID" />
-            </Principal>
-            <Dependent Role="JUNIORCETRIALPAYDEDUCTION">
-              <PropertyRef Name="JUNIORCETRIALPAYID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6680,6 +6992,7 @@
           <Property Name="GHANAPOSTGPS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SENIORCEALLOWANCE" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE" FromRole="SENIORCE" ToRole="SENIORCEALLOWANCE" />
           <NavigationProperty Name="SENIORCEDEDUCTION" Relationship="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION" FromRole="SENIORCE" ToRole="SENIORCEDEDUCTION" />
+          <NavigationProperty Name="DELETEDSENIORCE" Relationship="DBGAFPAYModel.FK_DELETEDSENIORCE_SENIORCE" FromRole="SENIORCE" ToRole="DELETEDSENIORCE" />
         </EntityType>
         <Association Name="FK_BLOODGROUP_SENIORCE">
           <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
@@ -6881,6 +7194,7 @@
           <NavigationProperty Name="SERVICE" Relationship="DBGAFPAYModel.FK_SERVICE_OFFICERCADET" FromRole="OFFICERCADET" ToRole="SERVICE" />
           <NavigationProperty Name="OFFICERINTAKE" Relationship="DBGAFPAYModel.FK_OFFICERCADET_OFFICERINTAKE" FromRole="OFFICERCADET" ToRole="OFFICERINTAKE" />
           <Property Name="GHANAPOSTGPS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DELETEDOFFICERCADET" Relationship="DBGAFPAYModel.FK_DELETEDOFFICERCADET_OFFICERCADET" FromRole="OFFICERCADET" ToRole="DELETEDOFFICERCADET" />
         </EntityType>
         <Association Name="FK_BLOODGROUP_OFFICERCADET">
           <End Type="DBGAFPAYModel.BLOODGROUP" Role="BLOODGROUP" Multiplicity="1" />
@@ -7280,6 +7594,348 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DELETEDJUNIORCE">
+          <Key>
+            <PropertyRef Name="DELETEDJCEID" />
+          </Key>
+          <Property Name="DELETEDJCEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATETIMEDELETED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="JUNIORCEID" Type="Int32" Nullable="false" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_DELETEDJUNIORCE_JUNIORCE" FromRole="DELETEDJUNIORCE" ToRole="JUNIORCE" />
+        </EntityType>
+        <EntityType Name="DELETEDOFFICER">
+          <Key>
+            <PropertyRef Name="DELETEDOFFICERID" />
+          </Key>
+          <Property Name="DELETEDOFFICERID" Type="Int32" Nullable="false" />
+          <Property Name="DATETIMEDELETED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="OFFICERID" Type="Int32" Nullable="false" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OFFICER" Relationship="DBGAFPAYModel.FK_DELETEDOFFICER_OFFICER" FromRole="DELETEDOFFICER" ToRole="OFFICER" />
+        </EntityType>
+        <EntityType Name="DELETEDOFFICERCADET">
+          <Key>
+            <PropertyRef Name="DELETEDOCID" />
+          </Key>
+          <Property Name="DELETEDOCID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATETIMEDELETED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="OFFICERCADETID" Type="Int32" Nullable="false" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OFFICERCADET" Relationship="DBGAFPAYModel.FK_DELETEDOFFICERCADET_OFFICERCADET" FromRole="DELETEDOFFICERCADET" ToRole="OFFICERCADET" />
+        </EntityType>
+        <EntityType Name="DELETEDRECRUIT">
+          <Key>
+            <PropertyRef Name="DELETEDRECRUITID" />
+          </Key>
+          <Property Name="DELETEDRECRUITID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATETIMEDELETED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="RECRUITID" Type="Int32" Nullable="false" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RECRUIT" Relationship="DBGAFPAYModel.FK_DELETEDRECRUIT_RECRUIT" FromRole="DELETEDRECRUIT" ToRole="RECRUIT" />
+        </EntityType>
+        <EntityType Name="DELETEDSENIORCE">
+          <Key>
+            <PropertyRef Name="DELETEDSCEID" />
+          </Key>
+          <Property Name="DELETEDSCEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATETIMEDELETED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SENIORCEID" Type="Int32" Nullable="false" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SENIORCE" Relationship="DBGAFPAYModel.FK_DELETEDSENIORCE_SENIORCE" FromRole="DELETEDSENIORCE" ToRole="SENIORCE" />
+        </EntityType>
+        <EntityType Name="DELETEDSOLDIER">
+          <Key>
+            <PropertyRef Name="DELETEDSOLDIERID" />
+          </Key>
+          <Property Name="DELETEDSOLDIERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATETIMEDELETED" Type="DateTime" Precision="3" />
+          <Property Name="DELETEDBY" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SOLDIERID" Type="Int32" />
+          <Property Name="STATUS" Type="Int32" />
+          <NavigationProperty Name="SOLDIER" Relationship="DBGAFPAYModel.FK_DELETEDSOLDIER_SOLDIER" FromRole="DELETEDSOLDIER" ToRole="SOLDIER" />
+        </EntityType>
+        <Association Name="FK_DELETEDJUNIORCE_JUNIORCE">
+          <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.DELETEDJUNIORCE" Role="DELETEDJUNIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCE">
+              <PropertyRef Name="JUNIORCEID" />
+            </Principal>
+            <Dependent Role="DELETEDJUNIORCE">
+              <PropertyRef Name="JUNIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDOFFICER_OFFICER">
+          <End Type="DBGAFPAYModel.OFFICER" Role="OFFICER" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.DELETEDOFFICER" Role="DELETEDOFFICER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICER">
+              <PropertyRef Name="OFFICERID" />
+            </Principal>
+            <Dependent Role="DELETEDOFFICER">
+              <PropertyRef Name="OFFICERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDOFFICERCADET_OFFICERCADET">
+          <End Type="DBGAFPAYModel.OFFICERCADET" Role="OFFICERCADET" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.DELETEDOFFICERCADET" Role="DELETEDOFFICERCADET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Principal>
+            <Dependent Role="DELETEDOFFICERCADET">
+              <PropertyRef Name="OFFICERCADETID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDRECRUIT_RECRUIT">
+          <End Type="DBGAFPAYModel.RECRUIT" Role="RECRUIT" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.DELETEDRECRUIT" Role="DELETEDRECRUIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RECRUIT">
+              <PropertyRef Name="RECRIUTID" />
+            </Principal>
+            <Dependent Role="DELETEDRECRUIT">
+              <PropertyRef Name="RECRUITID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDSENIORCE_SENIORCE">
+          <End Type="DBGAFPAYModel.SENIORCE" Role="SENIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.DELETEDSENIORCE" Role="DELETEDSENIORCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Principal>
+            <Dependent Role="DELETEDSENIORCE">
+              <PropertyRef Name="SENIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELETEDSOLDIER_SOLDIER">
+          <End Type="DBGAFPAYModel.SOLDIER" Role="SOLDIER" Multiplicity="0..1" />
+          <End Type="DBGAFPAYModel.DELETEDSOLDIER" Role="DELETEDSOLDIER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOLDIER">
+              <PropertyRef Name="SOLDEIRID" />
+            </Principal>
+            <Dependent Role="DELETEDSOLDIER">
+              <PropertyRef Name="SOLDIERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERPAYROLL_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERPAYROLL" Role="OFFICERPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="OFFICERPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFFICERTRIALPAY_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.OFFICERTRIALPAY" Role="OFFICERTRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="OFFICERTRIALPAY">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCEPAYROLL_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCEPAYROLL" Role="SENIORCEPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SENIORCEPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SENIORCETRIALPAY_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SENIORCETRIALPAY" Role="SENIORCETRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SENIORCETRIALPAY">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOLDIERPAYROLL_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SOLDIERPAYROLL" Role="SOLDIERPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SOLDIERPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOLDIERTRIALPAY_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.SOLDIERTRIALPAY" Role="SOLDIERTRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="SOLDIERTRIALPAY">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="JUNIORCEPAYROLL">
+          <Key>
+            <PropertyRef Name="JUNIORCEPAYROLLID" />
+          </Key>
+          <Property Name="JUNIORCEPAYROLLID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <Property Name="JUNIORCEID" Type="Int32" Nullable="false" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_BANK" FromRole="JUNIORCEPAYROLL" ToRole="BANK" />
+          <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" FromRole="JUNIORCEPAYROLL" ToRole="JUNIORCE" />
+          <NavigationProperty Name="JUNIORCEPAYROLLALLOWANCE" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" FromRole="JUNIORCEPAYROLL" ToRole="JUNIORCEPAYROLLALLOWANCE" />
+          <NavigationProperty Name="JUNIORCEPAYROLLDEDUCTION" Relationship="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" FromRole="JUNIORCEPAYROLL" ToRole="JUNIORCEPAYROLLDEDUCTION" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
+        </EntityType>
+        <EntityType Name="JUNIORCETRIALPAY">
+          <Key>
+            <PropertyRef Name="JUNIORCETRIALPAYID" />
+          </Key>
+          <Property Name="JUNIORCETRIALPAYID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PAYDATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CONSTPAY" Type="Decimal" Nullable="false" Precision="20" Scale="2" />
+          <Property Name="DATETIMEINSERTED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="INSERTEDBY" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <Property Name="JUNIORCEID" Type="Int32" Nullable="false" />
+          <Property Name="BANKID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BANK" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_BANK" FromRole="JUNIORCETRIALPAY" ToRole="BANK" />
+          <NavigationProperty Name="JUNIORCE" Relationship="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" FromRole="JUNIORCETRIALPAY" ToRole="JUNIORCE" />
+          <NavigationProperty Name="JUNIORCETRIALPAYALLOWANCE" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" FromRole="JUNIORCETRIALPAY" ToRole="JUNIORCETRIALPAYALLOWANCE" />
+          <NavigationProperty Name="JUNIORCETRIALPAYDEDUCTION" Relationship="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" FromRole="JUNIORCETRIALPAY" ToRole="JUNIORCETRIALPAYDEDUCTION" />
+          <Property Name="NETPAY" Type="Decimal" Precision="20" Scale="2" />
+        </EntityType>
+        <Association Name="FK_JUNIORCEPAYROLL_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="JUNIORCEPAYROLL">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCETRIALPAY_BANK">
+          <End Type="DBGAFPAYModel.BANK" Role="BANK" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BANK">
+              <PropertyRef Name="BANKID" />
+            </Principal>
+            <Dependent Role="JUNIORCETRIALPAY">
+              <PropertyRef Name="BANKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCE_JUNIORCEPAYROLL">
+          <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCE">
+              <PropertyRef Name="JUNIORCEID" />
+            </Principal>
+            <Dependent Role="JUNIORCEPAYROLL">
+              <PropertyRef Name="JUNIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCE_JUNIORCETRIALPAY">
+          <End Type="DBGAFPAYModel.JUNIORCE" Role="JUNIORCE" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCE">
+              <PropertyRef Name="JUNIORCEID" />
+            </Principal>
+            <Dependent Role="JUNIORCETRIALPAY">
+              <PropertyRef Name="JUNIORCEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE">
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" Role="JUNIORCEPAYROLLALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCEPAYROLL">
+              <PropertyRef Name="JUNIORCEPAYROLLID" />
+            </Principal>
+            <Dependent Role="JUNIORCEPAYROLLALLOWANCE">
+              <PropertyRef Name="JUNIORCEPAYROLLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION">
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLL" Role="JUNIORCEPAYROLL" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCEPAYROLLDEDUCTION" Role="JUNIORCEPAYROLLDEDUCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCEPAYROLL">
+              <PropertyRef Name="JUNIORCEPAYROLLID" />
+            </Principal>
+            <Dependent Role="JUNIORCEPAYROLLDEDUCTION">
+              <PropertyRef Name="JUNIORCEPAYROLLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE">
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" Role="JUNIORCETRIALPAYALLOWANCE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCETRIALPAY">
+              <PropertyRef Name="JUNIORCETRIALPAYID" />
+            </Principal>
+            <Dependent Role="JUNIORCETRIALPAYALLOWANCE">
+              <PropertyRef Name="JUNIORCETRIALPAYID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION">
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAY" Role="JUNIORCETRIALPAY" Multiplicity="1" />
+          <End Type="DBGAFPAYModel.JUNIORCETRIALPAYDEDUCTION" Role="JUNIORCETRIALPAYDEDUCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JUNIORCETRIALPAY">
+              <PropertyRef Name="JUNIORCETRIALPAYID" />
+            </Principal>
+            <Dependent Role="JUNIORCETRIALPAYDEDUCTION">
+              <PropertyRef Name="JUNIORCETRIALPAYID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7456,20 +8112,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="JUNIORCEPAYROLL">
-            <EntityTypeMapping TypeName="DBGAFPAYModel.JUNIORCEPAYROLL">
-              <MappingFragment StoreEntitySet="JUNIORCEPAYROLL">
-                <ScalarProperty Name="JUNIORCEID" ColumnName="JUNIORCEID" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
-                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
-                <ScalarProperty Name="NETPAY" ColumnName="NETPAY" />
-                <ScalarProperty Name="CONSTPAY" ColumnName="CONSTPAY" />
-                <ScalarProperty Name="PAYDATE" ColumnName="PAYDATE" />
-                <ScalarProperty Name="JUNIORCEPAYROLLID" ColumnName="JUNIORCEPAYROLLID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="JUNIORCEPAYROLLALLOWANCE">
             <EntityTypeMapping TypeName="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE">
               <MappingFragment StoreEntitySet="JUNIORCEPAYROLLALLOWANCE">
@@ -7498,20 +8140,6 @@
               <MappingFragment StoreEntitySet="JUNIORCEPROVIDENT">
                 <ScalarProperty Name="PROVIDENTFUNDID" ColumnName="PROVIDENTFUNDID" />
                 <ScalarProperty Name="JUNIORCEID" ColumnName="JUNIORCEID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="JUNIORCETRIALPAY">
-            <EntityTypeMapping TypeName="DBGAFPAYModel.JUNIORCETRIALPAY">
-              <MappingFragment StoreEntitySet="JUNIORCETRIALPAY">
-                <ScalarProperty Name="JUNIORCEID" ColumnName="JUNIORCEID" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
-                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
-                <ScalarProperty Name="NETPAY" ColumnName="NETPAY" />
-                <ScalarProperty Name="CONSTPAY" ColumnName="CONSTPAY" />
-                <ScalarProperty Name="PAYDATE" ColumnName="PAYDATE" />
-                <ScalarProperty Name="JUNIORCETRIALPAYID" ColumnName="JUNIORCETRIALPAYID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7552,6 +8180,7 @@
           <EntitySetMapping Name="OFFICER">
             <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICER">
               <MappingFragment StoreEntitySet="OFFICER">
+                <ScalarProperty Name="GHANAPOSTGPS" ColumnName="GHANAPOSTGPS" />
                 <ScalarProperty Name="PROVIDENTFUNDID" ColumnName="PROVIDENTFUNDID" />
                 <ScalarProperty Name="UNITID" ColumnName="UNITID" />
                 <ScalarProperty Name="MILITARYLEVSTEPID" ColumnName="MILITARYLEVSTEPID" />
@@ -7671,6 +8300,7 @@
           <EntitySetMapping Name="OFFICERPAYROLL">
             <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERPAYROLL">
               <MappingFragment StoreEntitySet="OFFICERPAYROLL">
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
                 <ScalarProperty Name="OFFICERID" ColumnName="OFFICERID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
@@ -7708,6 +8338,7 @@
           <EntitySetMapping Name="OFFICERTRIALPAY">
             <EntityTypeMapping TypeName="DBGAFPAYModel.OFFICERTRIALPAY">
               <MappingFragment StoreEntitySet="OFFICERTRIALPAY">
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
                 <ScalarProperty Name="OFFICERID" ColumnName="OFFICERID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
@@ -7889,6 +8520,7 @@
           <EntitySetMapping Name="SENIORCEPAYROLL">
             <EntityTypeMapping TypeName="DBGAFPAYModel.SENIORCEPAYROLL">
               <MappingFragment StoreEntitySet="SENIORCEPAYROLL">
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
                 <ScalarProperty Name="SENIORCEID" ColumnName="SENIORCEID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
@@ -7926,6 +8558,7 @@
           <EntitySetMapping Name="SENIORCETRIALPAY">
             <EntityTypeMapping TypeName="DBGAFPAYModel.SENIORCETRIALPAY">
               <MappingFragment StoreEntitySet="SENIORCETRIALPAY">
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
                 <ScalarProperty Name="SENIORCEID" ColumnName="SENIORCEID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
@@ -7973,6 +8606,7 @@
           <EntitySetMapping Name="SOLDIER">
             <EntityTypeMapping TypeName="DBGAFPAYModel.SOLDIER">
               <MappingFragment StoreEntitySet="SOLDIER">
+                <ScalarProperty Name="GHANAPOSTGPS" ColumnName="GHANAPOSTGPS" />
                 <ScalarProperty Name="PROVIDENTFUNDID" ColumnName="PROVIDENTFUNDID" />
                 <ScalarProperty Name="UNITID" ColumnName="UNITID" />
                 <ScalarProperty Name="MILITARYLEVSTEPID" ColumnName="MILITARYLEVSTEPID" />
@@ -8048,6 +8682,7 @@
           <EntitySetMapping Name="SOLDIERPAYROLL">
             <EntityTypeMapping TypeName="DBGAFPAYModel.SOLDIERPAYROLL">
               <MappingFragment StoreEntitySet="SOLDIERPAYROLL">
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
                 <ScalarProperty Name="SOLDEIRID" ColumnName="SOLDEIRID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
@@ -8085,6 +8720,7 @@
           <EntitySetMapping Name="SOLDIERTRIALPAY">
             <EntityTypeMapping TypeName="DBGAFPAYModel.SOLDIERTRIALPAY">
               <MappingFragment StoreEntitySet="SOLDIERTRIALPAY">
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
                 <ScalarProperty Name="SOLDEIRID" ColumnName="SOLDEIRID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
@@ -8333,6 +8969,108 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DELETEDJUNIORCE">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.DELETEDJUNIORCE">
+              <MappingFragment StoreEntitySet="DELETEDJUNIORCE">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="JUNIORCEID" ColumnName="JUNIORCEID" />
+                <ScalarProperty Name="DELETEDBY" ColumnName="DELETEDBY" />
+                <ScalarProperty Name="DATETIMEDELETED" ColumnName="DATETIMEDELETED" />
+                <ScalarProperty Name="DELETEDJCEID" ColumnName="DELETEDJCEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DELETEDOFFICER">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.DELETEDOFFICER">
+              <MappingFragment StoreEntitySet="DELETEDOFFICER">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="OFFICERID" ColumnName="OFFICERID" />
+                <ScalarProperty Name="DELETEDBY" ColumnName="DELETEDBY" />
+                <ScalarProperty Name="DATETIMEDELETED" ColumnName="DATETIMEDELETED" />
+                <ScalarProperty Name="DELETEDOFFICERID" ColumnName="DELETEDOFFICERID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DELETEDOFFICERCADET">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.DELETEDOFFICERCADET">
+              <MappingFragment StoreEntitySet="DELETEDOFFICERCADET">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="OFFICERCADETID" ColumnName="OFFICERCADETID" />
+                <ScalarProperty Name="DELETEDBY" ColumnName="DELETEDBY" />
+                <ScalarProperty Name="DATETIMEDELETED" ColumnName="DATETIMEDELETED" />
+                <ScalarProperty Name="DELETEDOCID" ColumnName="DELETEDOCID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DELETEDRECRUIT">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.DELETEDRECRUIT">
+              <MappingFragment StoreEntitySet="DELETEDRECRUIT">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="RECRUITID" ColumnName="RECRUITID" />
+                <ScalarProperty Name="DELETEDBY" ColumnName="DELETEDBY" />
+                <ScalarProperty Name="DATETIMEDELETED" ColumnName="DATETIMEDELETED" />
+                <ScalarProperty Name="DELETEDRECRUITID" ColumnName="DELETEDRECRUITID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DELETEDSENIORCE">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.DELETEDSENIORCE">
+              <MappingFragment StoreEntitySet="DELETEDSENIORCE">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="SENIORCEID" ColumnName="SENIORCEID" />
+                <ScalarProperty Name="DELETEDBY" ColumnName="DELETEDBY" />
+                <ScalarProperty Name="DATETIMEDELETED" ColumnName="DATETIMEDELETED" />
+                <ScalarProperty Name="DELETEDSCEID" ColumnName="DELETEDSCEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DELETEDSOLDIER">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.DELETEDSOLDIER">
+              <MappingFragment StoreEntitySet="DELETEDSOLDIER">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="SOLDIERID" ColumnName="SOLDIERID" />
+                <ScalarProperty Name="DELETEDBY" ColumnName="DELETEDBY" />
+                <ScalarProperty Name="DATETIMEDELETED" ColumnName="DATETIMEDELETED" />
+                <ScalarProperty Name="DELETEDSOLDIERID" ColumnName="DELETEDSOLDIERID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JUNIORCEPAYROLL">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.JUNIORCEPAYROLL">
+              <MappingFragment StoreEntitySet="JUNIORCEPAYROLL">
+                <ScalarProperty Name="NETPAY" ColumnName="NETPAY" />
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
+                <ScalarProperty Name="JUNIORCEID" ColumnName="JUNIORCEID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
+                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
+                <ScalarProperty Name="CONSTPAY" ColumnName="CONSTPAY" />
+                <ScalarProperty Name="PAYDATE" ColumnName="PAYDATE" />
+                <ScalarProperty Name="JUNIORCEPAYROLLID" ColumnName="JUNIORCEPAYROLLID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JUNIORCETRIALPAY">
+            <EntityTypeMapping TypeName="DBGAFPAYModel.JUNIORCETRIALPAY">
+              <MappingFragment StoreEntitySet="JUNIORCETRIALPAY">
+                <ScalarProperty Name="NETPAY" ColumnName="NETPAY" />
+                <ScalarProperty Name="BANKID" ColumnName="BANKID" />
+                <ScalarProperty Name="JUNIORCEID" ColumnName="JUNIORCEID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="INSERTEDBY" ColumnName="INSERTEDBY" />
+                <ScalarProperty Name="DATETIMEINSERTED" ColumnName="DATETIMEINSERTED" />
+                <ScalarProperty Name="CONSTPAY" ColumnName="CONSTPAY" />
+                <ScalarProperty Name="PAYDATE" ColumnName="PAYDATE" />
+                <ScalarProperty Name="JUNIORCETRIALPAYID" ColumnName="JUNIORCETRIALPAYID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="procGetJCEBatchList" FunctionName="DBGAFPAYModel.Store.procGetJCEBatchList" />
+          <FunctionImportMapping FunctionImportName="procGetSCEBatchList" FunctionName="DBGAFPAYModel.Store.procGetSCEBatchList" />
+          <FunctionImportMapping FunctionImportName="procGetTotalJCETrial" FunctionName="DBGAFPAYModel.Store.procGetTotalJCETrial" />
+          <FunctionImportMapping FunctionImportName="procGetTotalOCTrial" FunctionName="DBGAFPAYModel.Store.procGetTotalOCTrial" />
+          <FunctionImportMapping FunctionImportName="procGetTotalRecruitTrial" FunctionName="DBGAFPAYModel.Store.procGetTotalRecruitTrial" />
+          <FunctionImportMapping FunctionImportName="procGetTotalSCETrial" FunctionName="DBGAFPAYModel.Store.procGetTotalSCETrial" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

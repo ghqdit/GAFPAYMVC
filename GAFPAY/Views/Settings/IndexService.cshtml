@@ -40,18 +40,7 @@
                     <a class="" onclick="removeItem(@item.ServiceID,'@item.ServiceName')"><i class="fas fa-trash-alt"></i></a>
 
                 </td>
-
-                @*@if (User.IsInRole("AccountAdmin") || User.IsInRole("SuperUser"))
-                    {
-                        <td class="text-center">
-
-                            <a class="" href="@Url.Action("EditExpense", new {id = item.ExpenseID})"><i class="fas fa-pencil-alt"></i></a> |
-
-                            <a class="" onclick="removeItem(@item.ExpenseID, '@item.Detail', '@item.Date')"><i class="fas fa-trash-alt"></i></a>
-                     
-
-                        </td>
-                    }*@
+                 
             </tr>
         }
     </table>
@@ -59,16 +48,15 @@
 </div>
 <script src="~/Scripts/tableList.js"></script>
 <script>
-
-    function removeItem(X,Y) {
+    function removeItem(X, Y) {
         swal({
             title: "Are you sure",
-            text: "Delete " + Y + "?",
-            type: 'warning',
+            text: "Delete " + Y + " ?",
+            type: "warning",
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: "Delete",
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Delete ",
+            closeOnConfirm: false,
             showLoaderOnConfirm: true,
             preConfirm: function () {
                 return new Promise(function (resolve) {
@@ -79,29 +67,46 @@
                     dataType: 'json'
                 })
                     .done(function (response) {
-                        swal({
-                            title: "Successful",
-                            text: response.Message+ " deleted successfully",
-                            type: "success",
-                            showCancelButton: false,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "OK",
-                            timer: 5000,
-                            closeOnConfirm: true
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " deleted successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
 
 
-                        })
-                        window.location.href = '@Url.Action("IndexService", "Settings")';
+                            })
+                            window.location.href = '@Url.Action("IndexService", "Settings")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
 
                     })
                     .fail(function () {
                         swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
                     });
             });
-    },
-    allowOutsideClick: false
-    });
     }
+
+
+
+    },
+        @* *@);
+    }
+
 
 
 </script>

@@ -37,6 +37,31 @@ namespace GAFPAY.ViewData
             SelectList payMonths = new SelectList(months, "Key", "Value");
             return payMonths;
         }
+        public SelectList getTrialPayMonth()
+        {
+            Dictionary<int, string> months = new Dictionary<int, string>();
+            string[] monthArray = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+            var monthPrev = DateTime.Now.AddMonths(-1).ToString("MMMM");
+            var monthPrev1 = DateTime.Now.AddMonths(-1).ToString("MMMM-yyyy");
+            var monthNext = DateTime.Now.AddMonths(+1).ToString("MMMM");
+            var monthNext1 = DateTime.Now.AddMonths(+1).ToString("MMMM-yyyy");
+            var month = DateTime.Now.ToString("MMMM");
+            var mon = DateTime.Now.Month;
+            var month1 = DateTime.Now.ToString("MMMM-yyyy");
+            var date = DateTime.Now.Month;
+
+            var nextMonth = date + 1;
+            var PrevMonth = date - 1;
+            var monthIDCurrent = Array.IndexOf(monthArray, (month)) + 1;
+            var monthIDPrev = Array.IndexOf(monthArray, monthPrev) + 1;
+            var monthIDNext = Array.IndexOf(monthArray, monthNext) + 1;
+             
+            // months.Add(monthIDPrev, monthPrev1); 
+            months.Add(monthIDCurrent, month1);
+            months.Add(monthIDNext, monthNext1); 
+            SelectList payMonths = new SelectList(months, "Key", "Value");
+            return payMonths;
+        }
 
         public List<RecruitBatchTrial> GetRecruitBatchTrialList()
         {
@@ -48,10 +73,21 @@ namespace GAFPAY.ViewData
             return trialPay;
         }
 
-        public List<RecruitBatchTrial> GetrecruitBatchTrialList1()
+        public List<RecruitBatchTrialDetails> GetRecruitBatchTrialDetailsList(DateTime paydate)
         {
-            var tPay = db.RECRUITTRIALPAY.GroupBy(a => a.PAYDATE).OrderByDescending(a=>a.Key);
-            return null;
+            var details = db.RECRUITTRIALPAY.Where(a => a.PAYDATE == paydate).Select(a => new RecruitBatchTrialDetails()
+            {
+                RecruitID = a.RECRIUTID,
+                PayDate = a.PAYDATE,
+                Surname = a.RECRUIT.SURNAME,
+                Othernames = a.RECRUIT.OTHERNAME,
+                ConstPay = a.CONSTPAY,
+                ServiceNumber = a.RECRUIT.SERVICENUMBER,
+                RecruitTrialPayID = a.RTRIALPAYID
+
+            }).ToList();
+
+            return details;
         } 
 
         public List<OCBatchTrial> GetOCBatchTrialList()
@@ -64,6 +100,87 @@ namespace GAFPAY.ViewData
                     }).OrderByDescending(a => a.PayDate).ToList();
             return trialPay;
         }
+
+        public List<OCBatchTrialDetails> GetOCBatchTrialDetailsList(DateTime paydate)
+        {
+            var details = db.OFFICERCADETTRIALPAY.Where(a => a.PAYDATE == paydate).Select(a => new OCBatchTrialDetails()
+            {
+                OCID = a.OFFICERCADETID,
+                PayDate = a.PAYDATE,
+                Surname = a.OFFICERCADET.SURNAME,
+                Othernames = a.OFFICERCADET.OTHERNAME,
+                ConstPay = a.CONSTPAY, 
+                ServiceNumber = a.OFFICERCADET.SERVICENUMBER,
+                OCTrialPayID=a.OCTRIALPAYID
+
+            }).ToList();
+
+            return details;
+        }
+
+        public List<JCEBatchTrial> GetJCEBatchTrialList()
+        {
+            var trialPay = db.procGetJCEBatchList()
+                    .Select(a => new JCEBatchTrial()
+                    {
+                        PayDate = a.Value
+                    }).OrderByDescending(a => a.PayDate).ToList();
+            return trialPay;
+        }
+
+        public List<JCEBatchTrialDetails> GetJCEBatchTrialDetailsList(DateTime paydate)
+        {
+            var details = db.JUNIORCETRIALPAY.Where(a => a.PAYDATE == paydate && a.STATUS==1).Select(a => new JCEBatchTrialDetails()
+            {
+                JuniorCEID = a.JUNIORCEID,
+                TrialPayID= a.JUNIORCETRIALPAYID,
+                PayDate = a.PAYDATE,
+                Surname = a.JUNIORCE.SURNAME,
+                Othernames = a.JUNIORCE.OTHERNAME,
+                ConstPay = a.CONSTPAY,
+                NetPay = a.NETPAY,
+                ServiceNumber = a.JUNIORCE.SERVICENUMBER
+
+            }).ToList();
+
+            return details;
+        }
+
+        public List<SCEBatchTrial> GetSCEBatchTrialList()
+        {
+            var trialPay = db.procGetSCEBatchList()
+                    .Select(a => new SCEBatchTrial()
+                    {
+                        PayDate = a.Value
+                    }).OrderByDescending(a => a.PayDate).ToList();
+            return trialPay;
+        }
+
+
+        public List<SCEBatchTrialDetails> GetSCEBatchTrialDetailsList(DateTime paydate)
+        {
+            var details = db.SENIORCETRIALPAY.Where(a => a.PAYDATE == paydate && a.STATUS==1 ).Select(a => new SCEBatchTrialDetails()
+            {
+                TrialPayID = a.SENIORCETRIALPAYID,
+                SeniorCEID = a.SENIORCEID,
+                PayDate = a.PAYDATE,
+                Surname = a.SENIORCE.SURNAME,
+                Othernames = a.SENIORCE.OTHERNAME,
+                ConstPay = a.CONSTPAY,
+                NetPay = a.NETPAY, 
+                ServiceNumber = a.SENIORCE.SERVICENUMBER
+
+            }).ToList();
+
+            return details;
+        }
+
+        //public List<RecruitBatchTrial> GetrecruitBatchTrialList1()
+        //{
+        //    var tPay = db.RECRUITTRIALPAY.GroupBy(a => a.PAYDATE).OrderByDescending(a=>a.Key);
+        //    return null;
+        //} 
+
 
 
         public decimal calculateDisabilityAllowance(decimal constPay)

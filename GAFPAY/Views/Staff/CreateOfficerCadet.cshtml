@@ -342,7 +342,7 @@
 
         var items = '<option value="">Select Officer Intake </option>';
         if (CommissionTypeID !== undefined) {
-            $.post("@Url.Action("FillOIntake", "Settings")" + "?id=" + CommissionTypeID, function (data) {
+            $.post("@Url.Action("FillOIntake", "Settings")" + "?id=" + CommissionTypeID, function(data) {
 
                 for (var i = 0; i < data.length; i++) {
                     items += "<option value='" + data[i].OFFICERINTAKEID + "'>" + data[i].OFFICERINTAKENAME + "</option>";
@@ -351,10 +351,10 @@
                 $('#OfficerIntakeID').empty().append(items);
             });
         }
-         //populateRecruitCourse(ServiceID);
+        //populateRecruitCourse(ServiceID);
     }
-      
-    $(document).on("keypress keyup blur", '.PhoneNumber', function (event) {
+
+    $(document).on("keypress keyup blur", '.PhoneNumber', function(event) {
         $(this).val($(this).val().replace(/[^0-9]/g, ''));
         if (event.which != 8 && (event.which < 48 || event.which > 57)) {
             event.preventDefault();
@@ -362,12 +362,11 @@
     });
 
 
-
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#OfficerCadetPic')
                     .attr('src', e.target.result)
                     .width(250)
@@ -377,7 +376,7 @@
         }
     }
 
-    $(function () {
+    $(function() {
         $("#DOB").datepicker({
             dateFormat: 'dd-MM-yy',
             maxDate: 0,
@@ -388,7 +387,7 @@
     });
 
 
-    $(function () {
+    $(function() {
         $("#OfficerStartDate").datepicker({
             dateFormat: 'dd-MM-yy',
             maxDate: 0,
@@ -408,7 +407,7 @@
     });
 
 
-    function sendForm() {
+    @*function sendForm() {
 
         var form = $('#NewFormX').get(0);
 
@@ -448,6 +447,72 @@
 
             }
         });
+    }*@
+
+        
+    function sendForm() {
+        var form = $('#NewFormX').get(0);
+        swal({
+            title: "Save changes",
+            text: "Are you sure you want to save?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Save ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("CreateOfficerCadet","Staff")",
+                        type: 'POST',
+                    data: new FormData(form),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " saved successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#1E90FF",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
+
+
+                            })
+                            window.location.href = '@Url.Action("IndexOfficerCadet", "Staff")';
+
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+            });
     }
+
+
+
+    },
+        @* *@);
+    }
+
+
+
 
 </script>

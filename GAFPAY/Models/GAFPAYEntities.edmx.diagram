@@ -17,11 +17,9 @@
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCE" Width="1.5" PointX="18.75" PointY="74.75" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEBANK" Width="1.5" PointX="24" PointY="79.375" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEIMAGE" Width="1.5" PointX="21" PointY="86.75" />
-        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLL" Width="1.5" PointX="21" PointY="91.625" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLLALLOWANCE" Width="1.5" PointX="23.25" PointY="96.125" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLLDEDUCTION" Width="1.5" PointX="26.25" PointY="91.875" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPROVIDENT" Width="1.5" PointX="12.75" PointY="116.5" />
-        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAY" Width="1.5" PointX="21" PointY="73.375" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAYALLOWANCE" Width="1.5" PointX="23.25" PointY="71.875" />
         <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAYDEDUCTION" Width="1.5" PointX="26.25" PointY="73.5" />
         <EntityTypeShape EntityType="DBGAFPAYModel.MILITARYLEVSTEP" Width="1.5" PointX="3" PointY="71.25" />
@@ -110,18 +108,12 @@
         <AssociationConnector Association="DBGAFPAYModel.FK_GENERALSTATUS_SOLDIER" />
         <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEBANK" />
         <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEIMAGE" />
-        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" />
-        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" />
         <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_PROVIDENTFUND" />
         <AssociationConnector Association="DBGAFPAYModel.FK_REGION_JUNIORCE" />
         <AssociationConnector Association="DBGAFPAYModel.FK_RELIGION_JUNIORCE" />
         <AssociationConnector Association="DBGAFPAYModel.FK_TITLE_JUNIORCE" />
         <AssociationConnector Association="DBGAFPAYModel.FK_UNIT_JUNIORCE" />
-        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" />
-        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" />
         <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPROVIDENT_PROVIDENTFUND" />
-        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" />
-        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" />
         <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_OFFICER" />
         <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_RECRUIT" />
         <AssociationConnector Association="DBGAFPAYModel.FK_MILITARYLEVSTEP_SOLDIER" />
@@ -233,6 +225,34 @@
         <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEDEDUCTION" />
         <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEALLOWANCE" />
         <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCE_SENIORCEDEDUCTION" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DELETEDJUNIORCE" Width="1.5" PointX="21" PointY="80.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DELETEDOFFICER" Width="1.5" PointX="7.5" PointY="82.375" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DELETEDOFFICERCADET" Width="1.5" PointX="18" PointY="63.25" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DELETEDRECRUIT" Width="1.5" PointX="7.5" PointY="107" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DELETEDSENIORCE" Width="1.5" PointX="18" PointY="53.625" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.DELETEDSOLDIER" Width="1.5" PointX="18" PointY="108.375" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DELETEDJUNIORCE_JUNIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DELETEDOFFICER_OFFICER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DELETEDOFFICERCADET_OFFICERCADET" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DELETEDRECRUIT_RECRUIT" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DELETEDSENIORCE_SENIORCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_DELETEDSOLDIER_SOLDIER" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERPAYROLL_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_OFFICERTRIALPAY_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCEPAYROLL_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SENIORCETRIALPAY_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIERPAYROLL_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_SOLDIERTRIALPAY_BANK" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCEPAYROLL" Width="1.5" PointX="21" PointY="72.75" />
+        <EntityTypeShape EntityType="DBGAFPAYModel.JUNIORCETRIALPAY" Width="1.5" PointX="24" PointY="74.75" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_BANK" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCEPAYROLL" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCE_JUNIORCETRIALPAY" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCEPAYROLL_JUNIORCEPAYROLLDEDUCTION" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYALLOWANCE" />
+        <AssociationConnector Association="DBGAFPAYModel.FK_JUNIORCETRIALPAY_JUNIORCETRIALPAYDEDUCTION" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
