@@ -77,6 +77,7 @@ else
          event.preventDefault();
      }
  });
+  
     function sendForm() {
         var form = $('#NewFormX').get(0);
         swal({
@@ -98,35 +99,33 @@ else
                     processData: false,
                     contentType: false,
                     })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexProvidentFund", "Settings")';
-
-                        }  else {
-                            var error;
-                            if (response.ErrorMessage) {
-                                error = response.ErrorMessage;
-                            } else {
-                                error = "Error while processing. Please try again";
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexProvidentFund", "Settings")';
+                                });
+                            }  else {
+                                var error;
+                                if (response.ErrorMessage) {
+                                    error = response.ErrorMessage;
+                                } else {
+                                    error = "Error while processing. Please try again";
+                                }
+                                swal("Error", error, "error");
+                                //swal("error", "error");
                             }
-                            swal("Error", error, "error");
-                            //swal("error", "error");
-                        }
 
 
-                    })
+                        })
                     .fail(function () {
                         swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
                     });
@@ -135,8 +134,8 @@ else
 
 
 
-    },
-        @* *@);
+    }
+         );
     }
 
     function editForm() {
@@ -160,35 +159,33 @@ else
                     processData: false,
                     contentType: false,
                     })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexProvidentFund", "Settings")';
-
-                        }  else {
-                            var error;
-                            if (response.ErrorMessage) {
-                                error = response.ErrorMessage;
-                            } else {
-                                error = "Error while processing. Please try again";
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexProvidentFund", "Settings")';
+                                });
+                            }  else {
+                                var error;
+                                if (response.ErrorMessage) {
+                                    error = response.ErrorMessage;
+                                } else {
+                                    error = "Error while processing. Please try again";
+                                }
+                                swal("Error", error, "error");
+                                //swal("error", "error");
                             }
-                            swal("Error", error, "error");
-                            //swal("error", "error");
-                        }
 
 
-                    })
+                        })
                     .fail(function () {
                         swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
                     });
@@ -197,11 +194,9 @@ else
 
 
 
-    },
-        @* *@);
     }
-
-
+         );
+    } 
 </script>
 
 <script>

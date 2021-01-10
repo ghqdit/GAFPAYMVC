@@ -17,11 +17,11 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public OFFICER()
         {
+            this.DELETEDOFFICER = new HashSet<DELETEDOFFICER>();
             this.OFFICERALLOWANCE = new HashSet<OFFICERALLOWANCE>();
             this.OFFICERDEDUCTION = new HashSet<OFFICERDEDUCTION>();
             this.OFFICERPAYROLL = new HashSet<OFFICERPAYROLL>();
             this.OFFICERTRIALPAY = new HashSet<OFFICERTRIALPAY>();
-            this.DELETEDOFFICER = new HashSet<DELETEDOFFICER>();
         }
     
         public int OFFICERID { get; set; }
@@ -53,6 +53,8 @@ namespace GAFPAY.Models
         public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDOFFICER> DELETEDOFFICER { get; set; }
         public virtual GENDER GENDER { get; set; }
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
         public virtual MILITARYLEVSTEP MILITARYLEVSTEP { get; set; }
@@ -73,7 +75,5 @@ namespace GAFPAY.Models
         public virtual SERVICE SERVICE { get; set; }
         public virtual UNIT UNIT { get; set; }
         public virtual PROVIDENTFUND PROVIDENTFUND1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DELETEDOFFICER> DELETEDOFFICER { get; set; }
     }
 }

@@ -17,18 +17,18 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DEDUCTION()
         {
+            this.JUNIORCEDEDUCTION = new HashSet<JUNIORCEDEDUCTION>();
             this.JUNIORCEPAYROLLDEDUCTION = new HashSet<JUNIORCEPAYROLLDEDUCTION>();
             this.JUNIORCETRIALPAYDEDUCTION = new HashSet<JUNIORCETRIALPAYDEDUCTION>();
             this.OFFICERDEDUCTION = new HashSet<OFFICERDEDUCTION>();
             this.OFFICERPAYROLLDEDUCTION = new HashSet<OFFICERPAYROLLDEDUCTION>();
             this.OFFICERTRIALPAYDEDUCTION = new HashSet<OFFICERTRIALPAYDEDUCTION>();
+            this.SENIORCEDEDUCTION = new HashSet<SENIORCEDEDUCTION>();
             this.SENIORCEPAYROLLDEDUCTION = new HashSet<SENIORCEPAYROLLDEDUCTION>();
             this.SENIORCETRIALPAYDEDUCTION = new HashSet<SENIORCETRIALPAYDEDUCTION>();
             this.SOLDIERDEDUCTION = new HashSet<SOLDIERDEDUCTION>();
             this.SOLDIERPAYROLLDEDUCTION = new HashSet<SOLDIERPAYROLLDEDUCTION>();
             this.SOLDIERTRIALPAYDEDUCTION = new HashSet<SOLDIERTRIALPAYDEDUCTION>();
-            this.JUNIORCEDEDUCTION = new HashSet<JUNIORCEDEDUCTION>();
-            this.SENIORCEDEDUCTION = new HashSet<SENIORCEDEDUCTION>();
         }
     
         public int DEDUCTIONID { get; set; }
@@ -36,6 +36,8 @@ namespace GAFPAY.Models
         public int STATUS { get; set; }
         public int DEDUCTIONCLASSID { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JUNIORCEPAYROLLDEDUCTION> JUNIORCEPAYROLLDEDUCTION { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,6 +49,8 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERTRIALPAYDEDUCTION> OFFICERTRIALPAYDEDUCTION { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCEPAYROLLDEDUCTION> SENIORCEPAYROLLDEDUCTION { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCETRIALPAYDEDUCTION> SENIORCETRIALPAYDEDUCTION { get; set; }
@@ -57,9 +61,5 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIERTRIALPAYDEDUCTION> SOLDIERTRIALPAYDEDUCTION { get; set; }
         public virtual DEDUCTIONCLASS DEDUCTIONCLASS { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
     }
 }

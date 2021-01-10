@@ -167,8 +167,10 @@
                                     closeOnConfirm: true
 
 
-                                })
-                                window.location.href = '@Url.Action("IndexJCEAllowance", "Pay")';
+                                }).then(function () {
+                                    window.location.href = '@Url.Action("IndexJCEAllowance", "Pay")';
+
+                                });
 
                             }  else {
                                 var error;

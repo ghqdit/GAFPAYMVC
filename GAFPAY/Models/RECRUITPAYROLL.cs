@@ -20,9 +20,18 @@ namespace GAFPAY.Models
         public System.DateTime DATETIMEINSERTED { get; set; }
         public string INSERTEDBY { get; set; }
         public int RECRIUTID { get; set; }
+        public string BANK { get; set; }
         public int BANKID { get; set; }
+        public int STATUS { get; set; }
+        public string NAME { get; set; }
+        public string ACCOUNTNUMBER { get; set; }
+        public string SERVICENUMBER { get; set; }
+        public string TRAININGCENTER { get; set; }
+        public System.DateTime DATESTART { get; set; }
+        public string RECRUITCOURCE { get; set; }
+        public string SERVICE { get; set; }
     
-        public virtual BANK BANK { get; set; }
+        public virtual BANK BANK1 { get; set; }
         public virtual RECRUIT RECRUIT { get; set; }
     }
 }

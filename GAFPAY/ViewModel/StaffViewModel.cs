@@ -48,7 +48,7 @@ namespace GAFPAY.ViewModel
         public string ResAddress { get; set; }
         //[Required]
         [Display(Name = "Account Number")] 
-        [StringLength(15, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 10)]
+        [StringLength(15, ErrorMessage = "{0} must be {1} characters long.")]
         public string AccountNumber { get; set; }
         [Display(Name = "Ghana Post GPS")]
         [StringLength(15,ErrorMessage = "{0} must be between {2} and {1} characters.",MinimumLength = 10)]
@@ -294,6 +294,7 @@ namespace GAFPAY.ViewModel
         public decimal Amount { get; set; }
         public List<JuniorCEAllowance> JuniorCEAllowanceDetails { get; set; }
     }
+
     public class SeniorCEAllowance
     {
         public int SeniorCEAllowanceID { get; set; }
@@ -352,7 +353,7 @@ namespace GAFPAY.ViewModel
         [Display(Name = "Lev Step")]
         [Required(ErrorMessage = "{0} is required")]
         public int CLevStepID { get; set; }
-
+        [Display(Name = "Date Promoted")]
         public DateTime DatePromoted { get; set; }
         public int IsMedical { get; set; }
 
@@ -382,10 +383,9 @@ namespace GAFPAY.ViewModel
         [Display(Name = "Lev Step")]
         [Required(ErrorMessage = "{0} is required")]
         public int CLevStepID { get; set; }
-
+        [Display(Name = "Date Promoted")]
         public DateTime DatePromoted { get; set; }
-        public int IsMedical { get; set; }
-
+        public int IsMedical { get; set; } 
         public SelectList GradeList { get; set; }
         public SelectList CLevStepList { get; set; } 
 

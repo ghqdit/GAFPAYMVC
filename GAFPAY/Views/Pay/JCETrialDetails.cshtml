@@ -82,8 +82,10 @@
                             closeOnConfirm: true
 
 
-                        })
-                        window.location.href = '@Url.Action("IndexJCEBatchTrial", "Pay")';
+                        }).then(function () {
+                            window.location.href = '@Url.Action("IndexJCEBatchTrial", "Pay")';
+
+                        });
 
                     })
                     .fail(function () {

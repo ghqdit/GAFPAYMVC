@@ -68,7 +68,7 @@
         var i = $('#deduc tbody').find('tr').length;
 
         var tr = "<tr>";
-        tr += "<td><input type=text name=SeniorCEDeduction2Details[" + i + "].DeductionDate class=form-control></td>";
+        tr += "<td><input type=text name=SeniorCEDeduction2Details[" + i + "].DeductionDate placeholder='DD/MM/YYYY'  class=form-control></td>";
         tr += "<td><input type=text name=SeniorCEDeduction2Details[" + i + "].DeductionName class='form-control Desc' id='SeniorCEDeduction2Details[" + i + "].Desc'></td>";
         tr += "<td><input type=text name=SeniorCEDeduction2Details[" + i + "].TotalAmount class='form-control TotalAmount'></td>";
         tr += "<td><input type=text name=SeniorCEDeduction2Details[" + i + "].Amount class='form-control Amount'></td>";
@@ -180,8 +180,10 @@
                                      closeOnConfirm: true
 
 
-                                 })
+                                 }).then(function() {
                                  window.location.href = '@Url.Action("IndexSCEDeduction2", "Pay")';
+
+                                 });
 
                              }  else {
                                  var error;

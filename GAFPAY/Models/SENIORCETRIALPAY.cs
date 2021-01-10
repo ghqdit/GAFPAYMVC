@@ -25,17 +25,17 @@ namespace GAFPAY.Models
         public System.DateTime PAYDATE { get; set; }
         public decimal CONSTPAY { get; set; }
         public Nullable<decimal> NETPAY { get; set; }
+        public Nullable<decimal> TOTALALLOWANCE { get; set; }
+        public Nullable<decimal> TOTALDEDUCTION { get; set; }
         public System.DateTime DATETIMEINSERTED { get; set; }
         public string INSERTEDBY { get; set; }
         public int STATUS { get; set; }
         public int SENIORCEID { get; set; }
-        public int BANKID { get; set; }
     
+        public virtual SENIORCE SENIORCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCETRIALPAYALLOWANCE> SENIORCETRIALPAYALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCETRIALPAYDEDUCTION> SENIORCETRIALPAYDEDUCTION { get; set; }
-        public virtual SENIORCE SENIORCE { get; set; }
-        public virtual BANK BANK { get; set; }
     }
 }

@@ -160,9 +160,10 @@
                                     timer: 5000,
                                     closeOnConfirm: true
 
+                                }).then(function () {
+                                    window.location.href = '@Url.Action("IndexJCEDeduction1", "Pay")';
 
-                                })
-                                window.location.href = '@Url.Action("IndexJCEDeduction1", "Pay")';
+                                });
 
                             }  else {
                                 var error;

@@ -11,15 +11,17 @@ namespace GAFPAY.ViewModel
     public class TrialPay
     {
           
-        [Display(Name = "Month")]
+        [Display(Name = "Period")]
         public int MonthID { get; set; }  
         public int TrialPayID { get; set; }
         public DateTime TrialPayDate { get; set; }
         public DateTime DateTimeInserted { get; set; }
         public string InsertedBy { get; set; }
         public SelectList MonthList { get; set; }
-        public SelectList StaffList { get; set; } 
-        
+        public SelectList StaffList { get; set; }
+        public string Message { get; set; }
+        public bool success { get; set; } 
+        public bool IsTrial { get; set; } 
 
     }
 
@@ -28,7 +30,12 @@ namespace GAFPAY.ViewModel
         public decimal TotalRecruit { get; set; }
         public decimal TotalOC { get; set; }
         public decimal TotalJCE { get; set; }
-        public decimal TotalSCE { get; set; } 
+        public decimal TotalSCE { get; set; }
+        public decimal TotalSoldiers { get; set; }
+        public decimal TotalOfficers { get; set; } 
+        public decimal GrandTotal { get; set; }
+
+
     
     }
 
@@ -113,6 +120,37 @@ namespace GAFPAY.ViewModel
 
     }
 
+    public class JCETrialReportList
+    {
+        public int TrialPayID { get; set; }
+        public decimal ConstPay { get; set; }
+
+        public DateTime PayDate { get; set; }
+        public int JuniorCEID { get; set; }
+        public string Surname { get; set; }
+        public string Othername { get; set; }
+        public decimal NetPay { get; set; }
+        public List<JuniorCEAllowance> JuniorCETrialPayAllowances { get; set; }
+        public List<JuniorCEDeduction2> JuniorCETrialPayDeductions { get; set; }
+    }
+
+    public class JCETrialReport
+    {
+        public int TrialPayID { get; set; }
+        public decimal ConstPay { get; set; }
+
+        public DateTime PayDate { get; set; }
+        public int JuniorCEID { get; set; }
+        public string Surname { get; set; }
+        public string Othername { get; set; }
+        public decimal NetPay { get; set; }
+        public List<JuniorCEAllowance> JuniorCETrialPayAllowances { get; set; }
+        public List<JuniorCEDeduction2> JuniorCETrialPayDeductions { get; set; }
+        public List<JCETrialReport> JuniorCETrialReport { get; set; } 
+
+    }
+
+
     public class SCEBatchTrial
     {
         public DateTime PayDate { get; set; }
@@ -127,8 +165,7 @@ namespace GAFPAY.ViewModel
         public string Othernames { get; set; }
         public decimal ConstPay { get; set; }
         public decimal? NetPay { get; set; }
-        public string ServiceNumber { get; set; }
-
+        public string ServiceNumber { get; set; } 
 
     }
 

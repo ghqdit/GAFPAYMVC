@@ -50,7 +50,8 @@
     </div>
 </div>
 <script>
-    function sendForm() {
+
+       function sendForm() {
         var form = $('#NewFormX').get(0);
         swal({
             title: "Save changes",
@@ -65,29 +66,27 @@
                 return new Promise(function (resolve) {
                     $.ajax({
                         url: "@Url.Action("SCEProvident","Staff")",
-                        type: 'POST',
-                    data: new FormData(form),
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexJCEProvident", "Staff")';
-
-                        }  else {
+                            type: 'POST',
+                            data: new FormData(form),
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexSCEProvident", "Staff")';
+                                });
+                            }  else {
                             var error;
                             if (response.ErrorMessage) {
                                 error = response.ErrorMessage;
@@ -108,54 +107,10 @@
 
 
 
-    },
-        @* *@);
+    }
+         );
     }
 
-
-
-    @*function sendForm() {
-
-        var form = $('#NewFormX').get(0);
-
-        $.ajax({
-            url: "@Url.Action("SCEProvident", "Staff")",
-            type: "POST",
-            data: new FormData(form),
-            processData: false,
-            contentType: false,
-
-            success: function (data) {
-                if (data.Success) {
-                    swal({
-                        title: "Success",
-                        html: data.Message + " saved successfully",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonColor: "#1E90FF",
-                        confirmButtonText: "OK",
-                        timer: 4000,
-
-                    }).then((result) => {
-                        //redirection happens here
-                        window.location.href = '@Url.Action("IndexSCEProvident", "Staff")';
-                    })
-
-                } else {
-                    var error;
-                    if (data.ErrorMessage) {
-                        error = data.ErrorMessage;
-                    }
-                    else {
-                        error = "Error while processing. Please try again";
-                    }
-                    swal("Error", error, "error");
-                    //swal("error", "error");
-                }
-
-            }
-        });
-    }*@
-
+     
 
 </script>

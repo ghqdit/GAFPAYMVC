@@ -20,7 +20,7 @@ namespace GAFPAY.Models
         public int ALLOWANCEID { get; set; }
         public int SOLDEIRID { get; set; }
     
-        public virtual SOLDIER SOLDIER { get; set; }
         public virtual ALLOWANCE ALLOWANCE { get; set; }
+        public virtual SOLDIER SOLDIER { get; set; }
     }
 }

@@ -35,7 +35,7 @@
                                     <div class="col-sm-5">
                                         <div class="input-field">
                                             @Html.LabelFor(model => model.MonthID)
-                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Month", htmlAttributes: new { @class = "form-control", onchange = "populateBankBranch(this)" })
+                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Period", htmlAttributes: new { @class = "form-control", onchange = "populateBankBranch(this)" })
 
                                         </div>
                                     </div>
@@ -84,6 +84,7 @@
             confirmButtonText: "Save ",
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
+            allowOutsideClick: false,
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
@@ -107,9 +108,10 @@
                                     closeOnConfirm: true
 
 
-                                })
-                                window.location.href = '@Url.Action("Index", "Home")';
-
+                                 }).then(function() {
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                });
+                                 
                             }  else {
                                 var error;
                                 if (response.ErrorMessage) {
@@ -134,49 +136,6 @@
     },
             @* *@);
     }
-
-    @*function sendForm() {
-
-        var form = $('#NewFormX').get(0);
-
-        $.ajax({
-            url: "@Url.Action("CreateOCProcess", "Pay")",
-            type: "POST",
-            data: new FormData(form),
-            processData: false,
-            contentType: false,
-
-            success: function (data) {
-                if (data.Success) {
-                    swal({
-                        title: "Success",
-                        html: data.Message + " saved successfully",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonColor: "#1E90FF",
-                        confirmButtonText: "OK",
-                        timer: 4000,
-
-                    }).then((result) => {
-                        //redirection happens here
-                        window.location.href = '@Url.Action("IndexOCBatch", "Pay")';
-                    })
-
-                } else {
-                    var error;
-                    if (data.ErrorMessage) {
-                        error = data.ErrorMessage;
-                    }
-                    else {
-                        error = "Error while processing. Please try again";
-                    }
-                    swal("Error", error, "error");
-                    //swal("error", "error");
-                }
-
-            }
-        });
-    }*@
-
+     
 
 </script>

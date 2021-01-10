@@ -82,10 +82,10 @@
                             confirmButtonText: "OK",
                             timer: 5000,
                             closeOnConfirm: true
+                                }).then(function () {
+                                    window.location.href = '@Url.Action("IndexJCE", "Staff")';
 
-
-                        })
-                        window.location.href = '@Url.Action("IndexJCE", "Staff")';
+                                });
 
                             }  else {
                                 var error;

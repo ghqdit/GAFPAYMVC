@@ -1,11 +1,23 @@
 ﻿
 <li class="nav-item nav-category"><span class="nav-link">Reports</span></li>
 <li class="nav-item">
-    <a class="nav-link" href="#">
-        <span class="menu-title">Bank List</span>
+    <a class="nav-link" data-toggle="collapse" href="#bankList" aria-expanded="false" aria-controls="bankList">
+        <span class="menu-title"> Bank List</span>
         <i class="icon-doc menu-icon"></i>
     </a>
+    <div class="collapse" id="bankList">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("RecBankSummary","Report")" target="_blank"> Recruits </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("CadetBankSummary","Report")" target="_blank">  Officer Cadet </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("JCEBankSummary", "Report")" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("SCEBankSummary", "Report")" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
 </li>
+
 <li class="nav-item">
     <a class="nav-link" href="#">
         <span class="menu-title">Bank Loans</span>
@@ -31,34 +43,118 @@
         </ul>
     </div>
 </li>
+
 <li class="nav-item">
-    <a class="nav-link" href="#">
-        <span class="menu-title">Pay Slips</span>
+    <a class="nav-link" data-toggle="collapse" href="#payList" aria-expanded="false" aria-controls="payList">
+        <span class="menu-title"> Pay List</span>
         <i class="icon-doc menu-icon"></i>
     </a>
+    <div class="collapse" id="payList">
+        <ul class="nav flex-column sub-menu"> 
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("JCEPayList", "Report")" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("SCEPayList", "Report")" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
+</li>
+
+
+<li class="nav-item">
+    <a class="nav-link" data-toggle="collapse" href="#paySlipSingle" aria-expanded="false" aria-controls="paySlipSingle">
+        <span class="menu-title">  Pay Slip Single</span>
+        <i class="icon-doc menu-icon"></i>
+    </a>
+    <div class="collapse" id="paySlipSingle">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="" target="_blank"> Recruits </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#" target="_blank"> Officer Cadet </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
 </li>
 
 <li class="nav-item">
-    <a class="nav-link" href="#">
-        <span class="menu-title">Pay List</span>
+    <a class="nav-link" data-toggle="collapse" href="#paySlipBatch" aria-expanded="false" aria-controls="paySlipBatch">
+        <span class="menu-title">  Pay Slip Batch</span>
         <i class="icon-doc menu-icon"></i>
     </a>
+    <div class="collapse" id="paySlipBatch">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("RecPaySlipBatch","Report")" target="_blank"> Recruits </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("CadetPaySlipBatch","Report")" target="_blank"> Officer Cadet </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("JCEPaySlipBatch","Report")" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("SCEPaySlipBatch","Report")" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
 </li>
+
 <li class="nav-item">
-    <a class="nav-link" href="@Url.Action("IndexGeneralTrialPay","Pay")">
-        <span class="menu-title">Trial Pay</span>
+    <a class="nav-link" data-toggle="collapse" href="#payHistory" aria-expanded="false" aria-controls="payHistory">
+        <span class="menu-title">Pay History</span>
         <i class="icon-doc menu-icon"></i>
     </a>
+    <div class="collapse" id="payHistory">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("JCEPayHistory", "Report")" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("SCEPayHistory", "Report")" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
 </li>
-<li class="nav-item">
-    <a class="nav-link" href="#">
-        <span class="menu-title">CTO</span>
+
+@*<li class="nav-item">
+    <a class="nav-link" href="@Url.Action("IndexGeneralTrialPay", "Pay")">
+        <span class="menu-title">Trial Pay Summary</span>
         <i class="icon-doc menu-icon"></i>
     </a>
-</li>
+</li>*@
+
 <li class="nav-item">
+    <a class="nav-link" data-toggle="collapse" href="#tPay" aria-expanded="false" aria-controls="tPay">
+        <span class="menu-title">Tiral Pay</span>
+        <i class="icon-doc menu-icon"></i>
+    </a>
+    <div class="collapse" id="tPay">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("JCETrialPay", "Report")" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("SCETrialPay", "Report")" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
+</li>
 
 
+<li class="nav-item">
+    <a class="nav-link" data-toggle="collapse" href="#CTO" aria-expanded="false" aria-controls="CTO">
+        <span class="menu-title">CTO </span>
+        <i class="icon-doc menu-icon"></i>
+    </a>
+    <div class="collapse" id="CTO">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="#" target="_blank"> General CTO </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("CTOJCE", "Report")" target="_blank"> Junior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Soldiers </a></li>
+            <li class="nav-item"> <a class="nav-link" href="@Url.Action("CTOSCE", "Report")" target="_blank"> Senior CE </a></li>
+            <li class="nav-item"> <a class="nav-link" href="#"> Officers </a></li>
+
+        </ul>
+    </div>
+</li>
+
+<li class="nav-item"> 
     <a class="nav-link" data-toggle="collapse" href="#summary" aria-expanded="false" aria-controls="summary">
         <span class="menu-title">Summaries</span>
         <i class="icon-doc menu-icon"></i>

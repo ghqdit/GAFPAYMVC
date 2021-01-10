@@ -18,9 +18,9 @@ namespace GAFPAY.Models
         public MILITARYLEVSTEP()
         {
             this.OFFICER = new HashSet<OFFICER>();
+            this.OFFICERCADET = new HashSet<OFFICERCADET>();
             this.RECRUIT = new HashSet<RECRUIT>();
             this.SOLDIER = new HashSet<SOLDIER>();
-            this.OFFICERCADET = new HashSet<OFFICERCADET>();
         }
     
         public int MILITARYLEVSTEPID { get; set; }
@@ -32,10 +32,10 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICER> OFFICER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RECRUIT> RECRUIT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIER> SOLDIER { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
     }
 }

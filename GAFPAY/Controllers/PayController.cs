@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using GAFPAY.Extensions;
 using GAFPAY.ViewModel;
+using Microsoft.Ajax.Utilities;
 
 namespace GAFPAY.Controllers
 {
@@ -38,30 +39,18 @@ namespace GAFPAY.Controllers
         {
            
             var model=new GeneralTrialPay();
-            var date = "";
-            var monthID = data.MonthID;
-            var dayID = 15;
-            var yearID = DateTime.Now.Year;
-            if (data.MonthID == 1)
-            {
-                yearID = DateTime.Now.AddYears(1).Year;
-            }
-
-            date = (dayID + "-" + monthID + "-" + yearID);
-            DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                System.Globalization.CultureInfo.InvariantCulture);
-
-
-            var recruit = db.RECRUITTRIALPAY.Where(a => a.PAYDATE == date1);
-            if (recruit!=null)
-            {
-                model.TotalRecruit=recruit.Sum(a=>a.CONSTPAY);
-            }
- 
-        
-
-           
-            return View();
+            var payDate = payViewData.getPayDate(data.MonthID);
+            model.TotalRecruit = payViewData.GetMonthTotalRecruitTrial(payDate);
+            model.TotalOC = payViewData.GetMonthTotalOCTrial(payDate);
+            model.TotalJCE = payViewData.GetMonthTotalJCETrial(payDate);
+            model.TotalSCE = payViewData.GetMonthTotalSCETrial(payDate);
+            model.TotalSoldiers = 0;
+            model.TotalOfficers = 0;
+            model.GrandTotal = (model.TotalRecruit + model.TotalOC + model.TotalJCE + model.TotalSCE +
+                                model.TotalSoldiers + model.TotalOfficers);
+            model.TrialPayDate = payDate;
+               
+            return View("GeneralTrialPay",model);
         }
 
 
@@ -115,55 +104,58 @@ namespace GAFPAY.Controllers
             {   
                 var recruitID = data.RecruitID;
                 var rec = db.RECRUIT.Find(recruitID);
-                var constPay = db.MILITARYLEVSTEP.Find(rec.MILITARYLEVSTEPID);
-                var tPay=new TrialPay(); 
+                var constPay = rec.MILITARYLEVSTEP.CONSTPAY; 
+
                 if (rec != null)
                 {
 
-                    var date = "";
-                    var monthID = data.MonthID;
-                    var dayID = 15;
-                    var yearID = DateTime.Now.Year;
-                    if (data.MonthID==1)
-                    {
-                        yearID = DateTime.Now.AddYears(1).Year;
-                    }
+                    var payDate = payViewData.getPayDate(data.MonthID);
 
-                    date = (dayID + "-" + monthID + "-" + yearID);
-                    DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                        System.Globalization.CultureInfo.InvariantCulture);
-                    tPay.TrialPayDate = date1; 
-                    var checkAvail =  db.RECRUITTRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.RECRIUTID == recruitID);
-                    if (checkAvail!=null)
-                    {
-                        errorMessage = "Trial Pay for " + rec.SERVICENUMBER+" " + rec.SURNAME + " "+rec.OTHERNAME+ " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
+                    var process =  payViewData.RecruitTrialPay(payDate, recruitID, constPay);
 
+                    if (process.success)
+                    {
+                        success = true;
                     }
                     else
                     {
-                        var recruitTrialPay=new RECRUITTRIALPAY();
-                        recruitTrialPay.PAYDATE = date1;
-                        recruitTrialPay.RECRIUTID = recruitID;
-                        recruitTrialPay.CONSTPAY = constPay.CONSTPAY;
-                        recruitTrialPay.BANKID = rec.RECRUITBANK.BANKID;
-                        recruitTrialPay.DATETIMEINSERTED=DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        recruitTrialPay.INSERTEDBY = "admin";
+                        errorMessage = "Trial Pay for " + rec.SERVICENUMBER + " " + rec.SURNAME + " " + rec.OTHERNAME + " for period " +payDate.ToString("MMMM yyyy") + " has already been processed.";
 
-                        db.RECRUITTRIALPAY.Add(recruitTrialPay);
+                    } 
+                    #region OldProcess
+                    
+                    //var checkAvail =  db.RECRUITTRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.RECRIUTID == recruitID);
+                    //if (checkAvail!=null)
+                    //{
+                    //    errorMessage = "Trial Pay for " + rec.SERVICENUMBER+" " + rec.SURNAME + " "+rec.OTHERNAME+ " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
 
-                        try
-                        {
-                            db.SaveChanges();
-                            success = true;
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-                         
-                    }
-                     
+                    //}
+                    //else
+                    //{
+                    //    var recruitTrialPay=new RECRUITTRIALPAY();
+                    //    recruitTrialPay.PAYDATE = date1;
+                    //    recruitTrialPay.RECRIUTID = recruitID;
+                    //    recruitTrialPay.CONSTPAY = constPay.CONSTPAY;
+                    //    recruitTrialPay.BANKID = rec.RECRUITBANK.BANKID;
+                    //    recruitTrialPay.DATETIMEINSERTED=DateTime.Now;
+                    //    //recruitTrialPay.INSERTEDBY = User.Identity.Name;
+                    //    recruitTrialPay.INSERTEDBY = "admin";
+
+                    //    db.RECRUITTRIALPAY.Add(recruitTrialPay);
+
+                    //    try
+                    //    {
+                    //        db.SaveChanges();
+                    //        success = true;
+                    //    }
+                    //    catch (Exception e)
+                    //    {
+                    //        errorMessage = e.Message;
+                    //    }
+
+                    //}
+
+                    #endregion
                 }
                 else
                 {
@@ -194,8 +186,9 @@ namespace GAFPAY.Controllers
         {
             var model = new RecruitTrialPay();
             model.MonthList = payViewData.getPayrollMonth();
+            model.IsTrial = true;
              
-            return View("CreateRecruitBatchTrial",model);
+            return View("CreateRecruitBatch",model);
         }
         [HttpPost]
         public ActionResult CreateRecruitBatchTrial(RecruitTrialPay data)
@@ -204,50 +197,22 @@ namespace GAFPAY.Controllers
             var Unprocessed = 0;    
             if (ModelState.IsValid)
             {
-               
-                var date = "";
-                var monthID = data.MonthID;
-                var dayID = 15;
-                var yearID = DateTime.Now.Year;
-                if (data.MonthID==1)
-                {
-                    yearID = DateTime.Now.AddYears(1).Year;
-                }
-                date = (dayID + "-" + monthID + "-" + yearID);
-                DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                    System.Globalization.CultureInfo.InvariantCulture);
 
-                var recruit = db.RECRUIT.Where(a => a.GENERALSTATUSID == 1).ToList();
+                var payDate = payViewData.getPayDate(data.MonthID);
+                var recruit = db.RECRUIT.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
                 foreach (var item in recruit)
                 {
-                    var tPay=new RecruitTrialPay();
-                    tPay.TrialPayDate = date1;
-                    tPay.RecruitID = item.RECRIUTID;
+                    var process =payViewData.RecruitTrialPay(payDate, item.RECRIUTID, item.MILITARYLEVSTEP.CONSTPAY);
 
-                    var recTrialPay = db.RECRUITTRIALPAY.FirstOrDefault(a => a.PAYDATE == date1 && a.RECRIUTID == item.RECRIUTID);
-                    if (recTrialPay==null)
+                    if (process.success)
                     {
-                        var recruitTrialPay = new RECRUITTRIALPAY();
-                        recruitTrialPay.PAYDATE = date1;
-                        recruitTrialPay.RECRIUTID = item.RECRIUTID;
-                        recruitTrialPay.CONSTPAY = item.MILITARYLEVSTEP.CONSTPAY;
-                        recruitTrialPay.BANKID = item.RECRUITBANK.BANKID;
-                        recruitTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        recruitTrialPay.INSERTEDBY = "admin";
-
-                        db.RECRUITTRIALPAY.Add(recruitTrialPay);
-
-                        
                         Processed += 1;
                     }
                     else
                     {
                         Unprocessed += 1;
-                        //success = true;
                     }
                      
-
                 }
                 try
                 {
@@ -293,6 +258,28 @@ namespace GAFPAY.Controllers
 
                 errorMessage = e.Message;
             }
+            return Json(success ? JsonResponse.SuccessResponse("Recruit Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        public ActionResult RemoveMonthRecruitTrial(DateTime date)
+        {
+            var recTrial = db.RECRUITTRIALPAY.Where(a => a.PAYDATE == date).ToList();
+
+            foreach (var details in recTrial)
+            {
+                db.RECRUITTRIALPAY.Remove(details);
+            }
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+
+                errorMessage = e.Message;
+            }
+
             return Json(success ? JsonResponse.SuccessResponse("Recruit Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
         }
 
@@ -344,55 +331,23 @@ namespace GAFPAY.Controllers
             {
                 var ocID = data.OfficerCadetID;
                 var oc = db.OFFICERCADET.Find(ocID);
-                var constPay = db.MILITARYLEVSTEP.Find(oc.MILITARYLEVSTEPID);
-                var tPay = new TrialPay();
+                var constPay = oc.MILITARYLEVSTEP.CONSTPAY; 
                 if (oc != null)
                 {
 
-                    var date = "";
-                    var monthID = data.MonthID;
-                    var dayID = 15;
-                    var yearID = DateTime.Now.Year;
-                    if (data.MonthID==1)
-                    {
-                        yearID = DateTime.Now.AddYears(1).Year;
-                    }
+                    var payDate = payViewData.getPayDate(data.MonthID);
 
-                    date = (dayID + "-" + monthID + "-" + yearID);
-                    DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                        System.Globalization.CultureInfo.InvariantCulture);
-                    tPay.TrialPayDate = date1;
-                    var checkAvail = db.OFFICERCADETTRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.OFFICERCADETID == ocID);
-                    if (checkAvail != null)
-                    {
-                        errorMessage = "Trial Pay for " + oc.SERVICENUMBER + " " + oc.SURNAME + " " + oc.OTHERNAME + " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
+                    var ocTrial = payViewData.OfficerCadetTrialPay(payDate, ocID, constPay);
 
+                    if (ocTrial.success)
+                    {
+                        success = true;
                     }
                     else
                     {
-                        var ocTrialPay = new OFFICERCADETTRIALPAY();
-                        ocTrialPay.PAYDATE = date1;
-                        ocTrialPay.OFFICERCADETID = ocID;
-                        ocTrialPay.CONSTPAY = constPay.CONSTPAY;
-                        ocTrialPay.BANKID = oc.OFFICERCADETBANK.BANKID;
-                        ocTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //ocTrialPay.INSERTEDBY = User.Identity.Name;
-                        ocTrialPay.INSERTEDBY = "admin";
+                        errorMessage = "Trial Pay for " + oc.SERVICENUMBER + " " + oc.SURNAME + " " + oc.OTHERNAME + " for period " + payDate.ToString("MMMM yyyy") + " has already been processed.";
 
-                        db.OFFICERCADETTRIALPAY.Add(ocTrialPay);
-
-                        try
-                        {
-                            db.SaveChanges();
-                            success = true;
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-                         
-                    }
-
+                    } 
 
                 }
                 else
@@ -421,8 +376,9 @@ namespace GAFPAY.Controllers
         {
             var model = new OcTrialPay();
             model.MonthList = payViewData.getPayrollMonth();
+            model.IsTrial = true; 
 
-            return View("CreateOCBatchTrial", model);
+            return View("CreateOCBatch", model);
         }
         [HttpPost]
         public ActionResult CreateOCBatchTrial(OcTrialPay data)
@@ -432,43 +388,20 @@ namespace GAFPAY.Controllers
             if (ModelState.IsValid)
             {
 
-                var date = "";
-                var monthID = data.MonthID;
-                var dayID = 15;
-                var yearID = DateTime.Now.Year;
-                date = (dayID + "-" + monthID + "-" + yearID);
-                DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                    System.Globalization.CultureInfo.InvariantCulture);
-
-                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == 1).ToList();
+                var payDate = payViewData.getPayDate(data.MonthID);
+                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
                 foreach (var item in oc)
                 {
-                    var tPay = new OcTrialPay();
-                    tPay.TrialPayDate = date1;
-                    tPay.OfficerCadetID = item.OFFICERCADETID;
+                    var process =payViewData.OfficerCadetTrialPay(payDate, item.OFFICERCADETID,item.MILITARYLEVSTEP.CONSTPAY);
 
-                    var ocTrialPay = db.OFFICERCADETTRIALPAY.FirstOrDefault(a => a.PAYDATE == date1 && a.OFFICERCADETID == item.OFFICERCADETID);
-                    if (ocTrialPay == null)
+                    if (process.success)
                     {
-                        var offCadTrialPay = new OFFICERCADETTRIALPAY();
-                        offCadTrialPay.PAYDATE = date1;
-                        offCadTrialPay.OFFICERCADETID = item.OFFICERCADETID;
-                        offCadTrialPay.CONSTPAY = item.MILITARYLEVSTEP.CONSTPAY;
-                        offCadTrialPay.BANKID = item.OFFICERCADETBANK.BANKID;
-                        offCadTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //offCadTrialPay.INSERTEDBY = User.Identity.Name;
-                        offCadTrialPay.INSERTEDBY = "admin";
-
-                        db.OFFICERCADETTRIALPAY.Add(offCadTrialPay);
-
-
                         Processed += 1;
                     }
                     else
                     {
                         Unprocessed += 1;
                     }
-
 
                 }
                 try
@@ -488,9 +421,7 @@ namespace GAFPAY.Controllers
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
             }
-
-
-
+             
             return Json(success ? JsonResponse.SuccessResponse("Total processed " + Processed + ". Total not processed " + Unprocessed + ". Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
         }
 
@@ -505,8 +436,7 @@ namespace GAFPAY.Controllers
         public ActionResult RemoveOCTrial(int id)
         {
             var ocTrial = db.OFFICERCADETTRIALPAY.Find(id);
-            db.OFFICERCADETTRIALPAY.Remove(ocTrial);
-
+            db.OFFICERCADETTRIALPAY.Remove(ocTrial); 
 
             try
             {
@@ -520,6 +450,29 @@ namespace GAFPAY.Controllers
             }
             return Json(success ? JsonResponse.SuccessResponse("Officer Cadet Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
         }
+
+        public ActionResult RemoveMonthOCTrial(DateTime date)
+        {
+            var ocTrial = db.OFFICERCADETTRIALPAY.Where(a => a.PAYDATE == date).ToList();
+            foreach (var details in ocTrial)
+            {
+               db.OFFICERCADETTRIALPAY.Remove(details);
+ 
+            }
+             
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+
+                errorMessage = e.Message;
+            }
+            return Json(success ? JsonResponse.SuccessResponse("Officer Cadet Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
 
         /*-----------------------------------------End Officer Cadet Trial Pay--------------------------------------   */
 
@@ -544,142 +497,24 @@ namespace GAFPAY.Controllers
             {
                 var JCEID = data.JCEID;
                 var jce = db.JUNIORCE.Find(JCEID);
-                var constPay = db.CIVILIANLEVSTEP.Find(jce.CIVILIANLEVSTEPID);
-                var tPay = new TrialPay();
+                var constPay = jce.CIVILIANLEVSTEP.CONSTPAY;
+                var bankID = jce.JUNIORCEBANK.BANKID; 
                 if (jce != null)
                 {
 
-                    var date = "";
-                    var monthID = data.MonthID;
-                    var yearID = DateTime.Now.Year;
-                    if (monthID==1)
-                    {
-                        yearID = DateTime.Now.AddYears(1).Year;
-                    }
-                    
-                    var dayID = 15;
-                    
-                    date = (dayID + "-" + monthID + "-" + yearID);
-                    DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                        System.Globalization.CultureInfo.InvariantCulture);
-                    tPay.TrialPayDate = date1;
-                    var checkAvail = db.JUNIORCETRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.JUNIORCEID == JCEID && a.STATUS==1);
-                    if (checkAvail != null)
-                    {
-                        errorMessage = "Trial Pay for " + jce.SERVICENUMBER +" "+ jce.SURNAME + " " + jce.OTHERNAME + " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
+                    var payDate = payViewData.getPayDate(data.MonthID);
+                    var process = payViewData.JuniorCETrialPay(payDate, JCEID, constPay, jce.ISMEDICAL);
 
-                    }
+                    if (process.success)
+                    {
+                        success = true;
+                    } 
                     else
                     {
-                        var jceTrialPay = new JUNIORCETRIALPAY();
-                        jceTrialPay.PAYDATE = date1;
-                        jceTrialPay.JUNIORCEID = JCEID;
-                        jceTrialPay.CONSTPAY = constPay.CONSTPAY;
-                        jceTrialPay.BANKID = jce.JUNIORCEBANK.BANKID;
-                        jceTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        jceTrialPay.STATUS = 1;
-                        jceTrialPay.INSERTEDBY = "admin";
-
-                        db.JUNIORCETRIALPAY.Add(jceTrialPay);
-
-                        try
-                        {
-                            db.SaveChanges();
-                            
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
-                        var JCEA = db.JUNIORCEALLOWANCE.Where(a => a.JUNIORCEID == JCEID && a.STATUS == 1);
-                        //model.JuniorCEAllowanceDetails = new List<JuniorCEAllowance>();
-                        decimal TotalAllow = 0;
-                        decimal NetPay = 0;
-                        foreach (var details in JCEA)
-                        {
-                            var Allow = new JUNIORCETRIALPAYALLOWANCE();
-                            Allow.ALLOWANCEID = details.ALLOWANCEID; 
-                            Allow.AMOUNT = details.AMOUNT;
-                            TotalAllow += details.AMOUNT;
-                            Allow.JUNIORCETRIALPAYID = jceTrialPay.JUNIORCETRIALPAYID;
-
-                            db.JUNIORCETRIALPAYALLOWANCE.Add(Allow);
-                             
-                        }
-
-
-                        var JCED = db.JUNIORCEDEDUCTION.Where(a => a.JUNIORCEID == JCEID && a.STATUS == 1 || a.JUNIORCEID == JCEID && a.STATUS == 2);
-                        decimal TotalDeduc = 0;
-                        //model.JuniorCEDeduction2Details = new List<JuniorCEDeduction2>();
-                        foreach (var details in JCED)
-                        {
-                            var Deduc = new JUNIORCETRIALPAYDEDUCTION();
-                            if (details.DEDUCTIONID != CEWelfareDeductionID)
-                            {
-
-                                if (details.DEDUCTIONID==TaxDeductionID && jce.ISMEDICAL)
-                                {
-                                    
-                                }
-                                else
-                                {
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID; 
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    TotalDeduc += details.DEDUCTIONAMOUNT;
-                                    Deduc.JUNIORCETRIALPAYID = jceTrialPay.JUNIORCETRIALPAYID;
-                                    if (details.BALANCE != null)
-                                    {
-                                        Deduc.BALANCE = details.BALANCE;
-                                        Deduc.DEDUCTIONDATE = details.DEDUCTIONDATE;
-                                        //model.TotalBalance = Deduc.Balance;
-                                    }
-                                    if (details.TOTALAMOUNT != null)
-                                    {
-                                        Deduc.TOTALAMOUNT = details.TOTALAMOUNT;
-                                        //model.TotalAmountX = Deduc.TotalAmount;
-                                    }
-
-
-                                    db.JUNIORCETRIALPAYDEDUCTION.Add(Deduc);  
-                                }
-
-                                
-                            }
-                            else
-                            {
-                                if (date1.Month == 3 || date1.Month == 6 || date1.Month == 9 || date1.Month == 12)
-                                {
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    Deduc.JUNIORCETRIALPAYID = jceTrialPay.JUNIORCETRIALPAYID;
-                                    
-                                    db.JUNIORCETRIALPAYDEDUCTION.Add(Deduc);
-
-                                }
-                            }
-
-                        }
-                        
-                        NetPay = (Convert.ToDecimal(constPay.CONSTPAY) + TotalAllow - TotalDeduc);
-
-                        jceTrialPay.NETPAY = NetPay;
-
-                        try
-                        {
-                            db.SaveChanges();
-                            success = true;
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
+                        errorMessage = "Trial Pay for " + jce.SERVICENUMBER +" "+ jce.SURNAME + " " + jce.OTHERNAME + " for period " + payDate.ToString("MMMM yyyy") + " has already been processed.";
 
                     }
-
-
+                      
                 }
                 else
                 {
@@ -708,8 +543,9 @@ namespace GAFPAY.Controllers
         {
             var model = new JCETrialPay();
             model.MonthList = payViewData.getPayrollMonth();
+            model.IsTrial = true;
 
-            return View("CreateJCEBatchTrial", model);
+            return View("CreateJCEBatch", model);
         }
         [HttpPost]
         public ActionResult CreateJCEBatchTrial(JCETrialPay data)
@@ -719,154 +555,40 @@ namespace GAFPAY.Controllers
             if (ModelState.IsValid)
             {
 
-                var date = "";
-                var monthID = data.MonthID;
-                var dayID = 15;
-                var yearID = DateTime.Now.Year;
-                if (data.MonthID == 1)
-                {
-                    yearID = DateTime.Now.AddYears(1).Year;
-                }
-                date = (dayID + "-" + monthID + "-" + yearID);
-                DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                    System.Globalization.CultureInfo.InvariantCulture);
-
+                var payDate = payViewData.getPayDate(data.MonthID);
                 var jce = db.JUNIORCE.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
                 foreach (var item in jce)
                 {
-                    var tPay = new JCETrialPay();
-                    tPay.TrialPayDate = date1;
-                    tPay.JCEID = item.JUNIORCEID;
-                    var checkAvail =
-                        db.JUNIORCETRIALPAY.FirstOrDefault(
-                            a => a.PAYDATE == tPay.TrialPayDate && a.JUNIORCEID == item.JUNIORCEID && a.STATUS == 1);
-                    if (checkAvail != null)
+                    var process = payViewData.JuniorCETrialPay(payDate, item.JUNIORCEID, item.CIVILIANLEVSTEP.CONSTPAY,item.ISMEDICAL);
+
+                    if (process.success)
                     {
-                        Unprocessed += 1;
-                        success = true;
+                        Processed += 1;
                     }
                     else
                     {
-                        var jceTrialPay = new JUNIORCETRIALPAY();
-                        jceTrialPay.PAYDATE = date1;
-                        jceTrialPay.JUNIORCEID = item.JUNIORCEID;
-                        jceTrialPay.CONSTPAY = item.CIVILIANLEVSTEP.CONSTPAY;
-                        jceTrialPay.BANKID = item.JUNIORCEBANK.BANKID;
-                        jceTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        jceTrialPay.STATUS = 1;
-                        jceTrialPay.INSERTEDBY = "admin";
-
-                        db.JUNIORCETRIALPAY.Add(jceTrialPay);
-
-                        try
-                        {
-                            db.SaveChanges();
-
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
-                        var JCEA = db.JUNIORCEALLOWANCE.Where(a => a.JUNIORCEID == item.JUNIORCEID && a.STATUS == 1);
-                        //model.JuniorCEAllowanceDetails = new List<JuniorCEAllowance>();
-                        decimal TotalAllow = 0;
-                        decimal NetPay = 0;
-                        foreach (var details in JCEA)
-                        {
-                            var Allow = new JUNIORCETRIALPAYALLOWANCE();
-                            Allow.ALLOWANCEID = details.ALLOWANCEID;
-                            Allow.AMOUNT = details.AMOUNT;
-                            TotalAllow += details.AMOUNT;
-                            Allow.JUNIORCETRIALPAYID = jceTrialPay.JUNIORCETRIALPAYID;
-
-                            db.JUNIORCETRIALPAYALLOWANCE.Add(Allow);
-
-                        }
-
-
-                        var JCED =
-                            db.JUNIORCEDEDUCTION.Where(
-                                a =>
-                                    a.JUNIORCEID == item.JUNIORCEID && a.STATUS == 1 ||
-                                    a.JUNIORCEID == item.JUNIORCEID && a.STATUS == 2);
-                        decimal TotalDeduc = 0;
-                        //model.JuniorCEDeduction2Details = new List<JuniorCEDeduction2>();
-                        foreach (var details in JCED)
-                        {
-                            var Deduc = new JUNIORCETRIALPAYDEDUCTION();
-                            if (details.DEDUCTIONID != CEWelfareDeductionID)
-                            {
-
-                                if (details.DEDUCTIONID == TaxDeductionID && item.ISMEDICAL)
-                                {
-
-                                }
-                                else
-                                {
-
-
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    TotalDeduc += details.DEDUCTIONAMOUNT;
-                                    Deduc.JUNIORCETRIALPAYID = jceTrialPay.JUNIORCETRIALPAYID;
-                                    if (details.BALANCE != null)
-                                    {
-                                        Deduc.BALANCE = details.BALANCE;
-                                        Deduc.DEDUCTIONDATE = details.DEDUCTIONDATE;
-                                        //model.TotalBalance = Deduc.Balance;
-                                    }
-                                    if (details.TOTALAMOUNT != null)
-                                    {
-                                        Deduc.TOTALAMOUNT = details.TOTALAMOUNT;
-                                        //model.TotalAmountX = Deduc.TotalAmount;
-                                    }
-
-
-                                    db.JUNIORCETRIALPAYDEDUCTION.Add(Deduc);
-                                }
-                            }
-                            else
-                            {
-                                if (date1.Month == 3 || date1.Month == 6 || date1.Month == 9 || date1.Month == 12)
-                                {
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    Deduc.JUNIORCETRIALPAYID = jceTrialPay.JUNIORCETRIALPAYID;
-
-                                    db.JUNIORCETRIALPAYDEDUCTION.Add(Deduc);
-
-                                }
-                            }
-
-                        }
-
-                        NetPay = (Convert.ToDecimal(item.CIVILIANLEVSTEP.CONSTPAY) + TotalAllow - TotalDeduc);
-
-                        jceTrialPay.NETPAY = NetPay;
-                        Processed += 1;
-                        try
-                        {
-                            db.SaveChanges();
-                            success = true;
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
-
+                        Unprocessed += 1;
                     }
+
                 }
-            } 
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
             else
             {
                 errorMessage = string.Join(" | ", ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
             }
-
+              
             return Json(success ? JsonResponse.SuccessResponse("Total processed " + Processed + ". Total not processed " + Unprocessed + ". Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
         }
 
@@ -883,19 +605,18 @@ namespace GAFPAY.Controllers
             var jceTrial = db.JUNIORCETRIALPAY.Find(id);
             var jce = db.JUNIORCE.Find(jceTrial.JUNIORCEID);
             var jceBank = db.JUNIORCEBANK.Find(jceTrial.JUNIORCEID);
-            var bank = db.BANK.Find(jceTrial.BANKID);
             model.Surname = jce.SURNAME;
             model.Othername = jce.OTHERNAME;
             model.ServiceNumber = jce.SERVICENUMBER;
             model.TitleName = jce.TITLE.TITLENAME;
             model.UnitName = jce.UNIT.UNITNAME;
             model.GenderName = jce.GENDER.GENDERNAME;
-            model.GeneralStatusName = jce.GENERALSTATUS.GSNAME;
+            //model.GeneralStatusName = jce.GENERALSTATUS.GSNAME;
             model.ConstPay = jceTrial.CONSTPAY;
             model.CLevStepName = jce.CIVILIANLEVSTEP.LEVSTEPNAME;
             model.SSNITNo = jce.SSNITNUMBER;
-            model.BankBranch = bank.BANKBRANCH;
-            model.BankName = bank.BANKNAME.BANKNAMEX;
+            model.BankBranch = jceBank.BANK.BANKBRANCH;
+            model.BankName = jceBank.BANK.BANKNAME.BANKNAMEX;
             model.NetPay = jceTrial.NETPAY;
             model.AccountNumber = jceBank.ACCOUNTNUMBER;
             model.GradeName = jce.GRADE.GRADENAME;
@@ -974,6 +695,44 @@ namespace GAFPAY.Controllers
             return Json(success ? JsonResponse.SuccessResponse("Junior CE Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
         }
 
+        public ActionResult RemoveMonthJCETrial(DateTime date)
+        {
+            var jceTrial = db.JUNIORCETRIALPAY.Where(a => a.PAYDATE == date && a.STATUS==1).ToList();
+            foreach (var items in jceTrial)
+            {
+                var payDetails =
+                    db.JUNIORCETRIALPAYALLOWANCE.Where(a => a.JUNIORCETRIALPAYID == items.JUNIORCETRIALPAYID).ToList();
+
+                foreach (var jcepay in payDetails)
+                {
+                    db.JUNIORCETRIALPAYALLOWANCE.Remove(jcepay);
+                }
+
+                var deducDetails =
+                    db.JUNIORCETRIALPAYDEDUCTION.Where(a => a.JUNIORCETRIALPAYID == items.JUNIORCETRIALPAYID).ToList();
+
+                foreach (var jcededuc in deducDetails)
+                {
+                    db.JUNIORCETRIALPAYDEDUCTION.Remove(jcededuc);
+                }
+
+                db.JUNIORCETRIALPAY.Remove(items);
+
+            }
+
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+
+                errorMessage = e.Message;
+            }
+            return Json(success ? JsonResponse.SuccessResponse("Junior CE Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
         /*-----------------------------------------End Junior CE Trial Pay--------------------------------------   */
 
 
@@ -997,142 +756,27 @@ namespace GAFPAY.Controllers
             {
                 var SCEID = data.SCEID;
                 var sce = db.SENIORCE.Find(SCEID);
-                var constPay = db.CIVILIANLEVSTEP.Find(sce.CIVILIANLEVSTEPID);
-                var tPay = new TrialPay();
+                var constPay = sce.CIVILIANLEVSTEP.CONSTPAY; 
                 if (sce != null)
                 {
 
-                    var date = "";
-                    var monthID = data.MonthID;
-                    var yearID = DateTime.Now.Year;
-                    if (monthID == 1)
+                    var payDate = payViewData.getPayDate(data.MonthID);
+                    var process = payViewData.SeniorCETrialPay(payDate, SCEID, constPay, sce.ISMEDICAL);
+
+                    if (process.success)
                     {
-                        yearID = DateTime.Now.AddYears(1).Year;
-                    }
-
-                    var dayID = 15;
-
-                    date = (dayID + "-" + monthID + "-" + yearID);
-                    DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                        System.Globalization.CultureInfo.InvariantCulture);
-                    tPay.TrialPayDate = date1;
-                    var checkAvail = db.SENIORCETRIALPAY.FirstOrDefault(a => a.PAYDATE == tPay.TrialPayDate && a.SENIORCEID == SCEID && a.STATUS==1);
-                    if (checkAvail != null)
-                    {
-                        errorMessage = "Trial Pay for " + sce.SERVICENUMBER + " " + sce.SURNAME + " " + sce.OTHERNAME + " for period " + tPay.TrialPayDate.ToString("MMMM yyyy") + " has already been processed.";
-
+                        success = true;
                     }
                     else
                     {
-                        var sceTrialPay = new SENIORCETRIALPAY();
-                        decimal TotalAllow=0, TotalDeduc =0,NetPay = 0;
-                        sceTrialPay.PAYDATE = date1;
-                        sceTrialPay.SENIORCEID = SCEID;
-                        sceTrialPay.CONSTPAY = constPay.CONSTPAY;
-                        sceTrialPay.BANKID = sce.SENIORCEBANK.BANKID;
-                        sceTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //sceTrialPay.INSERTEDBY = User.Identity.Name;
-                        sceTrialPay.STATUS = 1;
-                        sceTrialPay.INSERTEDBY = "admin";
+                        errorMessage = "Trial Pay for " + sce.SERVICENUMBER + " " + sce.SURNAME + " " + sce.OTHERNAME + " for period " + payDate.ToString("MMMM yyyy") + " has already been processed.";
 
-                        db.SENIORCETRIALPAY.Add(sceTrialPay);
-
-                        try
-                        {
-                            db.SaveChanges();
-
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
-                        var SCEA = db.SENIORCEALLOWANCE.Where(a => a.SENIORCEID == SCEID && a.STATUS == 1);
-                         
-                        foreach (var details in SCEA)
-                        {
-                            var Allow = new SENIORCETRIALPAYALLOWANCE();
-                            Allow.ALLOWANCEID = details.ALLOWANCEID;
-                            Allow.AMOUNT = details.AMOUNT;
-                            TotalAllow += details.AMOUNT;
-                            Allow.SENIORCETRIALPAYID = sceTrialPay.SENIORCETRIALPAYID;
-
-                            db.SENIORCETRIALPAYALLOWANCE.Add(Allow);
-
-                        }
-
-
-                        var SCED = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == SCEID && a.STATUS == 1 || a.SENIORCEID == SCEID && a.STATUS == 2);
-                        
-                        foreach (var details in SCED)
-                        {
-                            var Deduc = new SENIORCETRIALPAYDEDUCTION();
-                            if (details.DEDUCTIONID != CEWelfareDeductionID)
-                            {
-                                if (details.DEDUCTIONID == TaxDeductionID && sce.ISMEDICAL)
-                                {
-
-                                }
-                                else
-                                {
-
-
-
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    TotalDeduc += details.DEDUCTIONAMOUNT;
-                                    Deduc.SENIORCETRIALPAYID = sceTrialPay.SENIORCETRIALPAYID;
-                                    if (details.BALANCE != null)
-                                    {
-                                        Deduc.BALANCE = details.BALANCE;
-                                        Deduc.DEDUCTIONDATE = details.DEDUCTIONDATE;
-                                        //model.TotalBalance = Deduc.Balance;
-                                    }
-                                    if (details.TOTALAMOUNT != null)
-                                    {
-                                        Deduc.TOTALAMOUNT = details.TOTALAMOUNT;
-                                        //model.TotalAmountX = Deduc.TotalAmount;
-                                    }
-
-
-                                    db.SENIORCETRIALPAYDEDUCTION.Add(Deduc);
-                                }
-                            }
-                            else
-                            {
-                                if (date1.Month == 3 || date1.Month == 6 || date1.Month == 9 || date1.Month == 12)
-                                {
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    Deduc.SENIORCETRIALPAYID = sceTrialPay.SENIORCETRIALPAYID;
-
-                                    db.SENIORCETRIALPAYDEDUCTION.Add(Deduc);
-
-                                }
-                            }
-
-                        }
-                        NetPay = (Convert.ToDecimal(constPay.CONSTPAY) + TotalAllow - TotalDeduc);
-
-                        sceTrialPay.NETPAY = NetPay;
-
-
-                        try
-                        {
-                            db.SaveChanges();
-                            success = true;
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-                         
                     }
-                     
+
                 }
                 else
                 {
-                    errorMessage = "Senior CE does not exist. Please contact System Admin for assistance.";
+                    errorMessage = "Junior CE does not exist. Please contact System Admin for assistance.";
                     //return Json(success ? JsonResponse.SuccessResponse("Recruit") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
@@ -1158,155 +802,43 @@ namespace GAFPAY.Controllers
         {
             var model = new SCETrialPay(); 
             model.MonthList = payViewData.getPayrollMonth();
-
-            return View("CreateSCEBatchTrial", model);
+            model.IsTrial = true;
+            return View("CreateSCEBatch", model);
         }
         [HttpPost]
         public ActionResult CreateSCEBatchTrial(SCETrialPay data)
-        {   
+        {
             var Processed = 0;
             var Unprocessed = 0;
             if (ModelState.IsValid)
             {
 
-                var date = "";
-                var monthID = data.MonthID;
-                var dayID = 15;
-                var yearID = DateTime.Now.Year;
-                if (data.MonthID == 1)
-                {
-                    yearID = DateTime.Now.AddYears(1).Year;
-                }
-                date = (dayID + "-" + monthID + "-" + yearID);
-                DateTime date1 = DateTime.ParseExact(date, @"d-M-yyyy",
-                    System.Globalization.CultureInfo.InvariantCulture);
-
+                var payDate = payViewData.getPayDate(data.MonthID);
                 var sce = db.SENIORCE.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
                 foreach (var item in sce)
                 {
-                    var tPay = new SCETrialPay();
-                    tPay.TrialPayDate = date1;
-                    tPay.SCEID = item.SENIORCEID;
-                    var checkAvail =
-                        db.SENIORCETRIALPAY.FirstOrDefault(
-                            a => a.PAYDATE == tPay.TrialPayDate && a.SENIORCEID == item.SENIORCEID && a.STATUS == 1);
-                    if (checkAvail != null)
+                    var process = payViewData.SeniorCETrialPay(payDate, item.SENIORCEID, item.CIVILIANLEVSTEP.CONSTPAY, item.ISMEDICAL);
+
+                    if (process.success)
                     {
-                        Unprocessed += 1;
-                        success = true;
+                        Processed += 1;
                     }
                     else
                     {
-                        var sceTrialPay = new SENIORCETRIALPAY();
-                        sceTrialPay.PAYDATE = date1;
-                        sceTrialPay.SENIORCEID = item.SENIORCEID;
-                        sceTrialPay.CONSTPAY = item.CIVILIANLEVSTEP.CONSTPAY;
-                        sceTrialPay.BANKID = item.SENIORCEBANK.BANKID;
-                        sceTrialPay.DATETIMEINSERTED = DateTime.Now;
-                        //recruitTrialPay.INSERTEDBY = User.Identity.Name;
-                        sceTrialPay.STATUS = 1;
-                        sceTrialPay.INSERTEDBY = "admin";
-
-                        db.SENIORCETRIALPAY.Add(sceTrialPay);
-
-                        try
-                        {
-                            db.SaveChanges();
-
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
-                        var SCEA = db.SENIORCEALLOWANCE.Where(a => a.SENIORCEID == item.SENIORCEID && a.STATUS == 1);
-                        //model.JuniorCEAllowanceDetails = new List<JuniorCEAllowance>();
-                        decimal TotalAllow = 0;
-                        decimal NetPay = 0;
-                        foreach (var details in SCEA)
-                        {
-                            var Allow = new SENIORCETRIALPAYALLOWANCE();
-                            Allow.ALLOWANCEID = details.ALLOWANCEID;
-                            Allow.AMOUNT = details.AMOUNT;
-                            TotalAllow += details.AMOUNT;
-                            Allow.SENIORCETRIALPAYID = sceTrialPay.SENIORCETRIALPAYID;
-
-                            db.SENIORCETRIALPAYALLOWANCE.Add(Allow);
-
-                        }
-
-
-                        var SCED =
-                            db.SENIORCEDEDUCTION.Where(
-                                a =>
-                                    a.SENIORCEID == item.SENIORCEID && a.STATUS == 1 ||
-                                    a.SENIORCEID == item.SENIORCEID && a.STATUS == 2);
-                        decimal TotalDeduc = 0;
-                        //model.JuniorCEDeduction2Details = new List<JuniorCEDeduction2>();
-                        foreach (var details in SCED)
-                        {
-                            var Deduc = new SENIORCETRIALPAYDEDUCTION();
-                            if (details.DEDUCTIONID != CEWelfareDeductionID)
-                            {
-
-                                if (details.DEDUCTIONID == TaxDeductionID && item.ISMEDICAL)
-                                {
-
-                                }
-                                else
-                                {  
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    TotalDeduc += details.DEDUCTIONAMOUNT;
-                                    Deduc.SENIORCETRIALPAYID = sceTrialPay.SENIORCETRIALPAYID;
-                                    if (details.BALANCE != null)
-                                    {
-                                        Deduc.BALANCE = details.BALANCE;
-                                        Deduc.DEDUCTIONDATE = details.DEDUCTIONDATE;
-                                        //model.TotalBalance = Deduc.Balance;
-                                    }
-                                    if (details.TOTALAMOUNT != null)
-                                    {
-                                        Deduc.TOTALAMOUNT = details.TOTALAMOUNT;
-                                        //model.TotalAmountX = Deduc.TotalAmount;
-                                    }
-
-
-                                    db.SENIORCETRIALPAYDEDUCTION.Add(Deduc);
-                                }
-                            }
-                            else
-                            {
-                                if (date1.Month == 3 || date1.Month == 6 || date1.Month == 9 || date1.Month == 12)
-                                {
-                                    Deduc.DEDUCTIONID = details.DEDUCTIONID;
-                                    Deduc.DEDUCTIONAMOUNT = details.DEDUCTIONAMOUNT;
-                                    Deduc.SENIORCETRIALPAYID = sceTrialPay.SENIORCETRIALPAYID;
-
-                                    db.SENIORCETRIALPAYDEDUCTION.Add(Deduc);
-
-                                }
-                            }
-
-                        }
-
-                        NetPay = (Convert.ToDecimal(item.CIVILIANLEVSTEP.CONSTPAY) + TotalAllow - TotalDeduc);
-
-                        sceTrialPay.NETPAY = NetPay;
-                        Processed += 1;
-                        try
-                        {
-                            db.SaveChanges();
-                            success = true;
-                        }
-                        catch (Exception e)
-                        {
-                            errorMessage = e.Message;
-                        }
-
-
+                        Unprocessed += 1;
                     }
+
                 }
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
             }
             else
             {
@@ -1314,6 +846,7 @@ namespace GAFPAY.Controllers
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
             }
+
 
             return Json(success ? JsonResponse.SuccessResponse("Total processed " + Processed + ". Total not processed " + Unprocessed + ". Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
         }
@@ -1331,19 +864,18 @@ namespace GAFPAY.Controllers
             var sceTrial = db.SENIORCETRIALPAY.Find(id);
             var sce = db.SENIORCE.Find(sceTrial.SENIORCEID);
             var sceBank = db.SENIORCEBANK.Find(sceTrial.SENIORCEID);
-            var bank = db.BANK.Find(sceTrial.BANKID);
             model.Surname = sce.SURNAME;
             model.Othername = sce.OTHERNAME;
             model.ServiceNumber = sce.SERVICENUMBER;
             model.TitleName = sce.TITLE.TITLENAME;
             model.UnitName = sce.UNIT.UNITNAME;
             model.GenderName = sce.GENDER.GENDERNAME;
-            model.GeneralStatusName = sce.GENERALSTATUS.GSNAME;
+           // model.GeneralStatusName = sce.GENERALSTATUS.GSNAME;
             model.ConstPay = sceTrial.CONSTPAY;
             model.CLevStepName = sce.CIVILIANLEVSTEP.LEVSTEPNAME;
             model.SSNITNo = sce.SSNITNUMBER;
-            model.BankBranch = bank.BANKBRANCH;
-            model.BankName = bank.BANKNAME.BANKNAMEX;
+            model.BankBranch = sceBank.BANK.BANKBRANCH;
+            model.BankName = sceBank.BANK.BANKNAME.BANKNAMEX;
             model.NetPay = sceTrial.NETPAY;
             model.AccountNumber = sceBank.ACCOUNTNUMBER;
             model.GradeName = sce.GRADE.GRADENAME;
@@ -1422,6 +954,44 @@ namespace GAFPAY.Controllers
         }
 
 
+        public ActionResult RemoveMonthSCETrial(DateTime date)
+        {
+            var sceTrial = db.SENIORCETRIALPAY.Where(a => a.PAYDATE == date && a.STATUS == 1).ToList();
+            foreach (var items in sceTrial)
+            {
+                var payDetails =
+                    db.SENIORCETRIALPAYALLOWANCE.Where(a => a.SENIORCETRIALPAYID == items.SENIORCETRIALPAYID).ToList();
+
+                foreach (var scepay in payDetails)
+                {
+                    db.SENIORCETRIALPAYALLOWANCE.Remove(scepay);
+                }
+
+                var deducDetails =
+                    db.SENIORCETRIALPAYDEDUCTION.Where(a => a.SENIORCETRIALPAYID == items.SENIORCETRIALPAYID).ToList();
+
+                foreach (var scededuc in deducDetails)
+                {
+                    db.SENIORCETRIALPAYDEDUCTION.Remove(scededuc);
+                }
+
+                db.SENIORCETRIALPAY.Remove(items);
+
+            }
+
+            try
+            {
+                db.SaveChanges();
+                success = true;
+            }
+            catch (Exception e)
+            {
+
+                errorMessage = e.Message;
+            }
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
 
         /*-----------------------------------------End Senior CE Trial Pay--------------------------------------   */
 
@@ -1439,7 +1009,338 @@ namespace GAFPAY.Controllers
         /*-----------------------------------------End Officer Trial Pay--------------------------------------   */
 
 
-       
+
+        /*-----------------------------------------Start Overall Trial Pay--------------------------------------   */
+
+        public ActionResult CreateBatchTrial()
+        {
+            var model = new TrialPay();
+            model.MonthList = payViewData.getPayrollMonth();
+
+            return View("CreateBatchTrial", model);
+        }
+
+
+        [HttpPost]
+        public ActionResult CreateBatchTrial(TrialPay data)
+        {
+            int RecProcessed=0 , OCProcessed=0 , JCEProcessed=0 , SCEProcessed=0;
+            int RecUnprocessed = 0,OCUnprocessed=0,JCEUnprocessed=0,SCEUnprocessed=0;
+            if (ModelState.IsValid)
+            {
+
+                var payDate = payViewData.getPayDate(data.MonthID);
+                var recruit = db.RECRUIT.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
+                foreach (var item in recruit)
+                {
+                    var process = payViewData.RecruitTrialPay(payDate, item.RECRIUTID,item.MILITARYLEVSTEP.CONSTPAY);
+
+                    if (process.success)
+                    {
+                        RecProcessed += 1;
+                    }
+                    else
+                    {
+                        RecUnprocessed += 1;
+                    }
+
+                }
+
+                var oc = db.OFFICERCADET.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
+                foreach (var item in oc)
+                {
+                    var process = payViewData.OfficerCadetTrialPay(payDate, item.OFFICERCADETID,item.MILITARYLEVSTEP.CONSTPAY);
+                    if (process.success)
+                    {
+                        OCProcessed += 1;
+                    }
+                    else
+                    {
+                        OCUnprocessed += 1;
+                    }
+                }
+
+                var jce = db.JUNIORCE.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
+                foreach (var item in jce)
+                {
+                    var process = payViewData.JuniorCETrialPay(payDate, item.JUNIORCEID,item.CIVILIANLEVSTEP.CONSTPAY, item.ISMEDICAL);
+                    if (process.success)
+                    {
+                        JCEProcessed += 1; 
+                    }
+                    else
+                    {
+                        JCEUnprocessed += 1;
+                    }
+                }
+
+                var sce = db.SENIORCE.Where(a => a.GENERALSTATUSID == PresentGeneralStatusID).ToList();
+                foreach (var item in sce)
+                {
+                    var process = payViewData.SeniorCETrialPay(payDate, item.SENIORCEID, item.CIVILIANLEVSTEP.CONSTPAY, item.ISMEDICAL);
+                    if (process.success)
+                    {
+                        SCEProcessed += 1; 
+                    }
+                    else
+                    {
+                        SCEUnprocessed += 1;
+                    }
+                } 
+
+                try
+                {
+                    db.SaveChanges();
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    errorMessage = e.Message;
+                }
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+
+            return Json(success ? JsonResponse.SuccessResponse("Recruits processed " + RecProcessed + ". Recruits not processed " + RecUnprocessed +". Cadets processed " + OCProcessed + ". Cadets not processed " + OCUnprocessed +". Junior CE processed " + JCEProcessed + ". Junior CE not processed " + JCEUnprocessed +". Senior CE processed " + SCEProcessed + ". Senior CE not processed " + SCEUnprocessed + ". Trial Pay") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+
+        /*-----------------------------------------End Overalll Trial Pay--------------------------------------   */
+
+
+        /*-----------------------------------------Start General Payroll--------------------------------------   */
+
+        public ActionResult CreateBatchPayroll()
+        {
+            var model=new TrialPay();
+            model.MonthList = payViewData.getPayrollMonth();
+
+            return View("CreateBatchPayroll", model);
+
+        }
+
+        [HttpPost]
+        public ActionResult CreateBatchPayroll(TrialPay data)
+        {
+            if (ModelState.IsValid)
+            { 
+                var payDate = payViewData.getPayDate(data.MonthID);
+
+                var recruit = payViewData.RecruitPayProcess(payDate);
+                errorMessage += recruit.Message;
+
+                var cadet = payViewData.OfficerCadetPayProcess(payDate);
+                errorMessage += cadet.Message;
+
+                var jce = payViewData.JuniorCEPayProcess(payDate);
+                errorMessage += jce.Message;
+
+                var sce = payViewData.SeniorCEPayProcess(payDate);
+                errorMessage += sce.Message;
+
+                success = true;
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+
+            return Json(success ? JsonResponse.SuccessResponse(errorMessage + " Pay") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+
+        /*-----------------------------------------End General Payroll--------------------------------------   */
+
+        /*-----------------------------------------Start Recruit Payroll--------------------------------------   */
+
+        public ActionResult CreateRecruitPayroll()
+        {
+            var model=new RecruitTrialPay();
+            model.MonthList = payViewData.getPayrollMonth();
+            return View("CreateRecruitBatch",model);
+        }
+
+        [HttpPost]
+        public ActionResult CreateRecruitPayroll(RecruitTrialPay data)
+        {
+            if (ModelState.IsValid)
+            {
+                var payDate = payViewData.getPayDate(data.MonthID);
+
+                var recruit = payViewData.RecruitPayProcess(payDate);
+                errorMessage += recruit.Message;
+                success = true;
+
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse(errorMessage + " Pay") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+        /*-----------------------------------------End Recruit Payroll--------------------------------------   */
+
+        /*-----------------------------------------Start Officer Cadet Payroll--------------------------------------   */
+
+        public ActionResult CreateOCPayroll()
+        {
+            var model=new OcTrialPay();
+            model.MonthList = payViewData.getPayrollMonth();
+            return View("CreateOCBatch",model);
+        }
+        [HttpPost]
+        public ActionResult CreateOCPayroll(OcTrialPay data)
+        {
+            if (ModelState.IsValid)
+            {
+                var payDate = payViewData.getPayDate(data.MonthID);
+
+                var oc = payViewData.OfficerCadetPayProcess(payDate);
+                errorMessage += oc.Message;
+                success = true;
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse(errorMessage + " Pay") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+        /*-----------------------------------------End Officer Cadet Payroll--------------------------------------   */
+
+
+        /*-----------------------------------------Start Junior CE Payroll--------------------------------------   */
+
+        public ActionResult CreateJCEPayroll()
+        {
+            var model=new JCETrialPay();
+            model.MonthList = payViewData.getPayrollMonth();
+
+            return View("CreateJCEBatch",model);
+        }
+        [HttpPost]
+        public ActionResult CreateJCEPayroll(JCETrialPay data)
+        {
+            if (ModelState.IsValid)
+            {
+                var payDate = payViewData.getPayDate(data.MonthID);
+
+                var jce = payViewData.JuniorCEPayProcess(payDate);
+                errorMessage += jce.Message;
+                success = true;
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse(errorMessage + " Pay") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+        /*-----------------------------------------End Junior CE Payroll--------------------------------------   */
+
+        /*-----------------------------------------Start Senior CE Payroll--------------------------------------   */
+
+        public ActionResult CreateSCEPayroll()
+        {
+            var model=new SCETrialPay();
+            model.MonthList = payViewData.getPayrollMonth();
+            return View("CreateSCEBatch",model);
+        }
+        [HttpPost]
+        public ActionResult CreateSCEPayroll(RecruitTrialPay data)
+        {
+            if (ModelState.IsValid)
+            { 
+                var payDate = payViewData.getPayDate(data.MonthID);
+
+                var sce = payViewData.SeniorCEPayProcess(payDate);
+                errorMessage += sce.Message;
+                success = true;
+            }
+            else
+            {
+                errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse(errorMessage + " Pay") : JsonResponse.ErrorResponse(errorMessage));
+
+        }
+        /*-----------------------------------------End Senior CE Payroll--------------------------------------   */
+
+
+        /*-----------------------------------------Start Junior CE Trial Report--------------------------------------   */
+        public ActionResult IndexJCETrialReport()
+        {
+            List<JCEBatchTrial> getJCEBatchTrial = payViewData.GetJCEBatchTrialList();
+            return View("IndexJCETrialReport", getJCEBatchTrial);
+        }
+
+        //public ActionResult JCETrialReportDetails(DateTime date)    
+        //{
+        //    //List<JCETrialReport> getJCETrialReport = payViewData.GetJCETrialReportDetailsList(date);
+        //    ViewBag.Date = date; 
+        //    var jcetrial=new JCETrialReport();
+        //    jcetrial.JuniorCETrialReport = payViewData.GetJCETrialReportDetailsList(date);
+        //    var TL = db.JUNIORCETRIALPAY.Where(a => a.PAYDATE == date && a.STATUS == 1).ToList();
+        //    foreach (var item in TL)
+        //    {
+                
+                
+        //       //jcetrial.JuniorCETrialReport=new List<JCETrialReport>();
+             
+        //        var JAllow = payViewData.GetJCETrialAllowancesReportDetails(item.TrialPayID).ToList();
+        //        jcetrial.JuniorCETrialPayAllowances=new List<JuniorCEAllowance>();
+        //        foreach (var JA in JAllow)
+        //        {
+                    
+        //            jcetrial.JuniorCETrialPayAllowances.Add(JA); 
+        //        }
+
+        //        var JDeduc = payViewData.GetJCETrialDeductionsReportDetails(item.TrialPayID).ToList();
+        //        jcetrial.JuniorCETrialPayDeductions=new List<JuniorCEDeduction2>(); 
+        //        foreach (var JD in JDeduc)
+        //        {
+        //            jcetrial.JuniorCETrialPayDeductions.Add(JD); 
+        //        } 
+        //        jcetrial.JuniorCEID = item.JuniorCEID;
+        //        jcetrial.ConstPay = item.ConstPay;
+        //        jcetrial.NetPay = item.NetPay;
+
+        //       //jcetrial.JuniorCETrialReport.Add(jcetrial);
+               
+        //    }
+            
+
+        //    return View("JCETrialReportDetails");
+        //}
+
+
+        /*-----------------------------------------End Junior CE Trial Report--------------------------------------   */
+
+
+
+
 
         /*-----------------------------------------Start Junior CE Allowance--------------------------------------   */
 
@@ -1456,6 +1357,7 @@ namespace GAFPAY.Controllers
             JCEAllow.JuniorCEAllowanceDetails=new List<JuniorCEAllowance>();
             foreach (var details in allow)
             {
+                
                 var JCEA=new JuniorCEAllowance();
                 //JCEA.JuniorCEAllowanceID = details.JUNIORCEALLOWANCESID;
                 JCEA.JuniorCEID = details.JUNIORCEID;
@@ -1471,8 +1373,8 @@ namespace GAFPAY.Controllers
             return View("JCEAllowance",JCEAllow);
         }
         [HttpPost]
-        public ActionResult JCEAllowance(JuniorCEAllowance data)
-        {
+        public ActionResult JCEAllowance(int id,JuniorCEAllowance data)
+        {   
             if (data.JuniorCEAllowanceDetails!=null)
             {
                if (ModelState.IsValid)
@@ -1489,27 +1391,114 @@ namespace GAFPAY.Controllers
                                            " does not exist. Please check and try again.";
                             return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
                         }
-                        var JCEA = db.JUNIORCEALLOWANCE.FirstOrDefault(a => a.JUNIORCEID == data.JuniorCEID && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
+
+                        if (details.Amount > 10000)
+                        {
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                         " amount entered must not be greater than 10,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+
+                        var JCEA = db.JUNIORCEALLOWANCE.FirstOrDefault(a => a.JUNIORCEID == id && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
+ 
+                        JCEA.AMOUNT = details.Amount;   
+                        JCEA.DATETIMEUPDATED = DateTime.Now;
+                        JCEA.UPDATEDBY = "admin";
+                        //JCEA.INSERTEDBY = User.Identity.Name;
+
+
+                        var jce = db.JUNIORCE.Find(id);
+                        jce.DATETIMEUPDATED = DateTime.Now;
+                        jce.UPDATEDBY = User.Identity.Name;
+                        jce.UPDATEDBY = "admin";
+                        jce.ISEDIT = true;
+
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                        success = true;
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = e.Message;
+                    }
+
+                }
+                else
+                {
+                    errorMessage = string.Join(" | ", ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage));
+                }
+            }
+            else
+            {
+                errorMessage = "You have not selected any Allowance to be saved. Please ensure that Junior CE has at least one (1) Allowance before saving changes.";
+            }
+              
+            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+        public ActionResult JCEAllowanceAdd(int id)
+        {
+            var JCEAllow = new JuniorCEAllowance();
+            var jce = db.JUNIORCE.Find(id);
+            ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
+            JCEAllow.JuniorCEID = id;
+            return View("JCEAllowanceAdd", JCEAllow);
+        }
+        [HttpPost]
+        public ActionResult JCEAllowanceAdd(int id,JuniorCEAllowance data)
+        {
+            if (data.JuniorCEAllowanceDetails != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var details in data.JuniorCEAllowanceDetails)
+                    {
+                        var item =
+                            db.ALLOWANCE.Where(a => a.ALLOWANCENAME == details.AllowanceName && a.STATUS==1)
+                                .Select(a => new Allowance() { AllowanceID = a.ALLOWANCEID })
+                                .FirstOrDefault();
+                        if (item == null)
+                        {
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                           " does not exist in this context. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        var JCEA = db.JUNIORCEALLOWANCE.FirstOrDefault(a => a.JUNIORCEID == id && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
 
                         if (JCEA != null)
                         {
-                            JCEA.AMOUNT = details.Amount;
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                          " already exist for this Junior CE.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
                         }
-                        else
+
+                        if (details.Amount>10000)
                         {
-                            var JCEAllow = new JUNIORCEALLOWANCE();
-                            var guid=new Guid();
-                            JCEAllow.JUNIORCEID = data.JuniorCEID;
-                            JCEAllow.STATUS = 1;
-                            JCEAllow.AMOUNT = details.Amount;
-                            JCEAllow.ALLOWANCEID = item.AllowanceID;
-                            JCEAllow.ID = guid;
-                            JCEAllow.DATETIMEINSERTED = DateTime.Now;
-                            JCEAllow.INSERTEDBY = "admin";
-                            //JCEAllow.INSERTEDBY = User.Identity.Name;
-                             
-                            db.JUNIORCEALLOWANCE.Add(JCEAllow);
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                         " amount entered must not be greater than 10,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
                         }
+                        var JCEAllow = new JUNIORCEALLOWANCE();
+                        var guid= Guid.NewGuid();
+                        JCEAllow.JUNIORCEID = id;
+                        JCEAllow.STATUS = 1;
+                        JCEAllow.AMOUNT = details.Amount;
+                        JCEAllow.ALLOWANCEID = item.AllowanceID;  
+                        JCEAllow.ID = guid;
+                        JCEAllow.DATETIMEINSERTED = DateTime.Now;
+                        JCEAllow.INSERTEDBY = "admin";
+                        //JCEAllow.INSERTEDBY = User.Identity.Name;
+                        db.JUNIORCEALLOWANCE.Add(JCEAllow);
+
+                        var jce = db.JUNIORCE.Find(id);
+                        jce.DATETIMEUPDATED = DateTime.Now;
+                        //jce.UPDATEDBY = User.Identity.Name;
+                        jce.UPDATEDBY = "admin";
+                        jce.ISEDIT = true;
 
 
                     }
@@ -1536,91 +1525,6 @@ namespace GAFPAY.Controllers
                 errorMessage = "You have not selected any Allowance to be saved. Please ensure that Junior CE has at least one (1) Allowance before saving changes.";
             }
              
-
-
-            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
-        }
-
-        public ActionResult JCEAllowanceAdd(int id)
-        {
-            var JCEAllow = new JuniorCEAllowance();
-            var jce = db.JUNIORCE.Find(id);
-            ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
-            JCEAllow.JuniorCEID = id;
-            return View("JCEAllowanceAdd", JCEAllow);
-        }
-        [HttpPost]
-        public ActionResult JCEAllowanceAdd(JuniorCEAllowance data)
-        {
-            if (data.JuniorCEAllowanceDetails != null)
-            {
-                if (ModelState.IsValid)
-                {
-                    foreach (var details in data.JuniorCEAllowanceDetails)
-                    {
-                        var item =
-                            db.ALLOWANCE.Where(a => a.ALLOWANCENAME == details.AllowanceName &&a.STATUS==1)
-                                .Select(a => new Allowance() { AllowanceID = a.ALLOWANCEID })
-                                .FirstOrDefault();
-                        if (item == null)
-                        {
-                            errorMessage = "Allowance " + details.AllowanceName +
-                                           " does not exist in this context. Please check and try again.";
-                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
-                        }
-                        var JCEA = db.JUNIORCEALLOWANCE.FirstOrDefault(a => a.JUNIORCEID == data.JuniorCEID && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
-
-                        if (JCEA != null)
-                        {
-                            errorMessage = "Allowance " + details.AllowanceName +
-                                          " already exist for this user.";
-                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
-                        }
-
-                        if (details.Amount>100000)
-                        {
-                            errorMessage = "Allowance " + details.AllowanceName +
-                                         " amount entered must not be greater than 100,000. Please check and try again.";
-                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
-                        }
-                        var JCEAllow = new JUNIORCEALLOWANCE();
-                        var guid= Guid.NewGuid();
-                        JCEAllow.JUNIORCEID = data.JuniorCEID;
-                        JCEAllow.STATUS = 1;
-                        JCEAllow.AMOUNT = details.Amount;
-                        JCEAllow.ALLOWANCEID = item.AllowanceID; 
-                      
-                        JCEAllow.ID = guid;
-                        JCEAllow.DATETIMEINSERTED = DateTime.Now;
-                        JCEAllow.INSERTEDBY = "admin";
-                        //JCEAllow.INSERTEDBY = User.Identity.Name;
-                        db.JUNIORCEALLOWANCE.Add(JCEAllow);
-                    }
-                    try
-                    {
-                        db.SaveChanges();
-                        success = true;
-                    }
-                    catch (Exception e)
-                    {
-                        errorMessage = e.Message;
-                    }
-
-                }
-                else
-                {
-                    errorMessage = string.Join(" | ", ModelState.Values
-                        .SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage));
-                }
-            }
-            else
-            {
-                errorMessage = "You have not selected any Allowance to be saved. Please ensure that Junior CE has at least one (1) Allowance before saving changes.";
-            }
-
-
-
             return Json(success ? JsonResponse.SuccessResponse("Junior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
         }
 
@@ -1649,39 +1553,16 @@ namespace GAFPAY.Controllers
                 JCED.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
                 JCED.Amount = details.DEDUCTIONAMOUNT; 
 
-                JCEDeduc.JuniorCEDeduction1Details.Add(JCED); 
-
+                JCEDeduc.JuniorCEDeduction1Details.Add(JCED);  
             }
             var jce = db.JUNIORCE.Find(id);
             ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
             JCEDeduc.JuniorCEID = id;
             return View("JCEDeduction1",JCEDeduc);
         }
-        public ActionResult JCEDeduction1Add(int id)
-        {
-            var deduc = db.JUNIORCEDEDUCTION.Where(a => a.JUNIORCEID == id && a.STATUS == 1).ToList();
-            var JCEDeduc=new JuniorCEDeduction1();
-            //JCEDeduc.JuniorCEDeduction1Details=new List<JuniorCEDeduction1>();
-            //foreach (var details in deduc)
-            //{
-            //    var JCED=new JuniorCEDeduction1(); 
-            //    JCED.JuniorCEID = details.JUNIORCEID;
-            //    JCED.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
-            //    JCED.Amount = details.DEDUCTIONAMOUNT; 
-
-            //    JCEDeduc.JuniorCEDeduction1Details.Add(JCED); 
-
-            //}
-            var jce = db.JUNIORCE.Find(id);
-            ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
-            JCEDeduc.JuniorCEID = id;
-            return View("JCEDeduction1Add",JCEDeduc);
-        }
-
         [HttpPost]
-        public ActionResult JCEDeduction1Add(JuniorCEDeduction1 data)
+        public ActionResult JCEDeduction1(int id,JuniorCEDeduction1 data)
         {
-
             if (data.JuniorCEDeduction1Details != null)
             {
                 if (ModelState.IsValid)
@@ -1689,7 +1570,78 @@ namespace GAFPAY.Controllers
                     foreach (var details in data.JuniorCEDeduction1Details)
                     {
                         var item =
-                            db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 1 || a.DEDUCTIONNAME==details.DeductionName && a.STATUS==3)
+                            db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 1 || a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 3)
+                                .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
+                                .FirstOrDefault(); 
+                        var JCED = db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == id && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID); 
+                        if (details.Amount > 10000)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                         " amount entered must not be greater than 10,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }  
+                        JCED.DEDUCTIONAMOUNT = details.Amount;
+                        JCED.DATETIMEUPDATED = DateTime.Now;
+                        JCED.UPDATEDBY = "admin";
+                        //JCED.UPDATEDBY = User.Identity.Name;
+
+
+                        var jce = db.JUNIORCE.Find(id);
+                        jce.DATETIMEUPDATED = DateTime.Now;
+                        jce.UPDATEDBY = "admin";
+                        //jce.UPDATEDBY = User.Identity.Name;
+                        jce.ISEDIT = true;
+
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                        success = true;
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = e.Message;
+                    }
+
+                }
+                else
+                {
+                    errorMessage = string.Join(" | ", ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage));
+                }
+            }
+            else
+            {
+                errorMessage = "You have not selected any Deduction to be saved. Please ensure that Junior CE has at least one (1) Deduction before saving changes.";
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
+
+        public ActionResult JCEDeduction1Add(int id)
+        { 
+            var JCEDeduc=new JuniorCEDeduction1();
+          
+            var jce = db.JUNIORCE.Find(id);
+            ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
+            JCEDeduc.JuniorCEID = id;
+            return View("JCEDeduction1Add",JCEDeduc);
+        }
+
+        [HttpPost]
+        public ActionResult JCEDeduction1Add(int id,JuniorCEDeduction1 data)
+        {
+                
+            if (data.JuniorCEDeduction1Details != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var details in data.JuniorCEDeduction1Details)
+                    {
+                        var item =
+                            db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 1 )
                                 .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
                                 .FirstOrDefault();
                         if (item == null)
@@ -1698,33 +1650,40 @@ namespace GAFPAY.Controllers
                                            " does not exist in this context. Please check and try again.";
                             return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
-                        var JCED = db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == data.JuniorCEID && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
+                        var JCED = db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == id && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
 
                         if (JCED != null)
                         {
                             errorMessage = "Deduction " + details.DeductionName +
-                                          " already exist for this user.";
+                                          " already exist for this Junior CE.";
                             return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
 
-                        if (details.Amount > 1000000)
+                        if (details.Amount > 10000)
                         {
                             errorMessage = "Deduction " + details.DeductionName +
-                                         " amount entered must not be greater than 1,000,000. Please check and try again.";
+                                         " amount entered must not be greater than 10,000. Please check and try again.";
                             return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
 
                         var JCEDeduc = new JUNIORCEDEDUCTION(); 
-                        JCEDeduc.JUNIORCEID = data.JuniorCEID;
+                        JCEDeduc.JUNIORCEID = id;
                         JCEDeduc.STATUS = 1;
                         JCEDeduc.DEDUCTIONAMOUNT = details.Amount;
-                        JCEDeduc.DEDUCTIONID = item.DeductionID;
-
+                        JCEDeduc.DEDUCTIONID = item.DeductionID; 
                         JCEDeduc.ID = Guid.NewGuid();
                         JCEDeduc.DATETIMEINSERTED = DateTime.Now;
                         JCEDeduc.INSERTEDBY = "admin";
                         //JCEAllow.INSERTEDBY = User.Identity.Name;
                         db.JUNIORCEDEDUCTION.Add(JCEDeduc);
+
+
+                        var jce = db.JUNIORCE.Find(data.JuniorCEID);
+                        jce.DATETIMEUPDATED = DateTime.Now;
+                        jce.UPDATEDBY = "admin";
+                        //jce.UPDATEDBY = User.Identity.Name;
+                        jce.ISEDIT = true;
+
                     }
                     try
                     {
@@ -1789,24 +1748,82 @@ namespace GAFPAY.Controllers
             JCEDeduc.JuniorCEID = id;
             return View("JCEDeduction2",JCEDeduc);
         }
+
+        [HttpPost]
+        public ActionResult JCEDeduction2(int id,JuniorCEDeduction2 data)
+        {
+            if (data.JuniorCEDeduction2Details != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var details in data.JuniorCEDeduction2Details)
+                    {
+                        var item =
+                            db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName )
+                                .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
+                                .FirstOrDefault();
+                       
+                        var JCED = db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == data.JuniorCEID && a.STATUS == 2 && a.DEDUCTIONID == item.DeductionID);
+                         
+                        if (details.TotalAmount > 1000000)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                         " Total Amount entered must not be greater than 1,000,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        if (details.Amount >= details.TotalAmount)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                         " Amount " + details.Amount + " must not be greater than Total Amount " + details.TotalAmount + ". Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+
+                        //JCED.TOTALAMOUNT = details.TotalAmount;
+                        JCED.DEDUCTIONAMOUNT = details.Amount;
+                        JCED.DATETIMEUPDATED = DateTime.Now;
+                        JCED.UPDATEDBY = "admin";
+                        //JCED.UPDATEDBY = User.Identity.Name;
+
+                        var jce = db.JUNIORCE.Find(id);
+                        jce.DATETIMEUPDATED=DateTime.Now;
+                        jce.UPDATEDBY = "admin";
+                        //jce.UPDATEDBY = User.Identity.Name;
+                        jce.ISEDIT = true;
+
+
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                        success = true;
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = e.Message;
+                    }
+
+                }
+                else
+                {
+                    errorMessage = string.Join(" | ", ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage));
+                }
+            }
+            else
+            {
+                errorMessage = "There is no Deduction to be saved.";
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
         public ActionResult JCEDeduction2Add(int id)
         {
             var deduc = db.JUNIORCEDEDUCTION.Where(a => a.JUNIORCEID == id && a.STATUS == 2).ToList();
             var JCEDeduc=new JuniorCEDeduction2();
             JCEDeduc.JuniorCEDeduction2Details=new List<JuniorCEDeduction2>();
-            //foreach (var details in deduc)
-            //{
-            //    var JCED=new JuniorCEDeduction2();
-                 
-            //    JCED.JuniorCEID = details.JUNIORCEID;
-            //    JCED.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
-            //    JCED.Amount = details.DEDUCTIONAMOUNT;
-            //    JCED.TotalAmount = details.TOTALAMOUNT.Value;
-            //    JCED.DeductionDate = details.DEDUCTIONDATE.Value;
-
-            //    JCEDeduc.JuniorCEDeduction2Details.Add(JCED); 
-
-            //}
+             
             var jce = db.JUNIORCE.Find(id);
             ViewBag.Name = jce.TITLE.TITLENAME + " " + jce.SURNAME + " " + jce.OTHERNAME;
             JCEDeduc.JuniorCEID = id;
@@ -1814,15 +1831,20 @@ namespace GAFPAY.Controllers
         }
 
         [HttpPost]
-        public ActionResult JCEDeduction2Add(JuniorCEDeduction2 data)
+        public ActionResult JCEDeduction2Add(int id,JuniorCEDeduction2 data)
         {
 
-            if (data.JuniorCEDeduction2Details != null)
+            if (data.JuniorCEDeduction2Details != null) 
             {
                 if (ModelState.IsValid)
                 {
                     foreach (var details in data.JuniorCEDeduction2Details)
                     {
+                       if (details.DeductionDate==null)
+                        {
+                            errorMessage = "Date is required.";
+                            return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
                         var item =
                             db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 2)
                                 .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
@@ -1833,12 +1855,14 @@ namespace GAFPAY.Controllers
                                            " does not exist in this context. Please check and try again.";
                             return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
-                        var JCED = db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == data.JuniorCEID && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
+                        
+
+                        var JCED = db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == id && a.STATUS == 2 && a.DEDUCTIONID == item.DeductionID);
 
                         if (JCED != null)
                         {
                             errorMessage = "Deduction " + details.DeductionName +
-                                          " already exist for this user.";
+                                          " already exist for this Junior CE.";
                             return Json(success ? JsonResponse.SuccessResponse("Junior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
 
@@ -1856,19 +1880,26 @@ namespace GAFPAY.Controllers
                         }
 
                         var JCEDeduc = new JUNIORCEDEDUCTION(); 
-                        JCEDeduc.JUNIORCEID = data.JuniorCEID;
+                        JCEDeduc.JUNIORCEID = id;
                         JCEDeduc.STATUS = 2;
                         JCEDeduc.DEDUCTIONAMOUNT = details.Amount;
                         JCEDeduc.TOTALAMOUNT = details.TotalAmount;
                         JCEDeduc.BALANCE = details.TotalAmount;
                         JCEDeduc.DEDUCTIONID = item.DeductionID;
-                        JCEDeduc.DEDUCTIONDATE = details.DeductionDate;
-
+                        JCEDeduc.DEDUCTIONDATE = details.DeductionDate; 
                         JCEDeduc.ID = Guid.NewGuid();
                         JCEDeduc.DATETIMEINSERTED = DateTime.Now;
                         JCEDeduc.INSERTEDBY = "admin";
                         //JCEAllow.INSERTEDBY = User.Identity.Name;
                         db.JUNIORCEDEDUCTION.Add(JCEDeduc);
+
+                        var jce = db.JUNIORCE.Find(id);
+                        jce.UPDATEDBY = "admin";
+                        //jce.UPDATEDBY = User.Identity.Name;
+                        jce.DATETIMEUPDATED=DateTime.Now;
+                        jce.ISEDIT = true;
+                         
+
                     }
                     try
                     {
@@ -1933,16 +1964,8 @@ namespace GAFPAY.Controllers
             return View("SCEAllowance",SCEAllow);
         }
 
-        public ActionResult SCEAllowanceAdd(int id)
-        {
-            var SCEAllow = new SeniorCEAllowance();
-            var sce = db.SENIORCE.Find(id);
-            ViewBag.Name = sce.TITLE.TITLENAME + " " + sce.SURNAME + " " + sce.OTHERNAME;
-            SCEAllow.SeniorCEID = id;
-            return View("SCEAllowanceAdd", SCEAllow);
-        }
         [HttpPost]
-        public ActionResult SCEAllowanceAdd(SeniorCEAllowance data)
+        public ActionResult SCEAllowance(int id,SeniorCEAllowance data)
         {
             if (data.SeniorCEAllowanceDetails != null)
             {
@@ -1954,37 +1977,27 @@ namespace GAFPAY.Controllers
                             db.ALLOWANCE.Where(a => a.ALLOWANCENAME == details.AllowanceName && a.STATUS == 1)
                                 .Select(a => new Allowance() { AllowanceID = a.ALLOWANCEID })
                                 .FirstOrDefault();
-                        if (item == null)
+                        
+                        var SCEA = db.SENIORCEALLOWANCE.FirstOrDefault(a => a.SENIORCEID == id && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
+                         
+                        if (details.Amount > 10000)
                         {
                             errorMessage = "Allowance " + details.AllowanceName +
-                                           " does not exist in this context. Please check and try again.";
-                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
-                        }
-                        var SCEA = db.SENIORCEALLOWANCE.FirstOrDefault(a => a.SENIORCEID == data.SeniorCEID && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
-
-                        if (SCEA != null)
-                        {
-                            errorMessage = "Allowance " + details.AllowanceName +
-                                          " already exist for this user.";
-                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
-                        }
-                        if (details.Amount > 100000)
-                        {
-                            errorMessage = "Allowance " + details.AllowanceName +
-                                         " amount must not be greater than 100,000. Please check and try again.";
+                                         " amount must not be greater than 10,000. Please check and try again.";
                             return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
-                        var SCEAllow = new SENIORCEALLOWANCE();
-                        SCEAllow.SENIORCEID = data.SeniorCEID;
-                        SCEAllow.STATUS = 1;
-                        SCEAllow.AMOUNT = details.Amount;
-                        SCEAllow.ALLOWANCEID = item.AllowanceID;
-                        SCEAllow.ID = Guid.NewGuid();
-                        SCEAllow.DATETIMEINSERTED = DateTime.Now;
-                        SCEAllow.INSERTEDBY = "admin";
-                        //SCEAllow.INSERTEDBY = User.Identity.Name; 
 
-                        db.SENIORCEALLOWANCE.Add(SCEAllow);
+                        SCEA.AMOUNT = details.Amount;
+                        //SCEA.UPDATEDBY = User.Identity.Name;
+                        SCEA.UPDATEDBY = "admin";
+                        SCEA.DATETIMEUPDATED = DateTime.Now;
+
+                        var sce = db.SENIORCE.Find(id);
+                        sce.DATETIMEUPDATED=DateTime.Now;
+                        sce.UPDATEDBY = "admin";
+                        //sce.UPDATEDBY = User.Identity.Name;
+                        sce.ISEDIT = true;
+
                     }
                     try
                     {
@@ -2014,9 +2027,94 @@ namespace GAFPAY.Controllers
             return Json(success ? JsonResponse.SuccessResponse("Senior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
         }
 
+        public ActionResult SCEAllowanceAdd(int id)
+        {
+            var SCEAllow = new SeniorCEAllowance();
+            var sce = db.SENIORCE.Find(id);
+            ViewBag.Name = sce.TITLE.TITLENAME + " " + sce.SURNAME + " " + sce.OTHERNAME;
+            SCEAllow.SeniorCEID = id;
+            return View("SCEAllowanceAdd", SCEAllow);
+        }
+        [HttpPost]  
+        public ActionResult SCEAllowanceAdd(int id,SeniorCEAllowance data)
+        {
+            if (data.SeniorCEAllowanceDetails != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var details in data.SeniorCEAllowanceDetails)
+                    {
+                        var item =
+                            db.ALLOWANCE.Where(a => a.ALLOWANCENAME == details.AllowanceName && a.STATUS == 1)
+                                .Select(a => new Allowance() { AllowanceID = a.ALLOWANCEID })
+                                .FirstOrDefault();
+                        if (item == null)
+                        {
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                           " does not exist in this context. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        var SCEA = db.SENIORCEALLOWANCE.FirstOrDefault(a => a.SENIORCEID == id && a.STATUS == 1 && a.ALLOWANCEID == item.AllowanceID);
+
+                        if (SCEA != null)
+                        {
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                          " already exist for this Senior CE.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        if (details.Amount > 100000)
+                        {
+                            errorMessage = "Allowance " + details.AllowanceName +
+                                         " amount must not be greater than 100,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        var SCEAllow = new SENIORCEALLOWANCE();
+                        SCEAllow.SENIORCEID = id;
+                        SCEAllow.STATUS = 1;
+                        SCEAllow.AMOUNT = details.Amount;
+                        SCEAllow.ALLOWANCEID = item.AllowanceID;
+                        SCEAllow.ID = Guid.NewGuid();
+                        SCEAllow.DATETIMEINSERTED = DateTime.Now;
+                        SCEAllow.INSERTEDBY = "admin";
+                        //SCEAllow.INSERTEDBY = User.Identity.Name; 
+
+                        db.SENIORCEALLOWANCE.Add(SCEAllow);
+
+                        var sce = db.SENIORCE.Find(id);
+                        sce.DATETIMEUPDATED=DateTime.Now;
+                        sce.UPDATEDBY = "admin";
+                        //sce.UPDATEDBY = User.Identity.Name;
+                        sce.ISEDIT = true;
+
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                        success = true;
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = e.Message;
+                    }
+
+                }
+                else
+                {
+                    errorMessage = string.Join(" | ", ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage));
+                }
+            }
+            else
+            {
+                errorMessage = "You have not selected any Allowance to be saved. Please ensure that Senior CE has at least one (1) Allowance before saving changes.";
+            }
 
 
 
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE Allowance") : JsonResponse.ErrorResponse(errorMessage));
+        }
+         
         /*-----------------------------------------End Senior CE Allowance--------------------------------------   */
 
 
@@ -2050,32 +2148,9 @@ namespace GAFPAY.Controllers
             return View("SCEDeduction1", SCEDeduc);
         }
 
-
-        public ActionResult SCEDeduction1Add(int id)
+        [HttpPost] 
+        public ActionResult SCEDeduction1(int id,SeniorCEDeduction1 data)
         {
-            var deduc = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 1).ToList();
-            var SCEDeduc = new SeniorCEDeduction1();
-            //JCEDeduc.JuniorCEDeduction1Details=new List<JuniorCEDeduction1>();
-            //foreach (var details in deduc)
-            //{
-            //    var JCED=new JuniorCEDeduction1(); 
-            //    JCED.JuniorCEID = details.JUNIORCEID;
-            //    JCED.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
-            //    JCED.Amount = details.DEDUCTIONAMOUNT; 
-
-            //    JCEDeduc.JuniorCEDeduction1Details.Add(JCED); 
-
-            //}
-            var sce = db.SENIORCE.Find(id);
-            ViewBag.Name = sce.TITLE.TITLENAME + " " + sce.SURNAME + " " + sce.OTHERNAME;
-            SCEDeduc.SeniorCEID = id;
-            return View("SCEDeduction1Add", SCEDeduc);
-        }
-
-        [HttpPost]
-        public ActionResult SCEDeduction1Add(SeniorCEDeduction1 data)
-        {
-
             if (data.SeniorCEDeduction1Details != null)
             {
                 if (ModelState.IsValid)
@@ -2086,20 +2161,10 @@ namespace GAFPAY.Controllers
                             db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 1)
                                 .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
                                 .FirstOrDefault();
-                        if (item == null)
-                        {
-                            errorMessage = "Deduction " + details.DeductionName +
-                                           " does not exist in this context. Please check and try again.";
-                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
-                        }
-                        var SCED = db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == data.SeniorCEID && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
+                         
+                        var SCED = db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == id && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
 
-                        if (SCED != null)
-                        {
-                            errorMessage = "Deduction " + details.DeductionName +
-                                          " already exist for this user.";
-                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
-                        }
+                        
                         if (details.Amount > 1000000)
                         {
                             errorMessage = "Deduction " + details.DeductionName +
@@ -2107,17 +2172,17 @@ namespace GAFPAY.Controllers
                             return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
 
-                        var SCEDeduc = new SENIORCEDEDUCTION(); 
-                        SCEDeduc.SENIORCEID = data.SeniorCEID;
-                        SCEDeduc.STATUS = 1;
-                        SCEDeduc.DEDUCTIONAMOUNT = details.Amount;
-                        SCEDeduc.DEDUCTIONID = item.DeductionID;
 
-                        SCEDeduc.ID = Guid.NewGuid();
-                        SCEDeduc.DATETIMEINSERTED = DateTime.Now;
-                        SCEDeduc.INSERTEDBY = "admin";
-                        //JCEAllow.INSERTEDBY = User.Identity.Name;
-                        db.SENIORCEDEDUCTION.Add(SCEDeduc);
+                        SCED.DEDUCTIONAMOUNT = details.Amount;
+                        SCED.DATETIMEUPDATED=DateTime.Now;
+                        //SCED.UPDATEDBY = User.Identity.Name;
+                        SCED.UPDATEDBY = "admin";
+
+                        var sce = db.SENIORCE.Find(id);
+                        sce.DATETIMEUPDATED=DateTime.Now;
+                        sce.UPDATEDBY = "admin";
+                        //sce.UPDATEDBY = User.Identity.Name;
+                        sce.ISEDIT = true;
                     }
                     try
                     {
@@ -2145,8 +2210,96 @@ namespace GAFPAY.Controllers
             return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
         }
 
+        public ActionResult SCEDeduction1Add(int id)
+        {
+            var deduc = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 1).ToList();
+            var SCEDeduc = new SeniorCEDeduction1();
+           
+            var sce = db.SENIORCE.Find(id);
+            ViewBag.Name = sce.TITLE.TITLENAME + " " + sce.SURNAME + " " + sce.OTHERNAME;
+            SCEDeduc.SeniorCEID = id;
+            return View("SCEDeduction1Add", SCEDeduc);
+        }
 
+        [HttpPost]
+        public ActionResult SCEDeduction1Add(int id,SeniorCEDeduction1 data)
+        {
+                
+            if (data.SeniorCEDeduction1Details != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var details in data.SeniorCEDeduction1Details)
+                    {
+                        var item =
+                            db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName && a.STATUS == 1)
+                                .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
+                                .FirstOrDefault();
+                        if (item == null)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                           " does not exist in this context. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        var SCED = db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == id && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
 
+                        if (SCED != null)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                          " already exist for this user.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        if (details.Amount > 1000000)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                         " Total Amount must not be greater than 1,000,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+
+                        var SCEDeduc = new SENIORCEDEDUCTION(); 
+                        SCEDeduc.SENIORCEID = id;
+                        SCEDeduc.STATUS = 1;
+                        SCEDeduc.DEDUCTIONAMOUNT = details.Amount;
+                        SCEDeduc.DEDUCTIONID = item.DeductionID; 
+                        SCEDeduc.ID = Guid.NewGuid();
+                        SCEDeduc.DATETIMEINSERTED = DateTime.Now;
+                        SCEDeduc.INSERTEDBY = "admin";
+                        //JCEAllow.INSERTEDBY = User.Identity.Name;
+                        db.SENIORCEDEDUCTION.Add(SCEDeduc);
+
+                        var sce = db.SENIORCE.Find(id);
+                        sce.DATETIMEUPDATED=DateTime.Now;
+                        sce.UPDATEDBY = "admin";
+                        //sce.UPDATEDBY = User.Identity.Name;
+                        sce.ISEDIT = true;
+
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                        success = true;
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = e.Message;
+                    }
+
+                }
+                else
+                {
+                    errorMessage = string.Join(" | ", ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage));
+                }
+            }
+            else
+            {
+                errorMessage = "You have not selected any Deduction to be saved. Please ensure that Senior CE has at least one (1) Deduction before saving changes.";
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+        }
+         
 
         /*-----------------------------------------End Senior CE Standard Deduction 1--------------------------------------   */
 
@@ -2184,24 +2337,80 @@ namespace GAFPAY.Controllers
             return View("SCEDeduction2", SCEDeduc);
         }
 
+        [HttpPost]
+        public ActionResult SCEDeduction2(int id,SeniorCEDeduction2 data)
+        {
+            if (data.SeniorCEDeduction2Details != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var details in data.SeniorCEDeduction2Details)
+                    {
+                        var item =
+                            db.DEDUCTION.Where(a => a.DEDUCTIONNAME == details.DeductionName)
+                                .Select(a => new Deduction() { DeductionID = a.DEDUCTIONID })
+                                .FirstOrDefault();
+
+                        var SCED = db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == id && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
+
+                        if (details.TotalAmount > 1000000)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                         " Total Amount entered must not be greater than 1,000,000. Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+                        if (details.Amount >= details.TotalAmount)
+                        {
+                            errorMessage = "Deduction " + details.DeductionName +
+                                         " Amount " + details.Amount + " must not be greater than Total Amount " + details.TotalAmount + ". Please check and try again.";
+                            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+                        }
+
+                        SCED.TOTALAMOUNT = details.TotalAmount;
+                        SCED.DEDUCTIONAMOUNT = details.Amount;
+                        SCED.DATETIMEUPDATED = DateTime.Now;
+                        SCED.UPDATEDBY = "admin";
+                        //SCED.UPDATEDBY = User.Identity.Name;
+
+                        var sce = db.SENIORCE.Find(id);
+                        sce.DATETIMEUPDATED=DateTime.Now;
+                        sce.UPDATEDBY = "admin";
+                        //sce.UPDATEDBY = User.Identity.Name;
+                        sce.ISEDIT = true;
+
+                    }
+                    try
+                    {
+                        db.SaveChanges();
+                        success = true;
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = e.Message;
+                    }
+
+                }
+                else
+                {
+                    errorMessage = string.Join(" | ", ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage));
+                }
+            }
+            else
+            {
+                errorMessage = "There is no Deduction to be saved.";
+            }
+
+            return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
+        }
+
         public ActionResult SCEDeduction2Add(int id)
         {
             var deduc = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 2).ToList();
             var SCEDeduc = new SeniorCEDeduction2();
             SCEDeduc.SeniorCEDeduction2Details = new List<SeniorCEDeduction2>();
-            //foreach (var details in deduc)
-            //{
-            //    var JCED=new JuniorCEDeduction2();
-
-            //    JCED.JuniorCEID = details.JUNIORCEID;
-            //    JCED.DeductionName = details.DEDUCTION.DEDUCTIONNAME;
-            //    JCED.Amount = details.DEDUCTIONAMOUNT;
-            //    JCED.TotalAmount = details.TOTALAMOUNT.Value;
-            //    JCED.DeductionDate = details.DEDUCTIONDATE.Value;
-
-            //    JCEDeduc.JuniorCEDeduction2Details.Add(JCED); 
-
-            //}
+            
             var sce = db.SENIORCE.Find(id);
             ViewBag.Name = sce.TITLE.TITLENAME + " " + sce.SURNAME + " " + sce.OTHERNAME;
             SCEDeduc.SeniorCEID = id;
@@ -2209,8 +2418,8 @@ namespace GAFPAY.Controllers
         }
 
         [HttpPost]
-        public ActionResult SCEDeduction2Add(SeniorCEDeduction2 data)
-        {
+        public ActionResult SCEDeduction2Add(int id,SeniorCEDeduction2 data)    
+        {   
 
             if (data.SeniorCEDeduction2Details != null)
             {
@@ -2228,7 +2437,7 @@ namespace GAFPAY.Controllers
                                            " does not exist in this context. Please check and try again.";
                             return Json(success ? JsonResponse.SuccessResponse("Senior CE Deduction") : JsonResponse.ErrorResponse(errorMessage));
                         }
-                        var SCED = db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == data.SeniorCEID && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
+                        var SCED = db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == id && a.STATUS == 1 && a.DEDUCTIONID == item.DeductionID);
 
                         if (SCED != null)
                         {
@@ -2251,19 +2460,25 @@ namespace GAFPAY.Controllers
 
 
                         var SCEDeduc = new SENIORCEDEDUCTION(); 
-                        SCEDeduc.SENIORCEID = data.SeniorCEID;
+                        SCEDeduc.SENIORCEID = id;
                         SCEDeduc.STATUS = 2;
                         SCEDeduc.DEDUCTIONAMOUNT = details.Amount;
                         SCEDeduc.TOTALAMOUNT = details.TotalAmount;
                         SCEDeduc.BALANCE = details.TotalAmount;
                         SCEDeduc.DEDUCTIONID = item.DeductionID;
-                        SCEDeduc.DEDUCTIONDATE = details.DeductionDate;
-
+                        SCEDeduc.DEDUCTIONDATE = details.DeductionDate; 
                         SCEDeduc.ID = Guid.NewGuid();
                         SCEDeduc.DATETIMEINSERTED = DateTime.Now;
                         SCEDeduc.INSERTEDBY = "admin";
                         //JCEAllow.INSERTEDBY = User.Identity.Name;
                         db.SENIORCEDEDUCTION.Add(SCEDeduc);
+
+                        var sce = db.SENIORCE.Find(id);
+                        sce.UPDATEDBY = "admin";
+                        //sce.UPDATEDBY = User.Identity.Name;
+                        sce.DATETIMEUPDATED=DateTime.Now;
+                        sce.ISEDIT = true;
+
                     }
 
                     try
@@ -2295,8 +2510,7 @@ namespace GAFPAY.Controllers
          
 
         /*-----------------------------------------End Senior CE Standard Deduction 2--------------------------------------   */
-
-
+         
         /*-----------------------------------------Start Allowance Listings --------------------------------------   */
 
         [HttpPost]

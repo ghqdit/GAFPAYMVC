@@ -29,13 +29,11 @@ namespace GAFPAY.Models
         public string INSERTEDBY { get; set; }
         public int STATUS { get; set; }
         public int SOLDEIRID { get; set; }
-        public int BANKID { get; set; }
     
         public virtual SOLDIER SOLDIER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIERTRIALPAYALLOWANCE> SOLDIERTRIALPAYALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOLDIERTRIALPAYDEDUCTION> SOLDIERTRIALPAYDEDUCTION { get; set; }
-        public virtual BANK BANK { get; set; }
     }
 }

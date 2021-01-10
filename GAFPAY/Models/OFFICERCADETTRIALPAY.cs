@@ -20,9 +20,8 @@ namespace GAFPAY.Models
         public System.DateTime DATETIMEINSERTED { get; set; }
         public string INSERTEDBY { get; set; }
         public int OFFICERCADETID { get; set; }
-        public int BANKID { get; set; }
+        public int STATUS { get; set; }
     
-        public virtual BANK BANK { get; set; }
         public virtual OFFICERCADET OFFICERCADET { get; set; }
     }
 }

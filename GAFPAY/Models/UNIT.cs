@@ -19,8 +19,8 @@ namespace GAFPAY.Models
         {
             this.JUNIORCE = new HashSet<JUNIORCE>();
             this.OFFICER = new HashSet<OFFICER>();
-            this.SOLDIER = new HashSet<SOLDIER>();
             this.SENIORCE = new HashSet<SENIORCE>();
+            this.SOLDIER = new HashSet<SOLDIER>();
         }
     
         public int UNITID { get; set; }
@@ -33,8 +33,8 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICER> OFFICER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SOLDIER> SOLDIER { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCE> SENIORCE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SOLDIER> SOLDIER { get; set; }
     }
 }

@@ -31,11 +31,11 @@ namespace GAFPAY.Models
         public int OFFICERID { get; set; }
         public int BANKID { get; set; }
     
+        public virtual BANK BANK { get; set; }
         public virtual OFFICER OFFICER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERPAYROLLALLOWANCE> OFFICERPAYROLLALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERPAYROLLDEDUCTION> OFFICERPAYROLLDEDUCTION { get; set; }
-        public virtual BANK BANK { get; set; }
     }
 }

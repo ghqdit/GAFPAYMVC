@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet1">
+    <Query>
+      <DataSourceReference>GAFPAYDataSource</DataSourceReference>
+      <DataSetParameters>
+        <DataSetParameter Name="@Date">
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <OmitFromQuery>false</OmitFromQuery>
+          <rd:DbType>Object</rd:DbType>
+        </DataSetParameter>
+      </DataSetParameters>
+      <CommandText>SELECT        BANK AS BANKNAMEX, PAYDATE, BANK, BANKID
+FROM            JUNIORCEPAYROLL AS JP
+WHERE        (PAYDATE = @Date)
+ORDER BY BANKNAMEX</CommandText>
+    </Query>
+    <Fields>
+      <Field Name="BANKNAMEX">
+        <DataField>BANKNAMEX</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="BANKID">
+        <DataField>BANKID</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="PAYDATE">
+        <DataField>PAYDATE</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="BANK">
+        <DataField>BANK</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>

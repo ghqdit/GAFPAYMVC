@@ -91,9 +91,10 @@
                                 timer: 5000,
                                 closeOnConfirm: true
 
-
-                            })
+                            }).then(function () {
                             window.location.href = '@Url.Action("IndexBank", "Settings")';
+
+                            });
 
                         }  else {
                             var error;

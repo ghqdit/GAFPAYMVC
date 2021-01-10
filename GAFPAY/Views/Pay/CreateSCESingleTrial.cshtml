@@ -35,7 +35,7 @@
                                     <div class="col-sm-5">
                                         <div class="input-field">
                                             @Html.LabelFor(model => model.MonthID)
-                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Month", htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Period", htmlAttributes: new { @class = "form-control" })
 
                                         </div>
                                     </div>
@@ -85,6 +85,7 @@
             confirmButtonText: "Process ",
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
+            allowOutsideClick: false,
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
@@ -108,8 +109,10 @@
                                 closeOnConfirm: true
 
 
-                            })
-                            window.location.href = '@Url.Action("Index", "Home")';
+                            }).then(function() {
+                                  window.location.href = '@Url.Action("Index", "Home")';
+
+                            });
 
                         }  else {
                             var error;

@@ -17,9 +17,9 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RECRUIT()
         {
+            this.DELETEDRECRUIT = new HashSet<DELETEDRECRUIT>();
             this.RECRUITPAYROLL = new HashSet<RECRUITPAYROLL>();
             this.RECRUITTRIALPAY = new HashSet<RECRUITTRIALPAY>();
-            this.DELETEDRECRUIT = new HashSet<DELETEDRECRUIT>();
         }
     
         public int RECRIUTID { get; set; }
@@ -28,6 +28,7 @@ namespace GAFPAY.Models
         public System.DateTime DOB { get; set; }
         public string PHONENUMBER { get; set; }
         public string EMAILADDRESS { get; set; }
+        public string GHANAPOSTGPS { get; set; }
         public string RESADDRESS { get; set; }
         public string SERVICENUMBER { get; set; }
         public System.DateTime RECRUITSTARTDATE { get; set; }
@@ -47,9 +48,10 @@ namespace GAFPAY.Models
         public int SERVICEID { get; set; }
         public int GENERALSTATUSID { get; set; }
         public int MILITARYLEVSTEPID { get; set; }
-        public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDRECRUIT> DELETEDRECRUIT { get; set; }
         public virtual GENDER GENDER { get; set; }
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
         public virtual MILITARYLEVSTEP MILITARYLEVSTEP { get; set; }
@@ -65,7 +67,5 @@ namespace GAFPAY.Models
         public virtual RELIGION RELIGION { get; set; }
         public virtual SERVICE SERVICE { get; set; }
         public virtual TRAININGCENTER TRAININGCENTER { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DELETEDRECRUIT> DELETEDRECRUIT { get; set; }
     }
 }

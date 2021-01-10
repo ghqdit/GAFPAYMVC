@@ -20,48 +20,62 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-
-                    @*<button type="button" id="addDeduc" title="Add" class="btn btn-xs btn-primary" data-original-title="Add"><i class="fas fa-plus"></i></button>*@
-                    <br />
-                    <br />
-                    @*<label class="control-label"> Allowances </label>*@
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="deduc">
-                            <thead>
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "NewFormX" }))
+                    {
+                        @*<button type="button" id="addDeduc" title="Add" class="btn btn-xs btn-primary" data-original-title="Add"><i class="fas fa-plus"></i></button>*@
+                        <br />
+                        <br />
+                        @*<label class="control-label"> Allowances </label>*@
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" id="deduc">
+                                <thead>
                                 <tr style="background-color: #f9f9f9;">
+                                    @Html.HiddenFor(model => model.JuniorCEID)
                                     <th width="15%">Date</th>
                                     <th width="30%" class="">Deduction</th>
                                     <th class="text-right" width="20%">Total GHS</th>
                                     <th class="text-right" width="15%">Amount GHS</th>
-                                    <th class="text-right" width="15%">Balance GHS</th> 
-                                  @*  <th width="10%" class="text-center">Action</th>*@
+                                    <th class="text-right" width="15%">Balance GHS</th>
+                                    @*  <th width="10%" class="text-center">Action</th>*@
                                 </tr>
-                            </thead>
+                                </thead>
 
-                            <tbody>
+                                <tbody>
+                                    @if (Model.JuniorCEDeduction2Details.Count != 0)
+                                    { 
+                                        for (int i = 0; i < Model.JuniorCEDeduction2Details.Count(); i++)
+                                            {
+                                                <tr>
+                                                    <td>@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].DeductionDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</td>
+                                                    <td>@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].DeductionName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</td>
+                                                    <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].TotalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</td>
+                                                    <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].Amount, new { htmlAttributes = new { @class = "form-control Amount" } })</td>
+                                                    <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].Balance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</td>
+                                                    @*<td class="text-center"><button type='button' class='btn btn-xs btn-danger' title='Delete' onclick='rDeduc(this);'><i class='fas fa-trash-alt'></i></button></td>*@
+                                                </tr>
+                                            }
 
-                                @for (int i = 0; i < Model.JuniorCEDeduction2Details.Count(); i++)
-                                {
-                                    <tr>
-                                        <td>@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].DeductionDate, new { htmlAttributes = new {@class = "form-control" } })</td>
-                                        <td><input type="text" class="form-control Desc" name="JuniorCEDeduction2Details[i].DeductionName" id="JuniorCEDeduction2Details[i].DeductionName.Desc" value="@Model.JuniorCEDeduction2Details[i].DeductionName " /> </td> 
-                                        <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].TotalAmount, new { htmlAttributes = new { @class = "form-control" } })</td>
-                                        <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].Amount, new {htmlAttributes = new {@class = "form-control"}})</td>
-                                        <td class="text-right">@Html.EditorFor(model => Model.JuniorCEDeduction2Details[i].Balance, new { htmlAttributes = new { @class = "form-control" } })</td>
-                                        @*<td class="text-center"><button type='button' class='btn btn-xs btn-danger' title='Delete' onclick='rDeduc(this);'><i class='fas fa-trash-alt'></i></button></td>*@
-                                    </tr>
-                                } 
-                            </tbody>
-                             
-                        </table>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center">There is no Deductions for @ViewBag.Name</td>
+                                        </tr>
+                                    }
+                                   
+                                </tbody>
 
-                    </div>
-                    <br />
-                    <br />
-                    @*<div class="row">
-                        <a class="btn btn-lg btn-primary pull-right" id="" onclick="sendForm()" style="color: white">Save</a>
-                    </div>*@
-                    <br /> <br />
+                            </table>
+
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <a class="btn btn-lg btn-primary pull-right" id="" onclick="sendForm()" style="color: white">Save</a>
+                        </div>
+                        <br />
+                        <br />
+                    }
                 </div>
             </div>
         </div>
@@ -71,66 +85,6 @@
 <script src="~/Scripts/tableList.js"></script>
 <script>
 
-    $('#addDeduc').click(function () {
-
-        var i = $('#deduc tbody').find('tr').length;
-
-        var tr = "<tr>";
-        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].DeductionDate class=form-control></td>";
-        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].DeductionName class='form-control Desc' id='JuniorCEDeduction2Details[" + i + "].Desc'></td>";
-        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].TotalAmount class='form-control TotalAmount'></td>";
-        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].Amount class='form-control Amount'></td>";
-        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].Balance class='form-control Balance'></td>";
-
-        tr += "<td class='text-center'><button type='button' class='btn btn-xs btn-danger' title='Delete' onclick='rDeduc(this);'><i class='fas fa-trash-alt'></i></button></td>";
-        tr += "</tr>";
-
-        $('#deduc tbody').append(tr);
-        i++;
-    });
-
-    $(document).on('click', '.form-control.Desc', function () {
-        input_id = $(this).attr('id').split('[');
-        stable = input_id[1].substring(0, 1);
-        //alert(stable);
-        $(this).autocomplete({
-            minLength: 3,
-            source: function (request, response) {
-                $.ajax({
-                    url: '@Url.Action("GetDeduc2JsonResult", "Pay")',
-                    type: "POST",
-                    dataType: "json",
-                    data: { Prefix: request.term },
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return item;
-
-                        }));
-                    }
-
-                });
-
-            },
-            messages: {
-                noResults: "",
-                results: function (count) {
-                    return count + (count > 1 ? ' results' : ' result ') + ' found';
-                }
-            }
-        });
-    });
-
-
-
-
-
-    function rDeduc(r) {
-
-        var row = $(r).closest("tr");
-        row.remove();
-
-    }
-
     $(document).on("keypress keyup blur", '.Amount', function (event) {
         //this.value = this.value.replace(/[^0-9\.]/g,'');
         $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
@@ -138,64 +92,71 @@
             event.preventDefault();
         }
     });
-    $(document).on("keypress keyup blur", '.TotalAmount', function (event) {
-        //this.value = this.value.replace(/[^0-9\.]/g,'');
-        $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
-        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-            event.preventDefault();
-        }
-    });
-     $(document).on("keypress keyup blur", '.Balance', function (event) {
-        //this.value = this.value.replace(/[^0-9\.]/g,'');
-        $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
-        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-            event.preventDefault();
-        }
-    });
 
 
-
-    @*function sendForm() {
-
+    function sendForm() {
         var form = $('#NewFormX').get(0);
+        swal({
+            title: "Save changes",
+            text: "Are you sure you want to save?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5cb85c",
+            confirmButtonText: "Save ",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        url: "@Url.Action("JCEDeduction2","Pay")",
+                        type: 'POST',
+                        data: new FormData(form),
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                    })
+                    .done(function (response) {
+                        if (response.Success) {
+                            swal({
+                                title: "Successful",
+                                text: response.Message+ " saved successfully",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#1E90FF",
+                                confirmButtonText: "OK",
+                                timer: 5000,
+                                closeOnConfirm: true
 
-        $.ajax({
-            url: "@Url.Action("JCEDeduction2", "Pay")",
-            type: "POST",
-        data: new FormData(form),
-        processData: false,
-        contentType: false,
 
-        success: function (data) {
-            if (data.success) {
-                swal({
-                    title: "Save Successful",
-                    html: "Successful",
-                    type: "success",
-                    showCancelButton: false,
-                    confirmButtonColor: "#1E90FF",
-                    confirmButtonText: "OK",
-                    timer: 4000,
+                            }).then(function () {
+                            window.location.href = '@Url.Action("IndexJCEDeduction2", "Pay")';
 
-                }).then((result) => {
-                    //redirection happens here
-                    window.location.href = '@Url.Action("IndexJCEDeduction2", "Pay")';
-                })
+                            });
 
-            } else {
-                var error;
-                if (data.eMessage) {
-                    error = data.eMessage;
-                }
-                else {
-                    error = "Error while processing. Please try again";
-                }
-                swal("Error", error, "error");
-                //swal("error", "error");
+                        }  else {
+                            var error;
+                            if (response.ErrorMessage) {
+                                error = response.ErrorMessage;
+                            } else {
+                                error = "Error while processing. Please try again";
+                            }
+                            swal("Error", error, "error");
+                            //swal("error", "error");
+                        }
+
+
+                    })
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
+                });
             }
 
-        }
-    });
-    }*@
+
+
+        },
+        @* *@);
+    }
+
 
 </script>

@@ -65,7 +65,7 @@ else
     </div>
 </div>
 <script>
-    
+
     function sendForm() {
         var form = $('#NewFormX').get(0);
         swal({
@@ -81,29 +81,27 @@ else
                 return new Promise(function (resolve) {
                     $.ajax({
                         url: "@Url.Action("CreateBank","Settings")",
-                        type: 'POST',
-                    data: new FormData(form),
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexBank", "Settings")';
-
-                        }  else {
+                            type: 'POST',
+                            data: new FormData(form),
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexBank", "Settings")';
+                                });
+                            }  else {
                             var error;
                             if (response.ErrorMessage) {
                                 error = response.ErrorMessage;
@@ -124,8 +122,8 @@ else
 
 
 
-    },
-        @* *@);
+    }
+         );
     }
 
     function editForm() {
@@ -143,29 +141,27 @@ else
                 return new Promise(function (resolve) {
                     $.ajax({
                         url: "@Url.Action("EditBank","Settings")",
-                        type: 'POST',
-                    data: new FormData(form),
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexBank", "Settings")';
-
-                        }  else {
+                            type: 'POST',
+                            data: new FormData(form),
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexBank", "Settings")';
+                                });
+                            }  else {
                             var error;
                             if (response.ErrorMessage) {
                                 error = response.ErrorMessage;
@@ -186,99 +182,8 @@ else
 
 
 
-    },
-        @* *@);
     }
-
-
-
-
-
-    @*function sendForm() {
-
-        var form = $('#NewFormX').get(0);
-
-        $.ajax({
-            url: "@Url.Action("CreateBank", "Settings")",
-            type: "POST",
-            data: new FormData(form),
-            processData: false,
-            contentType: false,
-
-            success: function (data) {
-                if (data.Success) {
-                    swal({
-                        title: "Success",
-                        html: data.Message + " saved successfully",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonColor: "#1E90FF",
-                        confirmButtonText: "OK",
-                        timer: 4000,
-
-                    }).then((result) => {
-                        //redirection happens here
-                        window.location.href = '@Url.Action("IndexBank", "Settings")';
-                    })
-
-                } else {
-                    var error;
-                    if (data.ErrorMessage) {
-                        error = data.ErrorMessage;
-                    }
-                    else {
-                        error = "Error while processing. Please try again";
-                    }
-                    swal("Error", error, "error");
-                    //swal("error", "error");
-                }
-
-            }
-        });
-    }
-
-
-
-    function editForm() {
-
-        var form = $('#NewFormX').get(0);
-
-        $.ajax({
-            url: "@Url.Action("EditBank", "Settings")",
-            type: "POST",
-            data: new FormData(form),
-            processData: false,
-            contentType: false,
-
-            success: function (data) {
-                if (data.Success) {
-                    swal({
-                        title: "Success",
-                        html: data.Message + " saved successfully",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonColor: "#1E90FF",
-                        confirmButtonText: "OK",
-                        timer: 4000,
-
-                    }).then((result) => {
-                        //redirection happens here
-                        window.location.href = '@Url.Action("IndexBank", "Settings")';
-                    })
-
-                } else {
-                    var error;
-                    if (data.ErrorMessage) {
-                        error = data.ErrorMessage;
-                    }
-                    else {
-                        error = "Error while processing. Please try again";
-                    }
-                    swal("Error", error, "error");
-                    //swal("error", "error");
-                }
-
-            }
-        });
-    }*@
+         );
+    } 
+    
 </script>

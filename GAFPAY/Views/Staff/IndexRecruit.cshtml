@@ -140,10 +140,10 @@
                             confirmButtonText: "OK",
                             timer: 5000,
                             closeOnConfirm: true
+                                }).then(function () {
+                            window.location.href = '@Url.Action("IndexRecruit", "Staff")';
 
-
-                        })
-                        window.location.href = '@Url.Action("IndexRecruit", "Staff")';
+                                });
 
                             }  else {
                                 var error;

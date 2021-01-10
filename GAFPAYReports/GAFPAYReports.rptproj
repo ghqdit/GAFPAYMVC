@@ -7,8 +7,134 @@
       <FullPath>GAFPAYDataSource.rds</FullPath>
     </ProjectItem>
   </DataSources>
-  <DataSets />
-  <Reports />
+  <DataSets>
+    <ProjectItem>
+      <Name>dsBankList.rsd</Name>
+      <FullPath>dsBankList.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsCadetBankList.rsd</Name>
+      <FullPath>dsCadetBankList.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsCadetPayListDate.rsd</Name>
+      <FullPath>dsCadetPayListDate.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsJCEBankList.rsd</Name>
+      <FullPath>dsJCEBankList.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsJCEPayListDate.rsd</Name>
+      <FullPath>dsJCEPayListDate.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsJCETrialPayDate.rsd</Name>
+      <FullPath>dsJCETrialPayDate.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsRecBankList.rsd</Name>
+      <FullPath>dsRecBankList.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsRecPayListDate.rsd</Name>
+      <FullPath>dsRecPayListDate.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsSCEBankList.rsd</Name>
+      <FullPath>dsSCEBankList.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsSCEPayListDate.rsd</Name>
+      <FullPath>dsSCEPayListDate.rsd</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>dsSCETrialPayDate.rsd</Name>
+      <FullPath>dsSCETrialPayDate.rsd</FullPath>
+    </ProjectItem>
+  </DataSets>
+  <Reports>
+    <ProjectItem>
+      <Name>rptCadetBankMain.rdl</Name>
+      <FullPath>rptCadetBankMain.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptCadetBankSummary.rdl</Name>
+      <FullPath>rptCadetBankSummary.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptCTOJCE.rdl</Name>
+      <FullPath>rptCTOJCE.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptCTOSCE.rdl</Name>
+      <FullPath>rptCTOSCE.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptJCEBankMain.rdl</Name>
+      <FullPath>rptJCEBankMain.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptJCEBankSummary.rdl</Name>
+      <FullPath>rptJCEBankSummary.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptJCEPayHistory.rdl</Name>
+      <FullPath>rptJCEPayHistory.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptJCEPayList.rdl</Name>
+      <FullPath>rptJCEPayList.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptJCEPaySlipBatch.rdl</Name>
+      <FullPath>rptJCEPaySlipBatch.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptJCETrial.rdl</Name>
+      <FullPath>rptJCETrial.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptRecBankMain.rdl</Name>
+      <FullPath>rptRecBankMain.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptRecBankSummary.rdl</Name>
+      <FullPath>rptRecBankSummary.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptSCEBankMain.rdl</Name>
+      <FullPath>rptSCEBankMain.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptSCEBankSummary.rdl</Name>
+      <FullPath>rptSCEBankSummary.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptSCEPayHistory.rdl</Name>
+      <FullPath>rptSCEPayHistory.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptSCEPayList.rdl</Name>
+      <FullPath>rptSCEPayList.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptSCEPaySlipBatch.rdl</Name>
+      <FullPath>rptSCEPaySlipBatch.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptSCETrial.rdl</Name>
+      <FullPath>rptSCETrial.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptRecPaySlipBatch.rdl</Name>
+      <FullPath>rptRecPaySlipBatch.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>rptCadetPaySlipBatch.rdl</Name>
+      <FullPath>rptCadetPaySlipBatch.rdl</FullPath>
+    </ProjectItem>
+  </Reports>
   <Configurations>
     <Configuration>
       <Name>Debug</Name>
@@ -18,8 +144,10 @@
         <TargetServerVersion>SSRS2016</TargetServerVersion>
         <TargetServerURL>http://localhost/reportserver</TargetServerURL>
         <TargetFolder>GAFPAYReports</TargetFolder>
-        <TargetDataSourceFolder>Data Sources</TargetDataSourceFolder>
-        <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+        <TargetDataSourceFolder>Data Sources/GAFPAY</TargetDataSourceFolder>
+        <OverwriteDataSources>true</OverwriteDataSources>
+        <TargetDatasetFolder>Datasets/GAFPAY</TargetDatasetFolder>
+        <OverwriteDatasets>true</OverwriteDatasets>
         <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
       </Options>
     </Configuration>
@@ -32,7 +160,9 @@
         <TargetServerURL>http://localhost/reportserver</TargetServerURL>
         <TargetFolder>GAFPAYReports</TargetFolder>
         <TargetDataSourceFolder>Data Sources</TargetDataSourceFolder>
+        <OverwriteDataSources>true</OverwriteDataSources>
         <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+        <OverwriteDatasets>true</OverwriteDatasets>
         <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
       </Options>
     </Configuration>

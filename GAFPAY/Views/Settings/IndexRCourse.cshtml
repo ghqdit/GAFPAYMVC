@@ -76,10 +76,10 @@
                                 confirmButtonText: "OK",
                                 timer: 5000,
                                 closeOnConfirm: true
-
-
-                            })
+                            }).then(function () {
                             window.location.href = '@Url.Action("IndexRCourse", "Settings")';
+
+                            });
 
                         }  else {
                             var error;

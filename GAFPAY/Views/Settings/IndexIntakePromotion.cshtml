@@ -45,7 +45,7 @@
 
 </div>
 <script src="~/Scripts/tableList.js"></script>
-<script> 
+<script>
     function promoteItem(X,Y) {
         swal({
             title: "Are you sure",
@@ -74,10 +74,10 @@
                             confirmButtonText: "OK",
                             timer: 5000,
                             closeOnConfirm: true
+                        }).then(function () {
+                            window.location.href = '@Url.Action("IndexIntakePromotion", "Settings")';
 
-
-                        })
-                        window.location.href = '@Url.Action("IndexIntakePromotion", "Settings")';
+                        });
 
                     })
                     .fail(function () {

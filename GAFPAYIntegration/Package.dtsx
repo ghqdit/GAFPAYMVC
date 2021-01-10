@@ -1,0 +1,899 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="12/16/2020 12:55:36 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="JAMBOSU"
+  DTS:CreatorName="JAMBOSU\Ganyo"
+  DTS:DTSID="{89E47BC0-D4F8-4F13-921F-22440B47CE4D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{68E49B87-763F-479F-A1A3-0FA993BBE928}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Excel Connection Manager]"
+      DTS:CreationName="EXCEL"
+      DTS:DTSID="{4AEA9920-827F-49BC-862B-6DC783C22882}"
+      DTS:ObjectName="Excel Connection Manager">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Projects\GAF Project\GAFPAY\GAFPAYIntegration\GAFPAYIntegrationSheets.xls;Extended Properties=&quot;Excel 8.0;HDR=YES&quot;;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[JAMBOSU\SQL16TEST.DBGAFPAY]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{479BA128-0953-4DCC-8099-448FC951F580}"
+      DTS:ObjectName="JAMBOSU\SQL16TEST.DBGAFPAY">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=JAMBOSU\SQL16TEST;Initial Catalog=DBGAFPAY;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Civilian Lev Step"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{8EB2FAD5-C485-4C07-9A43-D05BF6F2C718}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Civilian Lev Step"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Civilian Lev Step\Excel Source"
+              componentClassID="Microsoft.ExcelSource"
+              contactInfo="Excel Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Excel Source"
+              name="Excel Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">CivilNew$</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mapping from parameters in the SQL command to variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Civilian Lev Step\Excel Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Excel Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Excel Connection Manager]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output]"
+                  name="Excel Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[LEVSTRPNAME]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[LEVSTRPNAME]"
+                      length="255"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[LEVSTRPNAME]"
+                      name="LEVSTRPNAME"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[CONSTPAY]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[CONSTPAY]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[CONSTPAY]"
+                      name="CONSTPAY"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[ISSENIOR]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[ISSENIOR]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[ISSENIOR]"
+                      name="ISSENIOR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[STATUS]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[STATUS]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[STATUS]"
+                      name="STATUS"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[LEVSTRPNAME]"
+                      dataType="wstr"
+                      length="255"
+                      name="LEVSTRPNAME" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[CONSTPAY]"
+                      dataType="r8"
+                      name="CONSTPAY" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[ISSENIOR]"
+                      dataType="r8"
+                      name="ISSENIOR" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].ExternalColumns[STATUS]"
+                      dataType="r8"
+                      name="STATUS" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output]"
+                  isErrorOut="true"
+                  name="Excel Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[LEVSTRPNAME]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[LEVSTRPNAME]"
+                      name="LEVSTRPNAME" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[CONSTPAY]"
+                      dataType="r8"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[CONSTPAY]"
+                      name="CONSTPAY" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[ISSENIOR]"
+                      dataType="r8"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[ISSENIOR]"
+                      name="ISSENIOR" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[STATUS]"
+                      dataType="r8"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[STATUS]"
+                      name="STATUS" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Civilian Lev Step\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[CIVILIANLEVSTEP]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Civilian Lev Step\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[JAMBOSU\SQL16TEST.DBGAFPAY]"
+                  connectionManagerRefId="Package.ConnectionManagers[JAMBOSU\SQL16TEST.DBGAFPAY]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CONSTPAY]"
+                      cachedDataType="r8"
+                      cachedName="CONSTPAY"
+                      externalMetadataColumnId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CONSTPAY]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[CONSTPAY]" />
+                    <inputColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ISSENIOR]"
+                      cachedDataType="r8"
+                      cachedName="ISSENIOR"
+                      externalMetadataColumnId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ISSENIOR]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[ISSENIOR]" />
+                    <inputColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[STATUS]"
+                      cachedDataType="r8"
+                      cachedName="STATUS"
+                      externalMetadataColumnId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[STATUS]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[STATUS]" />
+                    <inputColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LEVSTRPNAME]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="LEVSTRPNAME"
+                      externalMetadataColumnId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LEVSTEPNAME]"
+                      lineageId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output].Columns[LEVSTRPNAME]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CIVILIANLEVSTEPID]"
+                      dataType="i4"
+                      name="CIVILIANLEVSTEPID" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LEVSTEPNAME]"
+                      dataType="wstr"
+                      length="6"
+                      name="LEVSTEPNAME" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CONSTPAY]"
+                      dataType="numeric"
+                      name="CONSTPAY"
+                      precision="20"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ISSENIOR]"
+                      dataType="bool"
+                      name="ISSENIOR" />
+                    <externalMetadataColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[STATUS]"
+                      dataType="i4"
+                      name="STATUS" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Civilian Lev Step\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Civilian Lev Step\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Civilian Lev Step\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Civilian Lev Step\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Civilian Lev Step.Paths[Excel Source Output]"
+              endId="Package\Civilian Lev Step\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Excel Source Output"
+              startId="Package\Civilian Lev Step\Excel Source.Outputs[Excel Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Grade"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{5ED0C07D-23D4-44D8-A1DA-B22DA7C77990}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Grade"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Grade\Excel Source"
+              componentClassID="Microsoft.ExcelSource"
+              contactInfo="Excel Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Excel Source"
+              name="Excel Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">Grade$</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mapping from parameters in the SQL command to variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Grade\Excel Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Excel Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Excel Connection Manager]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Grade\Excel Source.Outputs[Excel Source Output]"
+                  name="Excel Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[GRADE]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[GRADE]"
+                      length="255"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[GRADE]"
+                      name="GRADE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[STATUS]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[STATUS]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[STATUS]"
+                      name="STATUS"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[MARKET PREM]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[MARKET PREM]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[MARKET PREM]"
+                      name="MARKET PREM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[ISMEDICAL]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[ISMEDICAL]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[ISMEDICAL]"
+                      name="ISMEDICAL"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[GRADE]"
+                      dataType="wstr"
+                      length="255"
+                      name="GRADE" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[STATUS]"
+                      dataType="r8"
+                      name="STATUS" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[MARKET PREM]"
+                      dataType="r8"
+                      name="MARKET PREM" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Output].ExternalColumns[ISMEDICAL]"
+                      dataType="r8"
+                      name="ISMEDICAL" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output]"
+                  isErrorOut="true"
+                  name="Excel Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[GRADE]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[GRADE]"
+                      name="GRADE" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[STATUS]"
+                      dataType="r8"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[STATUS]"
+                      name="STATUS" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[MARKET PREM]"
+                      dataType="r8"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[MARKET PREM]"
+                      name="MARKET PREM" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[ISMEDICAL]"
+                      dataType="r8"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[ISMEDICAL]"
+                      name="ISMEDICAL" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Grade\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[GRADE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Grade\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[JAMBOSU\SQL16TEST.DBGAFPAY]"
+                  connectionManagerRefId="Package.ConnectionManagers[JAMBOSU\SQL16TEST.DBGAFPAY]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[STATUS]"
+                      cachedDataType="r8"
+                      cachedName="STATUS"
+                      externalMetadataColumnId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[STATUS]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[STATUS]" />
+                    <inputColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ISMEDICAL]"
+                      cachedDataType="r8"
+                      cachedName="ISMEDICAL"
+                      externalMetadataColumnId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ISMEDICAL]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[ISMEDICAL]" />
+                    <inputColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[GRADE]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="GRADE"
+                      externalMetadataColumnId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[GRADENAME]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[GRADE]" />
+                    <inputColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MARKET PREM]"
+                      cachedDataType="r8"
+                      cachedName="MARKET PREM"
+                      externalMetadataColumnId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MARKETPREM]"
+                      lineageId="Package\Grade\Excel Source.Outputs[Excel Source Output].Columns[MARKET PREM]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[GRADEID]"
+                      dataType="i4"
+                      name="GRADEID" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[GRADENAME]"
+                      dataType="wstr"
+                      length="120"
+                      name="GRADENAME" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[STATUS]"
+                      dataType="i4"
+                      name="STATUS" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MARKETPREM]"
+                      dataType="i4"
+                      name="MARKETPREM" />
+                    <externalMetadataColumn
+                      refId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ISMEDICAL]"
+                      dataType="bool"
+                      name="ISMEDICAL" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Grade\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Grade\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Grade\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Grade\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Grade\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Grade.Paths[Excel Source Output]"
+              endId="Package\Grade\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Excel Source Output"
+              startId="Package\Grade\Excel Source.Outputs[Excel Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{9C8A72CA-7736-4371-9B5D-FB63630FEC5B}"
+      DTS:From="Package\Civilian Lev Step"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Grade" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Civilian Lev Step"
+          TopLeft="321,114" />
+        <NodeLayout
+          Size="110,42"
+          Id="Package\Grade"
+          TopLeft="651,110" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="482,133">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="169,0"
+              Start="0,0"
+              End="161.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="161.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Civilian Lev Step">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Civilian Lev Step\Excel Source"
+          TopLeft="284,117" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\Civilian Lev Step\OLE DB Destination"
+          TopLeft="567,110" />
+        <EdgeLayout
+          Id="Package\Civilian Lev Step.Paths[Excel Source Output]"
+          TopLeft="428,134.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="139,0"
+              Start="0,0"
+              End="131.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="131.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Civilian Lev Step\Excel Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Civilian Lev Step\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Grade">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Grade\Excel Source"
+          TopLeft="372,113" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\Grade\OLE DB Destination"
+          TopLeft="651,105" />
+        <EdgeLayout
+          Id="Package\Grade.Paths[Excel Source Output]"
+          TopLeft="516,134">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="135,-8"
+              Start="0,0"
+              End="127.5,-8">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="63.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="63.5,0"
+                    Point2="67.5,0"
+                    Point3="67.5,-4" />
+                  <mssgle:LineSegment
+                    End="67.5,-4" />
+                  <mssgle:CubicBezierSegment
+                    Point1="67.5,-4"
+                    Point2="67.5,-8"
+                    Point3="71.5,-8" />
+                  <mssgle:LineSegment
+                    End="127.5,-8" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Grade\Excel Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Grade\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

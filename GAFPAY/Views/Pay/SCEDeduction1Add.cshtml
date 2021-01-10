@@ -124,7 +124,7 @@
         }
     });
 
-    
+
     function sendForm() {
         var form = $('#NewFormX').get(0);
         swal({
@@ -158,9 +158,10 @@
                                     timer: 5000,
                                     closeOnConfirm: true
 
+                                }).then(function() {
+                                 window.location.href = '@Url.Action("IndexSCEDeduction1", "Pay")';
 
-                                })
-                                window.location.href = '@Url.Action("IndexSCEDeduction1", "Pay")';
+                                });
 
                             }  else {
                                 var error;

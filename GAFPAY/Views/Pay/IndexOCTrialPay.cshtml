@@ -94,8 +94,10 @@
                             closeOnConfirm: true
 
 
-                        })
-                        window.location.href = '@Url.Action("IndexMLevStep", "Settings")';
+                        }).then(function () {
+                            window.location.href = '@Url.Action("IndexMLevStep", "Settings")';
+
+                        });
 
                     })
                     .fail(function () {

@@ -22,13 +22,13 @@ namespace GAFPAY.Models
             this.OFFICERALLOWANCE = new HashSet<OFFICERALLOWANCE>();
             this.OFFICERPAYROLLALLOWANCE = new HashSet<OFFICERPAYROLLALLOWANCE>();
             this.OFFICERTRIALPAYALLOWANCE = new HashSet<OFFICERTRIALPAYALLOWANCE>();
+            this.SENIORCEALLOWANCE = new HashSet<SENIORCEALLOWANCE>();
             this.SENIORCEPAYROLLALLOWANCE = new HashSet<SENIORCEPAYROLLALLOWANCE>();
             this.SENIORCETRIALPAYALLOWANCE = new HashSet<SENIORCETRIALPAYALLOWANCE>();
             this.SOLDIERALLOWANCE = new HashSet<SOLDIERALLOWANCE>();
             this.SOLDIERPAYROLLALLOWANCE = new HashSet<SOLDIERPAYROLLALLOWANCE>();
             this.SOLDIERTRIALPAYALLOWANCE = new HashSet<SOLDIERTRIALPAYALLOWANCE>();
             this.JUNIORCEALLOWANCE = new HashSet<JUNIORCEALLOWANCE>();
-            this.SENIORCEALLOWANCE = new HashSet<SENIORCEALLOWANCE>();
         }
     
         public int ALLOWANCEID { get; set; }
@@ -46,6 +46,8 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICERTRIALPAYALLOWANCE> OFFICERTRIALPAYALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCEPAYROLLALLOWANCE> SENIORCEPAYROLLALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCETRIALPAYALLOWANCE> SENIORCETRIALPAYALLOWANCE { get; set; }
@@ -57,7 +59,5 @@ namespace GAFPAY.Models
         public virtual ICollection<SOLDIERTRIALPAYALLOWANCE> SOLDIERTRIALPAYALLOWANCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
     }
 }

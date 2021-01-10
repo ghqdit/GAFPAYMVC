@@ -21,6 +21,7 @@ namespace GAFPAY.Controllers
         private PayrollViewData payViewData=new PayrollViewData();
         private int UniformAllowanceID = 1;
         private int RationAllowanceID = 2;
+        private int HazardousAllowanceID = 9; 
         private int MarketPremAllowanceID = 11;
         private int OperationAllowanceID = 12;
         private int DisabilityAllowanceID = 4;
@@ -28,6 +29,7 @@ namespace GAFPAY.Controllers
         private int TaxDeductionID = 5;
         private int SSNITDeductionID = 4;
         private int ProvidentFundDeductionID = 2;
+        private int ClothingAllowanceID = 24;
 
         private int JuniorCadetLevStepID = 61;
         private int SeniorCadetLevStepID = 62;
@@ -109,7 +111,7 @@ namespace GAFPAY.Controllers
                 rec.RELIGIONID = data.ReligionID;
                 rec.RANKID = RecruitRankID;
                 rec.BLOODGROUPID = data.BloodGroupID;
-                //rec.INSERTEDBY = User.Identity.Name;
+               // rec.INSERTEDBY = User.Identity.Name;
                 rec.INSERTEDBY = "admin";
                 rec.DATETIMEINSERTED = DateTime.Now;
                 rec.RECRUITSTARTDATE = data.DateRecruitStart;
@@ -124,9 +126,9 @@ namespace GAFPAY.Controllers
                     db.SaveChanges();
                 }
                 catch (Exception e)
-                {
-
-                    errorMessage = e.Message;
+                { 
+                    errorMessage = e.InnerException.InnerException.Message;
+                    return Json(success ? JsonResponse.SuccessResponse("Recruit ") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
                 var recBank = new RECRUITBANK();
@@ -282,8 +284,7 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
-
+                    errorMessage = e.InnerException.InnerException.Message; 
                 }
 
             }
@@ -313,9 +314,7 @@ namespace GAFPAY.Controllers
             {
                 ViewBag.ErrorMessage = "Recruit bank does not exist. Kinldy contact Database Administrator for assistance";
                 return View("Error");
-            }
-
-
+            } 
             return View("EditRecruitBank", model);
         }
 
@@ -418,7 +417,7 @@ namespace GAFPAY.Controllers
 
                 if (data.AccountNumber == null)
                 {
-                    errorMessage = "Account Number is re quired";
+                    errorMessage = "Account Number is required";
                     return Json(success ? JsonResponse.SuccessResponse("Officer Cadet") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
@@ -474,7 +473,8 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
+                    errorMessage = e.InnerException.InnerException.Message;
+                    return Json(success ? JsonResponse.SuccessResponse("Officer Cadet") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
                 var ocID = oc.OFFICERCADETID;
@@ -639,7 +639,7 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
+                    errorMessage = e.InnerException.InnerException.Message;
                 }
 
             }
@@ -837,6 +837,7 @@ namespace GAFPAY.Controllers
                 jce.CIVILIANLEVSTEPID = data.CLevStepID;
                 jce.TITLEID = data.TitleID;
                 jce.GRADEID = data.GradeID;
+                jce.ISEDIT = true;
                 if (data.GhanaPostGPS != null)
                 {
                     jce.GHANAPOSTGPS = data.GhanaPostGPS.ToUpper();
@@ -854,7 +855,8 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
+                    errorMessage = e.InnerException.InnerException.Message;
+                    return Json(success ? JsonResponse.SuccessResponse("Junior CE") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
                 var jceID = jce.JUNIORCEID;
@@ -881,9 +883,11 @@ namespace GAFPAY.Controllers
                 var civilLevStep = db.CIVILIANLEVSTEP.FirstOrDefault(a => a.CIVILIANLEVSTEPID == levstepID);
                 var constPay = civilLevStep.CONSTPAY;
                 
-                var clothingAmount = payViewData.calculateCivilUniformAllowance(); 
+                var clothingAmount = payViewData.calculateCivilClothingAllowance(); 
                  
                 var rationAmount = payViewData.calculateCivilRationAllowance();
+
+                var hazardAmount = payViewData.calculateCivilHazardousAllowance();
                   
                 
                 if (data.IsMedical == 1)
@@ -943,17 +947,17 @@ namespace GAFPAY.Controllers
                 #endregion
 
                  
-                var UniformAllowance=new JUNIORCEALLOWANCE();
-                UniformAllowance.AMOUNT = clothingAmount;
-                UniformAllowance.STATUS = 1;
-                UniformAllowance.ID=Guid.NewGuid();
-                UniformAllowance.ALLOWANCEID = UniformAllowanceID;
-                UniformAllowance.JUNIORCEID = jceID;
-                UniformAllowance.DATETIMEINSERTED=DateTime.Now;
-                UniformAllowance.INSERTEDBY = "admin";
+                var clothingAllowance=new JUNIORCEALLOWANCE();
+                clothingAllowance.AMOUNT = clothingAmount;
+                clothingAllowance.STATUS = 1;
+                clothingAllowance.ID=Guid.NewGuid();
+                clothingAllowance.ALLOWANCEID = ClothingAllowanceID;
+                clothingAllowance.JUNIORCEID = jceID;
+                clothingAllowance.DATETIMEINSERTED=DateTime.Now;
+                clothingAllowance.INSERTEDBY = "admin";
                 //UniformAllowance.INSERTEDBY = User.Identity.Name;
 
-                db.JUNIORCEALLOWANCE.Add(UniformAllowance);
+                db.JUNIORCEALLOWANCE.Add(clothingAllowance);
 
                 var RationAllowance=new JUNIORCEALLOWANCE();
                 RationAllowance.AMOUNT = rationAmount;
@@ -967,7 +971,17 @@ namespace GAFPAY.Controllers
 
                 db.JUNIORCEALLOWANCE.Add(RationAllowance);
 
+                var HazardAllowance=new JUNIORCEALLOWANCE();
+                HazardAllowance.AMOUNT = hazardAmount;
+                HazardAllowance.STATUS = 1;
+                HazardAllowance.ID=Guid.NewGuid();
+                HazardAllowance.ALLOWANCEID = HazardousAllowanceID;
+                HazardAllowance.JUNIORCEID = jceID;
+                HazardAllowance.DATETIMEINSERTED=DateTime.Now;
+                HazardAllowance.INSERTEDBY = "admin";
+                //HazardAllowance.INSERTEDBY = User.Identity.Name;
 
+                db.JUNIORCEALLOWANCE.Add(HazardAllowance);
 
                 if (data.IsDisabled == 1)
                 {
@@ -1074,8 +1088,7 @@ namespace GAFPAY.Controllers
                 //TaxDeduc.INSERTEDBY = User.Identity.Name;
                 TaxDeduc.DATETIMEINSERTED=DateTime.Now;
 
-                db.JUNIORCEDEDUCTION.Add(TaxDeduc);
-
+                db.JUNIORCEDEDUCTION.Add(TaxDeduc); 
 
                 try
                 {
@@ -1215,7 +1228,7 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
+                    errorMessage = e.InnerException.InnerException.Message;
                 }
 
             }
@@ -1482,6 +1495,7 @@ namespace GAFPAY.Controllers
                 sce.INSERTEDBY = "admin";
                 sce.DATETIMEINSERTED = DateTime.Now;
                 sce.PROVIDENTFUNDID = data.ProvidentID;
+                sce.ISEDIT = true;
 
 
                 db.SENIORCE.Add(sce);
@@ -1491,7 +1505,8 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
+                    errorMessage = e.InnerException.InnerException.Message;
+                    return Json(success ? JsonResponse.SuccessResponse("Senior CE") : JsonResponse.ErrorResponse(errorMessage));
                 }
 
                 var sceID = sce.SENIORCEID;
@@ -1523,8 +1538,9 @@ namespace GAFPAY.Controllers
                 //Allowances insertion   
                 var operationAmount = payViewData.calculateOperationAllowance(constPay); 
                 var disabilityAmount = payViewData.calculateDisabilityAllowance(constPay);
-                var uniformAmount = payViewData.calculateCivilUniformAllowance();
+                var clothingAmount = payViewData.calculateCivilClothingAllowance();
                 var rationAmount = payViewData.calculateCivilRationAllowance();
+                var hazardAmount = payViewData.calculateCivilHazardousAllowance();
                 var providentAmount = payViewData.calculateProvidentFund(constPay, data.ProvidentID);
                 var CEWelfareAmount = payViewData.calculateCivilWelfare();
                 var SSNITAmount = payViewData.calculateSSNIT(constPay);
@@ -1589,17 +1605,17 @@ namespace GAFPAY.Controllers
                 //} 
                 #endregion
 
-                var UniformAllowance = new SENIORCEALLOWANCE();
-                UniformAllowance.AMOUNT = uniformAmount;
-                UniformAllowance.STATUS = 1;
-                UniformAllowance.ID = Guid.NewGuid();
-                UniformAllowance.ALLOWANCEID = UniformAllowanceID;
-                UniformAllowance.SENIORCEID = sceID;
-                UniformAllowance.DATETIMEINSERTED = DateTime.Now;
-                UniformAllowance.INSERTEDBY = "admin";
+                var clothingAllowance = new SENIORCEALLOWANCE();
+                clothingAllowance.AMOUNT = clothingAmount;
+                clothingAllowance.STATUS = 1;
+                clothingAllowance.ID = Guid.NewGuid();
+                clothingAllowance.ALLOWANCEID = ClothingAllowanceID;
+                clothingAllowance.SENIORCEID = sceID;
+                clothingAllowance.DATETIMEINSERTED = DateTime.Now;
+                clothingAllowance.INSERTEDBY = "admin";
                 //UniformAllowance.INSERTEDBY = User.Identity.Name;
 
-                db.SENIORCEALLOWANCE.Add(UniformAllowance);
+                db.SENIORCEALLOWANCE.Add(clothingAllowance);
 
                 var RationAllowance = new SENIORCEALLOWANCE();
                 RationAllowance.AMOUNT = rationAmount;
@@ -1612,6 +1628,19 @@ namespace GAFPAY.Controllers
                 //RationAllowance.INSERTEDBY = User.Identity.Name;
 
                 db.SENIORCEALLOWANCE.Add(RationAllowance);
+
+                var HazardAllowance = new SENIORCEALLOWANCE();
+                HazardAllowance.AMOUNT = hazardAmount;
+                HazardAllowance.STATUS = 1;
+                HazardAllowance.ID = Guid.NewGuid();
+                HazardAllowance.ALLOWANCEID = HazardousAllowanceID;
+                HazardAllowance.SENIORCEID = sceID;
+                HazardAllowance.DATETIMEINSERTED = DateTime.Now;
+                HazardAllowance.INSERTEDBY = "admin";
+                //HazardAllowance.INSERTEDBY = User.Identity.Name;
+
+                db.SENIORCEALLOWANCE.Add(HazardAllowance);
+
 
 
                 if (data.IsDisabled == 1)
@@ -1860,7 +1889,7 @@ namespace GAFPAY.Controllers
                 }
                 catch (Exception e)
                 {
-                    errorMessage = e.Message;
+                    errorMessage = e.InnerException.InnerException.Message;
                 }
 
             }
@@ -1910,7 +1939,7 @@ namespace GAFPAY.Controllers
                 model.SeniorCEAllowanceDetails.Add(Allow); 
             }
              
-            var SCED = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 1 || a.STATUS==2);
+            var SCED = db.SENIORCEDEDUCTION.Where(a => a.SENIORCEID == id && a.STATUS == 1 || a.SENIORCEID==id && a.STATUS==2);
             model.SeniorCEDeduction2Details = new List<SeniorCEDeduction2>();
             foreach (var details in SCED)
             {
@@ -2077,6 +2106,53 @@ namespace GAFPAY.Controllers
         {
             if (ModelState.IsValid)
             {
+                var jce = db.JUNIORCE.Find(id);
+
+                if (data.ProvidentID!=1)
+                {
+                    
+                    var provAmount = payViewData.calculateProvidentFund(jce.CIVILIANLEVSTEP.CONSTPAY, data.ProvidentID);
+
+                    var provDeduction =
+                        db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == id && a.DEDUCTIONID == ProvidentFundDeductionID);
+                    if (provDeduction!=null)
+                    {
+                        provDeduction.DEDUCTIONAMOUNT = provAmount;
+                        //provDeduction.UPDATEDBY = User.Identity.Name;
+                        provDeduction.UPDATEDBY = "admin";
+                        provDeduction.DATETIMEUPDATED = DateTime.Now;
+                    }
+                    else
+                    {
+                        var deduc=new JUNIORCEDEDUCTION();
+                        deduc.ID=Guid.NewGuid();
+                        deduc.DEDUCTIONID = ProvidentFundDeductionID;
+                        deduc.JUNIORCEID = id;
+                        deduc.DEDUCTIONAMOUNT = provAmount;
+                        deduc.STATUS = 1;
+                        deduc.DATETIMEINSERTED = DateTime.Now;
+                        //deduc.INSERTEDBY = User.Identity.Name;
+                        deduc.INSERTEDBY = "admin";
+
+                        db.JUNIORCEDEDUCTION.Add(deduc);
+
+
+                    }
+                    
+                }
+                else
+                {
+                    var provDeduction =
+                        db.JUNIORCEDEDUCTION.FirstOrDefault(a => a.JUNIORCEID == id && a.DEDUCTIONID == ProvidentFundDeductionID);
+                    if (provDeduction!=null)
+                    {
+                        db.JUNIORCEDEDUCTION.Remove(provDeduction);
+                    }
+
+                    
+                }
+                jce.ISEDIT = true; 
+                jce.PROVIDENTFUNDID = data.ProvidentID;
                 try
                 {
                     db.SaveChanges();
@@ -2144,7 +2220,8 @@ namespace GAFPAY.Controllers
                 var constPay = civilLevStep.CONSTPAY;
                 jce.DATEPROMOTED = data.DatePromoted;
                 jce.CIVILIANLEVSTEPID = data.CLevStepID;
-                jce.GRADEID = data.GradeID; 
+                jce.GRADEID = data.GradeID;
+                jce.ISEDIT = true;
                 
                 if (jce.ISMEDICAL)
                 { 
@@ -2256,6 +2333,54 @@ namespace GAFPAY.Controllers
         {
             if (ModelState.IsValid)
             {
+                var sce = db.SENIORCE.Find(id);
+
+                if (data.ProvidentID != 1)
+                {
+
+                    var provAmount = payViewData.calculateProvidentFund(sce.CIVILIANLEVSTEP.CONSTPAY, data.ProvidentID);
+
+                    var provDeduction =
+                        db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == id && a.DEDUCTIONID == ProvidentFundDeductionID);
+                    if (provDeduction != null)
+                    {
+                        provDeduction.DEDUCTIONAMOUNT = provAmount;
+                        //provDeduction.UPDATEDBY = User.Identity.Name;
+                        provDeduction.UPDATEDBY = "admin";
+                        provDeduction.DATETIMEUPDATED = DateTime.Now;
+                    }
+                    else
+                    {
+                        var deduc = new SENIORCEDEDUCTION();
+                        deduc.ID = Guid.NewGuid();
+                        deduc.DEDUCTIONID = ProvidentFundDeductionID;
+                        deduc.SENIORCEID = id;
+                        deduc.DEDUCTIONAMOUNT = provAmount;
+                        deduc.STATUS = 1;
+                        deduc.DATETIMEINSERTED = DateTime.Now;
+                        //deduc.INSERTEDBY = User.Identity.Name;
+                        deduc.INSERTEDBY = "admin";
+
+                        db.SENIORCEDEDUCTION.Add(deduc);
+
+
+                    }
+
+                }
+                else
+                {
+                    var provDeduction =
+                        db.SENIORCEDEDUCTION.FirstOrDefault(a => a.SENIORCEID == id && a.DEDUCTIONID == ProvidentFundDeductionID);
+                    if (provDeduction != null)
+                    {
+                        db.SENIORCEDEDUCTION.Remove(provDeduction);
+                    }
+
+
+                }
+
+                sce.PROVIDENTFUNDID = data.ProvidentID;
+                sce.ISEDIT = true;
                 try
                 {
                     db.SaveChanges();
@@ -2324,7 +2449,7 @@ namespace GAFPAY.Controllers
                 sce.DATEPROMOTED = data.DatePromoted;
                 sce.CIVILIANLEVSTEPID = data.CLevStepID;
                 sce.GRADEID = data.GradeID;
-
+                sce.ISEDIT = true;
                 if (sce.ISMEDICAL)
                 {
                     var gradeID = data.GradeID;
@@ -2380,8 +2505,7 @@ namespace GAFPAY.Controllers
                 sceTax.DEDUCTIONAMOUNT = tax;
                 sceTax.UPDATEDBY = "admin";
                // sceTax.UPDATEDBY = User.Identity.Name;
-                sceTax.DATETIMEUPDATED=DateTime.Now;
-
+                sceTax.DATETIMEUPDATED=DateTime.Now; 
                  
                 try
                 {

@@ -13163,6 +13163,9 @@ dl {
 
 .main-page{ 
     padding: 10px;
-    background: white;
+    background:#f8f9fa;
+}.index-page{ 
+    padding: 10px;
+    background:#bccedf;
 }
 /*# sourceMappingURL=style.css.map */

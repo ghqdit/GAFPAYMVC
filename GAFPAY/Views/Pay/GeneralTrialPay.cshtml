@@ -1,7 +1,103 @@
-﻿
+﻿@model GAFPAY.ViewModel.GeneralTrialPay
 @{
-    ViewBag.Title = "GeneralTrialPay";
+    ViewBag.Title = "Trial Pay";
 }
 
-<h2>GeneralTrialPay</h2>
 
+<div class="page-header">
+    <h3 class="page-title"> @ViewBag.Title</h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index", "Home")"> Dashboard</a> </li>
+            <li class="breadcrumb-item"> <a href="@Url.Action("IndexGeneralTrialPay", "pay")"> Trial Pay Check</a> </li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="main-page">
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src="~/Content/images/GAF Logo-mini.png" style="width: 150px;" />
+        </div>
+        <div class="col-md-9">
+            <br />
+            <br />
+            <h1 style="text-align: center">MINISTRY OF DEFENCE </h1>
+            <h2 style="text-align: center">TRIAL PAY DETAILS FOR @Model.TrialPayDate.ToString("MMMM yyyy")</h2>
+        </div>
+    </div>
+    <hr />
+    <div class="col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                @*  <h2>&nbsp; Pay Slip for Period Ending @Model.PayDate.ToString("MMMM yyyy") (@Model.Currency)</h2>*@
+
+            </div>
+            <div class="box-content">
+                <div class="content details-info">
+                    <div class="row">
+                        <div class="col-md-9 offset-md-1">
+
+
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-left"> <strong>Recruits</strong></td>
+                                                <td class="text-rightX">@Model.TotalRecruit.ToString("N")</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Officer Cadets</strong></td>
+                                                <td class="text-rightX">@Model.TotalOC.ToString("N")</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Junior CE</strong></td>
+                                                <td class="text-rightX">@Model.TotalJCE.ToString("N")</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Senior CE</strong></td>
+                                                <td class="text-rightX">@Model.TotalSCE.ToString("N")</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Soldiers</strong></td>
+                                                <td class="text-rightX">@Model.TotalSoldiers.ToString("N")</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"> <strong>Officers</strong></td>
+                                                <td class="text-rightX">@Model.TotalOfficers.ToString("N")</td>
+
+                                            </tr>
+                                           
+                                            <tr>
+                                                <td class="text-left"> <strong>Total</strong></td>
+                                                <td class="text-rightX"><strong> @Model.GrandTotal.ToString("N") </strong></td>
+
+                                            </tr> 
+                                        </tbody>
+                                    </table>
+                                   
+                                </div>
+                                <br /><br>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -129,7 +129,7 @@
     });
 
 
-    
+
     function sendForm() {
         var form = $('#NewFormX').get(0);
         swal({
@@ -164,8 +164,10 @@
                                     closeOnConfirm: true
 
 
-                                })
-                                window.location.href = '@Url.Action("IndexJCEAllowance", "Pay")';
+                                }).then(function() {
+                                 window.location.href = '@Url.Action("IndexSCEAllowance", "Pay")';
+
+                                });
 
                             }  else {
                                 var error;
@@ -192,47 +194,5 @@
             @* *@);
     }
 
-    @*function sendForm() {
-
-        var form = $('#NewFormX').get(0);
-
-        $.ajax({
-            url: "@Url.Action("SCEAllowanceAdd", "Pay")",
-            type: "POST",
-        data: new FormData(form),
-        processData: false,
-        contentType: false,
-
-        success: function (data) {
-            if (data.Success) {
-                swal({
-                    title: "Save Successful",
-                    html: "Successful",
-                    type: "success",
-                    showCancelButton: false,
-                    confirmButtonColor: "#1E90FF",
-                    confirmButtonText: "OK",
-                    timer: 4000,
-
-                }).then((result) => {
-                    //redirection happens here
-                    window.location.href = '@Url.Action("IndexSCEAllowance", "Pay")';
-                })
-
-            } else {
-                var error;
-                if (data.ErrorMessage) {
-                    error = data.ErrorMessage;
-                }
-                else {
-                    error = "Error while processing. Please try again";
-                }
-                swal("Error", error, "error");
-                //swal("error", "error");
-            }
-
-        }
-    });
-    }*@
 
 </script>

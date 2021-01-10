@@ -1,6 +1,6 @@
-﻿@model GAFPAY.ViewModel.RecruitTrialPay
+﻿@model GAFPAY.ViewModel.TrialPay
 @{
-    ViewBag.Title = "Process Recruit Trial Pay";
+    ViewBag.Title = "Process Pay";
 }
 
 
@@ -9,8 +9,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
 
-            <li class="breadcrumb-item"> <a href="@Url.Action("Index", "Home")"> Dashboard</a> </li> 
-            <li class="breadcrumb-item"> <a href="@Url.Action("IndexRecruitBatch", "Pay")"> Recruit Trial Pay</a> </li> 
+            <li class="breadcrumb-item"> <a href="@Url.Action("Index", "Home")"> Dashboard</a> </li>
             <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title </li>
         </ol>
     </nav>
@@ -35,11 +34,11 @@
                                     <div class="col-sm-5">
                                         <div class="input-field">
                                             @Html.LabelFor(model => model.MonthID)
-                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Month", htmlAttributes: new { @class = "form-control", onchange = "populateBankBranch(this)" })
+                                            @Html.DropDownListFor(model => model.MonthID, Model.MonthList, "Select Period", htmlAttributes: new { @class = "form-control"})
 
                                         </div>
                                     </div>
-                                     
+
                                 </div>
 
                                 <br />
@@ -66,10 +65,11 @@
 </div>
 <script>
 
+
     function sendForm() {
         var form = $('#NewFormX').get(0);
         swal({
-            title: "Process Trial Pay",
+            title: "Process Pay",
             text: "Are you sure you want to process?",
             type: "question",
             showCancelButton: true,
@@ -77,32 +77,31 @@
             confirmButtonText: "Save ",
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
+            allowOutsideClick: false,
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
-                        url: "@Url.Action("CreateRecruitBatchTrial","Pay")",
+                        url: "@Url.Action("CreateBatchPayroll","Pay")",
                         type: 'POST',
                     data: new FormData(form),
                     dataType: 'json',
                     processData: false,
                     contentType: false,
                     })
-                        .done(function (response) {
+                        .done(function(response) {
                             if (response.Success) {
                                 swal({
                                     title: "Successful",
-                                    text: response.Message+ " saved successfully",
+                                    text: response.Message + " process complete",
                                     type: "success",
                                     showCancelButton: false,
                                     confirmButtonColor: "#1E90FF",
                                     confirmButtonText: "OK",
-                                    timer: 5000,
-                                    closeOnConfirm: true
-
-
-                                })
-                                window.location.href = '@Url.Action("IndexRecruitBatchTrial", "Pay")';
-
+                                    timer: 15000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                });
                             }  else {
                                 var error;
                                 if (response.ErrorMessage) {
@@ -116,61 +115,18 @@
 
 
                         })
-                        .fail(function () {
-                            swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
-                        });
+                    .fail(function () {
+                        swal('Oops...', 'Something went wrong with the processing. Try again !', 'error');
+                    });
             });
     }
 
 
 
-    },
-            @* *@);
+    }
+         );
     }
 
-
-    @*function sendForm() {
-
-        var form = $('#NewFormX').get(0);
-
-        $.ajax({
-            url: "@Url.Action("CreateRecruitBatch", "Pay")",
-            type: "POST",
-            data: new FormData(form),
-            processData: false,
-            contentType: false,
-
-            success: function (data) {
-                if (data.Success) {
-                    swal({
-                        title: "Success",
-                        html: data.Message + " saved successfully",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonColor: "#1E90FF",
-                        confirmButtonText: "OK",
-                        timer: 4000,
-
-                    }).then((result) => {
-                        //redirection happens here
-                        window.location.href = '@Url.Action("IndexRecruitBatch", "Pay")';
-                    })
-
-                } else {
-                    var error;
-                    if (data.ErrorMessage) {
-                        error = data.ErrorMessage;
-                    }
-                    else {
-                        error = "Error while processing. Please try again";
-                    }
-                    swal("Error", error, "error");
-                    //swal("error", "error");
-                }
-
-            }
-        });
-    }*@
 
 
 </script>

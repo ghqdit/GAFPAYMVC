@@ -7,10 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAFPAY", "GAFPAY\GAFPAY.csp
 EndProject
 Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "GAFPAYReports", "GAFPAYReports\GAFPAYReports.rptproj", "{F612EC53-AB9E-4977-B109-4B1C761584DF}"
 EndProject
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "GAFPAYIntegration", "GAFPAYIntegration\GAFPAYIntegration.dtproj", "{F44EF22D-E30B-441F-B15F-791B3B92A618}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DebugLocal|Any CPU = DebugLocal|Any CPU
+		Development|Any CPU = Development|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -18,6 +21,8 @@ Global
 		{EC19178F-4772-4F36-88F1-293ACE838BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC19178F-4772-4F36-88F1-293ACE838BBB}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC19178F-4772-4F36-88F1-293ACE838BBB}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{EC19178F-4772-4F36-88F1-293ACE838BBB}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC19178F-4772-4F36-88F1-293ACE838BBB}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{EC19178F-4772-4F36-88F1-293ACE838BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC19178F-4772-4F36-88F1-293ACE838BBB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Debug|Any CPU.ActiveCfg = Debug
@@ -25,9 +30,20 @@ Global
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Debug|Any CPU.Deploy.0 = Debug
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.DebugLocal|Any CPU.ActiveCfg = DebugLocal
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.DebugLocal|Any CPU.Build.0 = DebugLocal
+		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Development|Any CPU.ActiveCfg = DebugLocal
+		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Development|Any CPU.Build.0 = DebugLocal
+		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Development|Any CPU.Deploy.0 = DebugLocal
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Release|Any CPU.ActiveCfg = Release
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Release|Any CPU.Build.0 = Release
 		{F612EC53-AB9E-4977-B109-4B1C761584DF}.Release|Any CPU.Deploy.0 = Release
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.Debug|Any CPU.ActiveCfg = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.Debug|Any CPU.Build.0 = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.DebugLocal|Any CPU.ActiveCfg = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.DebugLocal|Any CPU.Build.0 = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.Development|Any CPU.ActiveCfg = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.Development|Any CPU.Build.0 = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.Release|Any CPU.ActiveCfg = Development
+		{F44EF22D-E30B-441F-B15F-791B3B92A618}.Release|Any CPU.Build.0 = Development
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

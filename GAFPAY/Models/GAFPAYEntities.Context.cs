@@ -27,6 +27,7 @@ namespace GAFPAY.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ALLOWANCE> ALLOWANCE { get; set; }
         public virtual DbSet<BANK> BANK { get; set; }
         public virtual DbSet<BANKNAME> BANKNAME { get; set; }
         public virtual DbSet<BLOODGROUP> BLOODGROUP { get; set; }
@@ -34,26 +35,39 @@ namespace GAFPAY.Models
         public virtual DbSet<COMMISSIONTYPE> COMMISSIONTYPE { get; set; }
         public virtual DbSet<DEDUCTION> DEDUCTION { get; set; }
         public virtual DbSet<DEDUCTIONCLASS> DEDUCTIONCLASS { get; set; }
+        public virtual DbSet<DELETEDJUNIORCE> DELETEDJUNIORCE { get; set; }
+        public virtual DbSet<DELETEDOFFICER> DELETEDOFFICER { get; set; }
+        public virtual DbSet<DELETEDOFFICERCADET> DELETEDOFFICERCADET { get; set; }
+        public virtual DbSet<DELETEDRECRUIT> DELETEDRECRUIT { get; set; }
+        public virtual DbSet<DELETEDSENIORCE> DELETEDSENIORCE { get; set; }
+        public virtual DbSet<DELETEDSOLDIER> DELETEDSOLDIER { get; set; }
         public virtual DbSet<GENDER> GENDER { get; set; }
         public virtual DbSet<GENERALSTATUS> GENERALSTATUS { get; set; }
+        public virtual DbSet<GRADE> GRADE { get; set; }
         public virtual DbSet<JUNIORCE> JUNIORCE { get; set; }
+        public virtual DbSet<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCEBANK> JUNIORCEBANK { get; set; }
+        public virtual DbSet<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
         public virtual DbSet<JUNIORCEIMAGE> JUNIORCEIMAGE { get; set; }
+        public virtual DbSet<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
         public virtual DbSet<JUNIORCEPAYROLLALLOWANCE> JUNIORCEPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCEPAYROLLDEDUCTION> JUNIORCEPAYROLLDEDUCTION { get; set; }
         public virtual DbSet<JUNIORCEPROVIDENT> JUNIORCEPROVIDENT { get; set; }
+        public virtual DbSet<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
         public virtual DbSet<JUNIORCETRIALPAYALLOWANCE> JUNIORCETRIALPAYALLOWANCE { get; set; }
         public virtual DbSet<JUNIORCETRIALPAYDEDUCTION> JUNIORCETRIALPAYDEDUCTION { get; set; }
         public virtual DbSet<MILITARYLEVSTEP> MILITARYLEVSTEP { get; set; }
         public virtual DbSet<OFFICER> OFFICER { get; set; }
         public virtual DbSet<OFFICERALLOWANCE> OFFICERALLOWANCE { get; set; }
         public virtual DbSet<OFFICERBANK> OFFICERBANK { get; set; }
+        public virtual DbSet<OFFICERCADET> OFFICERCADET { get; set; }
         public virtual DbSet<OFFICERCADETBANK> OFFICERCADETBANK { get; set; }
         public virtual DbSet<OFFICERCADETIMAGE> OFFICERCADETIMAGE { get; set; }
         public virtual DbSet<OFFICERCADETPAYROLL> OFFICERCADETPAYROLL { get; set; }
         public virtual DbSet<OFFICERCADETTRIALPAY> OFFICERCADETTRIALPAY { get; set; }
         public virtual DbSet<OFFICERDEDUCTION> OFFICERDEDUCTION { get; set; }
         public virtual DbSet<OFFICERIMAGE> OFFICERIMAGE { get; set; }
+        public virtual DbSet<OFFICERINTAKE> OFFICERINTAKE { get; set; }
         public virtual DbSet<OFFICERPAYROLL> OFFICERPAYROLL { get; set; }
         public virtual DbSet<OFFICERPAYROLLALLOWANCE> OFFICERPAYROLLALLOWANCE { get; set; }
         public virtual DbSet<OFFICERPAYROLLDEDUCTION> OFFICERPAYROLLDEDUCTION { get; set; }
@@ -70,7 +84,10 @@ namespace GAFPAY.Models
         public virtual DbSet<RECRUITTRIALPAY> RECRUITTRIALPAY { get; set; }
         public virtual DbSet<REGION> REGION { get; set; }
         public virtual DbSet<RELIGION> RELIGION { get; set; }
+        public virtual DbSet<SENIORCE> SENIORCE { get; set; }
+        public virtual DbSet<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         public virtual DbSet<SENIORCEBANK> SENIORCEBANK { get; set; }
+        public virtual DbSet<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
         public virtual DbSet<SENIORCEIMAGE> SENIORCEIMAGE { get; set; }
         public virtual DbSet<SENIORCEPAYROLL> SENIORCEPAYROLL { get; set; }
         public virtual DbSet<SENIORCEPAYROLLALLOWANCE> SENIORCEPAYROLLALLOWANCE { get; set; }
@@ -93,23 +110,6 @@ namespace GAFPAY.Models
         public virtual DbSet<TITLE> TITLE { get; set; }
         public virtual DbSet<TRAININGCENTER> TRAININGCENTER { get; set; }
         public virtual DbSet<UNIT> UNIT { get; set; }
-        public virtual DbSet<ALLOWANCE> ALLOWANCE { get; set; }
-        public virtual DbSet<SENIORCE> SENIORCE { get; set; }
-        public virtual DbSet<OFFICERCADET> OFFICERCADET { get; set; }
-        public virtual DbSet<OFFICERINTAKE> OFFICERINTAKE { get; set; }
-        public virtual DbSet<GRADE> GRADE { get; set; }
-        public virtual DbSet<JUNIORCEALLOWANCE> JUNIORCEALLOWANCE { get; set; }
-        public virtual DbSet<JUNIORCEDEDUCTION> JUNIORCEDEDUCTION { get; set; }
-        public virtual DbSet<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
-        public virtual DbSet<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
-        public virtual DbSet<DELETEDJUNIORCE> DELETEDJUNIORCE { get; set; }
-        public virtual DbSet<DELETEDOFFICER> DELETEDOFFICER { get; set; }
-        public virtual DbSet<DELETEDOFFICERCADET> DELETEDOFFICERCADET { get; set; }
-        public virtual DbSet<DELETEDRECRUIT> DELETEDRECRUIT { get; set; }
-        public virtual DbSet<DELETEDSENIORCE> DELETEDSENIORCE { get; set; }
-        public virtual DbSet<DELETEDSOLDIER> DELETEDSOLDIER { get; set; }
-        public virtual DbSet<JUNIORCEPAYROLL> JUNIORCEPAYROLL { get; set; }
-        public virtual DbSet<JUNIORCETRIALPAY> JUNIORCETRIALPAY { get; set; }
     
         public virtual ObjectResult<procGetRecruitTrialPayList_Result2> procGetRecruitTrialPayList(Nullable<int> yearPrev, Nullable<int> prev, Nullable<int> yearCurr, Nullable<int> curr, Nullable<int> yearNext, Nullable<int> next)
         {
@@ -169,16 +169,6 @@ namespace GAFPAY.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<progGetOfficerCadetTrialPayList_Result2>("progGetOfficerCadetTrialPayList", yearPrevParameter, prevParameter, yearCurrParameter, currParameter, yearNextParameter, nextParameter);
         }
     
-        public virtual ObjectResult<Nullable<System.DateTime>> procGetRecruitBatchList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetRecruitBatchList");
-        }
-    
-        public virtual ObjectResult<Nullable<System.DateTime>> procGetOCBatchList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetOCBatchList");
-        }
-    
         public virtual ObjectResult<Nullable<System.DateTime>> procGetJCEBatchList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetJCEBatchList");
@@ -223,6 +213,25 @@ namespace GAFPAY.Models
                 new ObjectParameter("Date", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("procGetTotalSCETrial", dateParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> procGetOCBatchList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetOCBatchList");
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> procGetRecruitBatchList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("procGetRecruitBatchList");
+        }
+    
+        public virtual ObjectResult<procGetTrialPayReportDetails_Result3> procGetTrialPayReportDetails(Nullable<System.DateTime> date)
+        {
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("date", date) :
+                new ObjectParameter("date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<procGetTrialPayReportDetails_Result3>("procGetTrialPayReportDetails", dateParameter);
         }
     }
 }

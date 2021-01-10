@@ -1,34 +1,178 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div class="main-page">
+<div class="index-page">
 
+    <!-- Quick Action Toolbar Ends--> 
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-sm-flex align-items-baseline report-summary-header">
+                                    <h5 class="font-weight-semibold">Staff Strength Summary</h5>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row report-inner-cards-wrapper">
+                            <div class=" col-md -6 col-xl report-inner-card">
+                                <div class="inner-card-text">
+                                    <span class="report-title">RECRUITS</span>
+                                    <h4>6,220</h4>
+                                    @*<span class="report-count"> 2 Reports</span>*@
+                                </div>
+                                <div class="inner-card-icon bg-primary">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl report-inner-card">
+                                <div class="inner-card-text">
+                                    <span class="report-title">JUNIOR CIVILIANS</span>
+                                    <h4>1,458</h4>
+                                     
+                                </div>
+                                <div class="inner-card-icon bg-warning">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl report-inner-card">
+                                <div class="inner-card-text">
+                                    <span class="report-title"> SOLDIERS</span>
+                                    <h4>5,650</h4>
+                                     
+                                </div>
+                                <div class="inner-card-icon bg-success">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+                            
+                        </div><div class="row report-inner-cards-wrapper">
+                            <div class=" col-md -6 col-xl report-inner-card">
+                                <div class="inner-card-text">
+                                    <span class="report-title">OFFICER CADETS</span>
+                                    <h4>3,123</h4> 
+                                </div>
+                                <div class="inner-card-icon bg-primary">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl report-inner-card">
+                                <div class="inner-card-text">
+                                    <span class="report-title">SENIOR CIVILIANS</span>
+                                    <h4>95,458</h4>
+                                     
+                                </div>
+                                <div class="inner-card-icon bg-warning">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl report-inner-card">
+                                <div class="inner-card-text">
+                                    <span class="report-title">OFFICERS</span>
+                                    <h4>2,650</h4>
+                                     
+                                </div>
+                                <div class="inner-card-icon bg-success">
+                                    <i class="icon-user"></i>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
 
-    <div class="jumbotron">
+    @*<div class="jumbotron">
         <h1>ASP.NET</h1>
         <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
         <p><a href="#" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
+    </div>*@
 
     <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="#">Learn more &raquo;</a></p>
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Trial Pay for December-2020</h4>
+                    <div class="aligner-wrapper">
+                        <canvas id="sessionsDoughnutChart" height="210"></canvas>
+                        <div class="wrapper d-flex flex-column justify-content-center absolute absolute-center">
+                            <h2 class="text-center mb-0 font-weight-bold">12,000,000.00</h2>
+                            <small class="d-block text-center text-muted  font-weight-semibold mb-0">Total Amount</small>
+                        </div>
+                    </div>
+                    <div class="wrapper mt-4 d-flex flex-wrap align-items-cente">
+                        <div class="d-flex">
+                            <span class="square-indicator bg-primary ml-2"></span>
+                            <p class="mb-0 ml-2">Recruits</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-primary ml-2"></span>
+                            <p class="mb-0 ml-2">Officer Cadet</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-warning ml-2"></span>
+                            <p class="mb-0 ml-2">Junior CE</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-warning ml-2"></span>
+                            <p class="mb-0 ml-2">Senior CE</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-success ml-2"></span>
+                            <p class="mb-0 ml-2">Soldiers</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-success ml-2"></span>
+                            <p class="mb-0 ml-2">Officers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="#">Learn more &raquo;</a></p>
+
+          <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"> Trial Pay for January-2021</h4>
+                    <div class="aligner-wrapper">
+                        <canvas id="sessionsDoughnutChart" height="210"></canvas>
+                        <div class="wrapper d-flex flex-column justify-content-center absolute absolute-center">
+                            <h2 class="text-center mb-0 font-weight-bold">0</h2>
+                            <small class="d-block text-center text-muted  font-weight-semibold mb-0">Total Amount</small>
+                        </div>
+                    </div>
+                    <div class="wrapper mt-4 d-flex flex-wrap align-items-cente">
+                        <div class="d-flex">
+                            <span class="square-indicator bg-primary ml-2"></span>
+                            <p class="mb-0 ml-2">Recruits</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-primary ml-2"></span>
+                            <p class="mb-0 ml-2">Officer Cadet</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-warning ml-2"></span>
+                            <p class="mb-0 ml-2">Junior CE</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-warning ml-2"></span>
+                            <p class="mb-0 ml-2">Senior CE</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-success ml-2"></span>
+                            <p class="mb-0 ml-2">Soldiers</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="square-indicator bg-success ml-2"></span>
+                            <p class="mb-0 ml-2">Officers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="#">Learn more &raquo;</a></p>
-        </div>
+        
     </div>
+
 </div>

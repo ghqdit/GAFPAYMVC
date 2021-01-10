@@ -19,10 +19,10 @@ namespace GAFPAY.Models
         {
             this.JUNIORCE = new HashSet<JUNIORCE>();
             this.OFFICER = new HashSet<OFFICER>();
-            this.RECRUIT = new HashSet<RECRUIT>();
-            this.SOLDIER = new HashSet<SOLDIER>();
-            this.SENIORCE = new HashSet<SENIORCE>();
             this.OFFICERCADET = new HashSet<OFFICERCADET>();
+            this.RECRUIT = new HashSet<RECRUIT>();
+            this.SENIORCE = new HashSet<SENIORCE>();
+            this.SOLDIER = new HashSet<SOLDIER>();
         }
     
         public int BLOODGROUPID { get; set; }
@@ -34,12 +34,12 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFFICER> OFFICER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RECRUIT> RECRUIT { get; set; }
+        public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SOLDIER> SOLDIER { get; set; }
+        public virtual ICollection<RECRUIT> RECRUIT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCE> SENIORCE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFFICERCADET> OFFICERCADET { get; set; }
+        public virtual ICollection<SOLDIER> SOLDIER { get; set; }
     }
 }

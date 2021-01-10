@@ -76,29 +76,27 @@ else
                 return new Promise(function (resolve) {
                     $.ajax({
                         url: "@Url.Action("CreateOIntake","Settings")",
-                        type: 'POST',
-                    data: new FormData(form),
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexOIntake", "Settings")';
-
-                        }  else {
+                            type: 'POST',
+                            data: new FormData(form),
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexOIntake", "Settings")';
+                                });
+                            }  else {
                             var error;
                             if (response.ErrorMessage) {
                                 error = response.ErrorMessage;
@@ -119,8 +117,8 @@ else
 
 
 
-    },
-        @* *@);
+    }
+         );
     }
 
     function editForm() {
@@ -138,29 +136,27 @@ else
                 return new Promise(function (resolve) {
                     $.ajax({
                         url: "@Url.Action("EditOIntake","Settings")",
-                        type: 'POST',
-                    data: new FormData(form),
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    })
-                    .done(function (response) {
-                        if (response.Success) {
-                            swal({
-                                title: "Successful",
-                                text: response.Message+ " saved successfully",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#1E90FF",
-                                confirmButtonText: "OK",
-                                timer: 5000,
-                                closeOnConfirm: true
-
-
-                            })
-                            window.location.href = '@Url.Action("IndexOIntake", "Settings")';
-
-                        }  else {
+                            type: 'POST',
+                            data: new FormData(form),
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function(response) {
+                            if (response.Success) {
+                                swal({
+                                    title: "Successful",
+                                    text: response.Message + " saved successfully",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#1E90FF",
+                                    confirmButtonText: "OK",
+                                    timer: 5000,
+                                    // closeOnConfirm: true
+                                }).then(function() {
+                                    window.location.href = '@Url.Action("IndexOIntake", "Settings")';
+                                });
+                            }  else {
                             var error;
                             if (response.ErrorMessage) {
                                 error = response.ErrorMessage;
@@ -181,10 +177,10 @@ else
 
 
 
-    },
-        @* *@);
     }
-
+         );
+    }
+     
 
 </script>
 

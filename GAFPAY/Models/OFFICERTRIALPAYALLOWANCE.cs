@@ -19,7 +19,7 @@ namespace GAFPAY.Models
         public int OTRIALPAYID { get; set; }
         public int ALLOWANCEID { get; set; }
     
-        public virtual OFFICERTRIALPAY OFFICERTRIALPAY { get; set; }
         public virtual ALLOWANCE ALLOWANCE { get; set; }
+        public virtual OFFICERTRIALPAY OFFICERTRIALPAY { get; set; }
     }
 }

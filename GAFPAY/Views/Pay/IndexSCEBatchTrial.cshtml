@@ -37,7 +37,7 @@
                 <td>@item.PayDate.ToString("MMMM yyyy")</td>
                 <td class="text-center">
                     <a class="" href="@Url.Action("SCETrialDetails","Pay",new {date=item.PayDate} )"><i class="icon-calculator menu-icon"></i></a> |
-                    <a class="" onclick="removeItem('@item.PayDate.ToString("MMMM yyyy")' , '@item.PayDate.ToString("MMMM yyyy")')"><i class="fas fa-trash-alt"></i></a>
+                    <a class="" onclick="removeItem('@item.PayDate', '@item.PayDate.ToString("MMMM yyyy")')"><i class="fas fa-trash-alt"></i></a>
 
                 </td>
 
@@ -53,7 +53,7 @@
     function removeItem(X,Y) {
         swal({
             title: "Are you sure",
-            text: "Delete Trial Pay for " + Y + "?",
+            text: "Delete Trial Pay for Senior CE for the month " + Y + "?",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -63,9 +63,9 @@
             preConfirm: function () {
                 return new Promise(function (resolve) {
                     $.ajax({
-                        url: "@Url.Action("","")",
+                        url: "@Url.Action("RemoveMonthSCETrial","Pay")",
                         type: 'POST',
-                    data: 'id=' + X,
+                    data: 'date=' + X,
                     dataType: 'json'
                 })
                     .done(function (response) {
@@ -80,8 +80,10 @@
                             closeOnConfirm: true
 
 
-                        })
-                        window.location.href = '@Url.Action("", "")';
+                        }).then(function () {
+                            window.location.href = '@Url.Action("IndexSCEBatchTrial", "Pay")'; 
+
+                        });
 
                     })
                     .fail(function () {

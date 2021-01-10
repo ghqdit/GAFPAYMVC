@@ -17,11 +17,11 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SOLDIER()
         {
+            this.DELETEDSOLDIER = new HashSet<DELETEDSOLDIER>();
             this.SOLDIERALLOWANCE = new HashSet<SOLDIERALLOWANCE>();
             this.SOLDIERDEDUCTION = new HashSet<SOLDIERDEDUCTION>();
             this.SOLDIERPAYROLL = new HashSet<SOLDIERPAYROLL>();
             this.SOLDIERTRIALPAY = new HashSet<SOLDIERTRIALPAY>();
-            this.DELETEDSOLDIER = new HashSet<DELETEDSOLDIER>();
         }
     
         public int SOLDEIRID { get; set; }
@@ -53,6 +53,8 @@ namespace GAFPAY.Models
         public string GHANAPOSTGPS { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDSOLDIER> DELETEDSOLDIER { get; set; }
         public virtual GENDER GENDER { get; set; }
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
         public virtual MILITARYLEVSTEP MILITARYLEVSTEP { get; set; }
@@ -73,7 +75,5 @@ namespace GAFPAY.Models
         public virtual ICollection<SOLDIERTRIALPAY> SOLDIERTRIALPAY { get; set; }
         public virtual UNIT UNIT { get; set; }
         public virtual PROVIDENTFUND PROVIDENTFUND1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DELETEDSOLDIER> DELETEDSOLDIER { get; set; }
     }
 }

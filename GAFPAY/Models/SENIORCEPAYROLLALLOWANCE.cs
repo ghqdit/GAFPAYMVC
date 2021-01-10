@@ -19,7 +19,7 @@ namespace GAFPAY.Models
         public int SENIORCEPAYROLLID { get; set; }
         public int ALLOWANCEID { get; set; }
     
-        public virtual SENIORCEPAYROLL SENIORCEPAYROLL { get; set; }
         public virtual ALLOWANCE ALLOWANCE { get; set; }
+        public virtual SENIORCEPAYROLL SENIORCEPAYROLL { get; set; }
     }
 }

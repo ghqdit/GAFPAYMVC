@@ -72,7 +72,7 @@
         var i = $('#deduc tbody').find('tr').length;
 
         var tr = "<tr>";
-        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].DeductionDate class=form-control></td>";
+        tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].DeductionDate placeholder='DD/MM/YYYY' class=form-control></td>  ";
         tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].DeductionName class='form-control Desc' id='JuniorCEDeduction2Details[" + i + "].Desc'></td>";
         tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].TotalAmount class='form-control TotalAmount'></td>";
         tr += "<td><input type=text name=JuniorCEDeduction2Details[" + i + "].Amount class='form-control Amount'></td>";
@@ -183,8 +183,10 @@
                                      closeOnConfirm: true
 
 
-                                 })
-                                 window.location.href = '@Url.Action("IndexJCEDeduction2", "Pay")';
+                                 }).then(function () {
+                            window.location.href = '@Url.Action("IndexJCEDeduction2", "Pay")';
+
+                                 });
 
                              }  else {
                                  var error;

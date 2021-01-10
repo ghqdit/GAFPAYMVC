@@ -14,6 +14,7 @@ namespace GAFPAY.Models
     
     public partial class JUNIORCEDEDUCTION
     {
+        public System.Guid ID { get; set; }
         public int DEDUCTIONID { get; set; }
         public int JUNIORCEID { get; set; }
         public Nullable<decimal> TOTALAMOUNT { get; set; }
@@ -21,7 +22,6 @@ namespace GAFPAY.Models
         public decimal DEDUCTIONAMOUNT { get; set; }
         public Nullable<decimal> BALANCE { get; set; }
         public int STATUS { get; set; }
-        public System.Guid ID { get; set; }
         public System.DateTime DATETIMEINSERTED { get; set; }
         public string INSERTEDBY { get; set; }
         public Nullable<System.DateTime> DATETIMEUPDATED { get; set; }

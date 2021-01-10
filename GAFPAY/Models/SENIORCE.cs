@@ -17,11 +17,11 @@ namespace GAFPAY.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SENIORCE()
         {
-            this.SENIORCEPAYROLL = new HashSet<SENIORCEPAYROLL>();
-            this.SENIORCETRIALPAY = new HashSet<SENIORCETRIALPAY>();
+            this.DELETEDSENIORCE = new HashSet<DELETEDSENIORCE>();
             this.SENIORCEALLOWANCE = new HashSet<SENIORCEALLOWANCE>();
             this.SENIORCEDEDUCTION = new HashSet<SENIORCEDEDUCTION>();
-            this.DELETEDSENIORCE = new HashSet<DELETEDSENIORCE>();
+            this.SENIORCEPAYROLL = new HashSet<SENIORCEPAYROLL>();
+            this.SENIORCETRIALPAY = new HashSet<SENIORCETRIALPAY>();
         }
     
         public int SENIORCEID { get; set; }
@@ -37,6 +37,7 @@ namespace GAFPAY.Models
         public string INSERTEDBY { get; set; }
         public Nullable<System.DateTime> DATETIMEUPDATED { get; set; }
         public string UPDATEDBY { get; set; }
+        public string GHANAPOSTGPS { get; set; }
         public System.DateTime DATEEMPLOYED { get; set; }
         public System.DateTime DATEPROMOTED { get; set; }
         public string SSNITNUMBER { get; set; }
@@ -52,16 +53,23 @@ namespace GAFPAY.Models
         public int PROVIDENTFUNDID { get; set; }
         public int GRADEID { get; set; }
         public bool ISDISABLED { get; set; }
-        public string GHANAPOSTGPS { get; set; }
+        public bool ISEDIT { get; set; }
     
         public virtual BLOODGROUP BLOODGROUP { get; set; }
         public virtual CIVILIANLEVSTEP CIVILIANLEVSTEP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELETEDSENIORCE> DELETEDSENIORCE { get; set; }
         public virtual GENDER GENDER { get; set; }
         public virtual GENERALSTATUS GENERALSTATUS { get; set; }
+        public virtual GRADE GRADE { get; set; }
         public virtual PROVIDENTFUND PROVIDENTFUND { get; set; }
         public virtual REGION REGION { get; set; }
         public virtual RELIGION RELIGION { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
         public virtual SENIORCEBANK SENIORCEBANK { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
         public virtual SENIORCEIMAGE SENIORCEIMAGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SENIORCEPAYROLL> SENIORCEPAYROLL { get; set; }
@@ -69,12 +77,5 @@ namespace GAFPAY.Models
         public virtual ICollection<SENIORCETRIALPAY> SENIORCETRIALPAY { get; set; }
         public virtual TITLE TITLE { get; set; }
         public virtual UNIT UNIT { get; set; }
-        public virtual GRADE GRADE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCEALLOWANCE> SENIORCEALLOWANCE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SENIORCEDEDUCTION> SENIORCEDEDUCTION { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DELETEDSENIORCE> DELETEDSENIORCE { get; set; }
     }
 }

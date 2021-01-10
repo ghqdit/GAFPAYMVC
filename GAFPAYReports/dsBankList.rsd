@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet1">
+    <Query>
+      <DataSourceReference>GAFPAYDataSource</DataSourceReference>
+      <CommandText>SELECT        BN.BANKNAMEX + ', ' + B.BANKBRANCH AS BANKNAMEX, B.BANKID, BN.BANKSHORT
+FROM            BANKNAME AS BN INNER JOIN
+                         BANK AS B ON BN.BANKNAMEID = B.BANKNAMEID
+ORDER BY BANKNAMEX</CommandText>
+    </Query>
+    <Fields>
+      <Field Name="BANKNAMEX">
+        <DataField>BANKNAMEX</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="BANKSHORT">
+        <DataField>BANKSHORT</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="BANKID">
+        <DataField>BANKID</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>
